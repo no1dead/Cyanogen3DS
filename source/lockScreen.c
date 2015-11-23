@@ -1,6 +1,10 @@
 #include "clock.h"
+<<<<<<< HEAD
 #include "gfx.h"
 #include "home.h"
+=======
+#include "homeMenu.h"
+>>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 #include "lockScreen.h"
 
 extern const struct {
@@ -20,6 +24,11 @@ int lockScreen()
 	int hours = timeStruct->tm_hour;
 	int minutes = timeStruct->tm_min;
 	int day = timeStruct->tm_mday;
+<<<<<<< HEAD
+=======
+	
+	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
+>>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 
 	while (1)
 	{

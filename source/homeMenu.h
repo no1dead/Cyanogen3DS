@@ -11,8 +11,8 @@
 sftd_font *roboto;
 
 sf2d_texture *background;
-sf2d_texture *backdrop;
 sf2d_texture *cursor;
+sf2d_texture *quickSettings;
 
 //App icon assets
 sf2d_texture *ic_allapps;
@@ -51,7 +51,14 @@ extern const struct {
   unsigned int 	 height;
   unsigned int 	 bytes_per_pixel;
   unsigned char	 pixel_data[];
-} backdrop_img;
+} cursor_img;
+
+extern const struct {
+  unsigned int 	 width;
+  unsigned int 	 height;
+  unsigned int 	 bytes_per_pixel;
+  unsigned char	 pixel_data[];
+} quickSettings_img;
 
 extern const struct {
   unsigned int 	 width;
@@ -128,13 +135,6 @@ extern const struct {
   unsigned int 	 height;
   unsigned int 	 bytes_per_pixel;
   unsigned char	 pixel_data[];
-} cursor_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
 } day_img;
 
 extern const struct {
@@ -151,10 +151,7 @@ touchPosition touch;
 int cursorController();
 int batteryStatus(int x, int y);
 void appDrawerIcon();
-<<<<<<< HEAD
-int navbarControls();
-=======
 int navbarControls(int type);
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
+void androidQuickSettings();
 int dayNightWidget();
 int home();

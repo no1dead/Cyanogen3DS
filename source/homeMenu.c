@@ -1,18 +1,17 @@
 #include "appDrawer.h"
 #include "clock.h"
-<<<<<<< HEAD
-#include "drawing.h"
-#include "gfx.h"
-=======
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
-#include "home.h"
+#include "homeMenu.h"
+#include "language.h"
 #include "lockScreen.h"
 #include "main.h"
 #include "powerMenu.h"
-<<<<<<< HEAD
-=======
 #include "settingsMenu.h"
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
+
+int notif_y = -240;
+int yPos1 = -240;
+int yPos2 = -240;
+int yLine1 = -240;
+int yLine2 = -240;
 
 extern const struct {
   unsigned int 	 width;
@@ -43,7 +42,7 @@ int batteryStatus(int x, int y)
 {
 	int batt = 100; //This is temporary until I find how to get battery status. I know 3DS doesn't use percentages, but only values from 1-5.
 
-	sf2d_draw_texture(_100, 300, 2);
+	sf2d_draw_texture(_100, 300, y);
 	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
 	
 	return 0;
@@ -51,32 +50,6 @@ int batteryStatus(int x, int y)
 
 void appDrawerIcon() //Draws the app drawer icon. Draws a different icon of the same size once hovered with the cursor.
 {
-<<<<<<< HEAD
-	if (touch.px  >= 170 && touch.px  <= 210 && touch.py >= 130 && touch.py <= 180)
-		sf2d_draw_texture(ic_allapps_pressed, 179, 148);
-	
-	else
-		sf2d_draw_texture(ic_allapps, 179, 148);
-}
-
-int navbarControls()
-{
-	if (touch.px  >= 84 && touch.px  <= 159 && touch.py >= 201 && touch.py <= 240)
-		sf2d_draw_texture(backicon, 70, 201);
-	else
-		sf2d_draw_texture(navbar, 70, 201);
-
-	if (touch.px  >= 160 && touch.px  <= 235 && touch.py >= 201 && touch.py <= 240)
-		sf2d_draw_texture(homeicon, 70, 201);
-	else
-		sf2d_draw_texture(navbar, 70, 201);
-	
-	if (touch.px  >= 236 && touch.px  <= 311 && touch.py >= 201 && touch.py <= 240)
-		sf2d_draw_texture(multicon, 70, 201);
-	else
-		sf2d_draw_texture(navbar, 70, 201);
-		
-=======
 	if (touch.px  >= 170 && touch.px  <= 210 && touch.py >= 145 && touch.py <= 190)
 		sf2d_draw_texture(ic_allapps_pressed, 179, 158);
 	
@@ -126,8 +99,132 @@ int navbarControls(int type)
 		sf2d_end_frame();
 	}
 	
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 	return 0;
+}
+
+void androidQuickSettings()
+{
+	u32 kDown = hidKeysDown();
+	u32 kHeld = hidKeysHeld();
+
+	int notif_up;
+	int notif_down;
+	int notif_enabled;
+	
+	sf2d_draw_texture(quickSettings, 0, notif_y);
+	
+	batteryStatus(350, yPos2-4);
+	
+	sftd_draw_textf(roboto, 115, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][0]);
+	sftd_draw_textf(roboto, 245, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][2]);
+	sftd_draw_textf(roboto, 170, yLine2, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][4]);
+	
+	digitalTime(25, yPos1);
+	getMonthOfYear(25, yPos1+14, 10);
+
+	notif_enabled = 0;
+	
+	if ((kHeld & KEY_TOUCH) && (touch.px >= 0 && touch.px <= 400 && touch.py >= 0 && touch.py <= 20)) 
+	{
+		notif_down = 1;
+	}
+
+	else if ((kHeld & KEY_TOUCH) && (touch.px >= 0 && touch.px <= 400 && touch.py >= 220 && notif_y == 0))
+	{
+		notif_up = 1;
+	}
+			
+	if (notif_down == 1)
+	{				
+		if ((kHeld & KEY_TOUCH) && (touch_y >= 50))
+		{
+			notif_y = notif_y+6;
+			yPos1 = yPos1+6;
+			yPos2 = yPos2+6;
+			yLine1 = yLine1+6;
+			yLine2 = yLine2+6;
+		}
+		
+		if (notif_y >= 0)
+		{
+			notif_y = 0;
+		}
+		
+		if (yPos1 >= 10)
+		{
+			yPos1 = 10;
+		}
+		if (yPos2 >= 20)
+		{
+			yPos2 = 20;
+		}
+		if (yLine1 >= 155)
+		{
+			yLine1 = 155;
+		}
+		if (yLine2 >= 220)
+		{
+			yLine2 = 220;
+		}
+		if (yLine2 >= 200)
+		{
+			notif_enabled = 1;
+		}
+	}
+	
+	if (notif_enabled == 1)
+	{	
+		if ((touch.px >= 386 && touch.px <= 414 && touch.py >= 12 && touch.py <= 38) && (kDown & KEY_TOUCH))
+		{	 
+			notif_y = notif_y-240;
+			yPos1 = yPos1-240;
+			yPos2 = yPos2-240;
+			yLine1 = yLine1-240;
+			yLine2 = yLine2-240;
+			settingsMenu();
+		}
+		
+		if ((touch.px >= 198 && touch.px <= 240 && touch.py >= 204 && touch.py <= 258) && (kDown & KEY_TOUCH))
+		{
+			notif_y = notif_y-240;
+			yPos1 = yPos1-240;
+			yPos2 = yPos2-240;
+			yLine1 = yLine1-240;
+			yLine2 = yLine2-240;
+			lockScreen();
+		}
+	}
+	if ((notif_down == 1) && (kDown & KEY_B))
+	{
+		notif_y = notif_y-240;
+		yPos1 = yPos1-240;
+		yPos2 = yPos2-240;
+		yLine1 = yLine1-240;
+		yLine2 = yLine2-240;
+	}
+	
+	if (notif_up == 1)
+	{		
+		notif_enabled = 0;
+		
+		if ((kHeld & KEY_TOUCH) && (touch_y <= 50))
+		{
+			notif_y = notif_y-6;
+			yPos1 = yPos1-6;
+			yPos2 = yPos2-6;
+			yLine1 = yLine1-6;
+			yLine2 = yLine2-6;
+		}
+		
+		if (notif_y <= -240)
+		{	
+			notif_y = -240;
+			yPos1 = -240;
+			yPos2 = -240;
+			yLine1 = -240;
+			yLine2 = -240;
+		}
+	}
 }
 
 int dayNightWidget()
@@ -137,8 +234,6 @@ int dayNightWidget()
 
 	int hours = timeStruct->tm_hour;
 	int minutes = timeStruct->tm_min;
-	int day = timeStruct->tm_mday;
-	//int month = timeStruct->tm_mon;
 	
 	if (hours < 6)
 		sf2d_draw_texture(dayWidget, 172, 60);
@@ -146,9 +241,8 @@ int dayNightWidget()
 		sf2d_draw_texture(nightWidget, 167, 60);
 		
 	sftd_draw_textf(roboto, 142, 20, RGBA8(255, 255, 255, 255), 34, "0%2d : %02d", hours, minutes);
-	sftd_draw_textf(roboto, 130, 80, RGBA8(255, 255, 255, 255), 10, "Monday");
-	sftd_draw_textf(roboto, 230, 80, RGBA8(255, 255, 255, 255), 10, "%d", day);
-	sftd_draw_textf(roboto, 245, 80, RGBA8(255, 255, 255, 255), 10, "October");
+	sftd_draw_textf(roboto, 130, 80, RGBA8(255, 255, 255, 255), 10, "Tuesday");
+	getMonthOfYear(230, 80, 10);
 	
 	return 0;
 }
@@ -157,6 +251,7 @@ int home()
 {
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 
+	ic_allapps = sf2d_create_texture_mem_RGBA8(ic_allapps_img.pixel_data, ic_allapps_img.width, ic_allapps_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_allapps_pressed = sf2d_create_texture_mem_RGBA8(ic_allapps_pressed_img.pixel_data, ic_allapps_pressed_img.width, ic_allapps_pressed_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	
 	ic_launcher_browser = sf2d_create_texture_mem_RGBA8(ic_launcher_browser_img.pixel_data, ic_launcher_browser_img.width, ic_launcher_browser_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
@@ -180,57 +275,47 @@ int home()
 		
 		sf2d_draw_texture(background, 0, 0);
 		
-<<<<<<< HEAD
-		sf2d_draw_texture(ic_launcher_browser, 49, 135);
-		sf2d_draw_texture(ic_launcher_messenger, 114, 135);
-		sf2d_draw_texture(ic_launcher_apollo, 241, 135);
-		sf2d_draw_texture(ic_launcher_settings, 306, 135);
-=======
 		sf2d_draw_texture(ic_launcher_browser, 49, 145);
 		sf2d_draw_texture(ic_launcher_messenger, 114, 145);
 		sf2d_draw_texture(ic_launcher_apollo, 241, 145);
 		sf2d_draw_texture(ic_launcher_settings, 306, 145);
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 		appDrawerIcon();
 
 		dayNightWidget();
 		
-<<<<<<< HEAD
-		navbarControls(); //Displays navbar
-=======
 		navbarControls(0); //Displays navbar
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 		digitalTime(350, 2); //Displays digital time
 		batteryStatus(316, 2); //Displays battery status
+		androidQuickSettings();
 		cursorController();
 		
 		sf2d_end_frame();
 		
-		if ((touch.px  >= 170 && touch.px  <= 210 && touch.py >= 148 && touch.py <= 190) && (kDown & KEY_A))
+		if ((touch.px  >= 170 && touch.px  <= 210 && touch.py >= 148 && touch.py <= 190) && (kDown & KEY_TOUCH))
 		{
+			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
-			appDrawer(); //Open app drawer
+			appDrawer(); //Opens app drawer
 		}
 		
-<<<<<<< HEAD
-=======
-		if ((touch.px  >= 306 && touch.px  <= 351 && touch.py >= 145 && touch.py <= 190) && (kDown & KEY_A))
+		if ((touch.px  >= 306 && touch.px  <= 351 && touch.py >= 145 && touch.py <= 190) && (kDown & KEY_TOUCH))
 		{
+			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
-			settingsMenu(); //Open settings menu
+			settingsMenu(); //Opens settings menu
 		}
 		
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 		if (kDown & KEY_Y)
-			powerMenu(); //Open power menu
+			powerMenu(); //Opens power menu
 		
 		if (kDown & KEY_L)
-			lockScreen(); //Locks the screen
+			lockScreen(); //Takes you to lock screen
 
 		// Flush and swap framebuffers
 		sf2d_swapbuffers();
 	}
 
+	sf2d_free_texture(ic_allapps);
 	sf2d_free_texture(ic_allapps_pressed);
 	
 	return 0;
