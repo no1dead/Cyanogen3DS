@@ -1,8 +1,16 @@
 #include <3ds.h>
 
-sf2d_texture *aboutBg;
-sf2d_texture *settingsBg;
 sf2d_texture *highlight;
+
+sf2d_texture *aboutBg;
+sf2d_texture *developerBg;
+sf2d_texture *displayBg;
+sf2d_texture *performanceBg;
+sf2d_texture *performanceBg2;
+sf2d_texture *securityBg;
+sf2d_texture *settingsBg;
+sf2d_texture *updatesBg;
+sf2d_texture *wifiBg;
 
 sf2d_texture *about_highlight;
 sf2d_texture *display_highlight;

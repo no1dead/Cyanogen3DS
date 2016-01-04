@@ -1,10 +1,5 @@
 #include "clock.h"
-<<<<<<< HEAD
-#include "drawing.h"
-#include "home.h"
-=======
 #include "homeMenu.h"
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 
 void digitalTime(int x, int y)
 {
@@ -25,8 +20,6 @@ void digitalTime(int x, int y)
 	else 
 		sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
 }
-<<<<<<< HEAD
-=======
 
 void getMonthOfYear(int x, int y, int size)
 {
@@ -42,4 +35,3 @@ void getMonthOfYear(int x, int y, int size)
 	
     sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), size, "%d %s", day, months[month]);
 }
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74

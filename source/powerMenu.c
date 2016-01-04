@@ -1,10 +1,5 @@
 #include "clock.h"
-<<<<<<< HEAD
-#include "gfx.h"
-#include "home.h"
-=======
 #include "homeMenu.h"
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 #include "powerMenu.h"
 
 extern const struct {
@@ -47,11 +42,7 @@ int powerMenu()
 		if (touch.px  >= 62 && touch.px  <= 338 && touch.py >= 70 && touch.py <= 149)
 		{
 			sf2d_draw_texture(power1, 62, 90);
-<<<<<<< HEAD
-			if (kDown & KEY_A)
-=======
 			if (kDown & KEY_TOUCH)
->>>>>>> 8f4f166435c1b8e8f1cee52e05810b4d211f6c74
 				break;
 		}	
 		

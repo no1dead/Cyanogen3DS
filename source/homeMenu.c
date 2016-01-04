@@ -25,6 +25,16 @@ int cursorController()
 	//hidKeysHeld returns information about which buttons have are held down in this frame
 	u32 kHeld = hidKeysHeld();
 	
+	if(hidKeysDown()&KEY_TOUCH)
+    {
+		touchTimer = 0;
+		firstTouch = touch;
+    }
+    if(hidKeysHeld()&KEY_TOUCH)
+	{
+		touchTimer++;
+    }
+	
 	//Read the touch screen coordinates
 	if (kHeld & KEY_TOUCH) 
 	{
@@ -134,9 +144,9 @@ void androidQuickSettings()
 		notif_up = 1;
 	}
 			
-	if (notif_down == 1)
+	if (notif_down == 1) //&& touch.py <= 20)
 	{				
-		if ((kHeld & KEY_TOUCH) && (touch_y >= 50))
+		if ((kHeld & KEY_TOUCH) && (touch.py >= oldTouch.py))
 		{
 			notif_y = notif_y+6;
 			yPos1 = yPos1+6;
@@ -207,7 +217,7 @@ void androidQuickSettings()
 	{		
 		notif_enabled = 0;
 		
-		if ((kHeld & KEY_TOUCH) && (touch_y <= 50))
+		if ((kHeld & KEY_TOUCH) && (oldTouch.py >= touch.py))
 		{
 			notif_y = notif_y-6;
 			yPos1 = yPos1-6;
@@ -286,7 +296,7 @@ int home()
 		navbarControls(0); //Displays navbar
 		digitalTime(350, 2); //Displays digital time
 		batteryStatus(316, 2); //Displays battery status
-		androidQuickSettings();
+		//androidQuickSettings();
 		cursorController();
 		
 		sf2d_end_frame();

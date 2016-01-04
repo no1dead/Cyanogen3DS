@@ -147,6 +147,8 @@ extern const struct {
 u16 touch_x;
 u16 touch_y;
 touchPosition touch;
+touchPosition oldTouch, firstTouch;
+u16 touchTimer;
 
 int cursorController();
 int batteryStatus(int x, int y);
