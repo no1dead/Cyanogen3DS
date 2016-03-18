@@ -1,25 +1,14 @@
 #include "clock.h"
 #include "homeMenu.h"
 #include "powerMenu.h"
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} power_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} power1_img;
+#include "main.h"
 
 int powerMenu()
 {
-	power = sf2d_create_texture_mem_RGBA8(power_img.pixel_data, power_img.width, power_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	power1 = sf2d_create_texture_mem_RGBA8(power1_img.pixel_data, power1_img.width, power1_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	load_PNG(power, "romfs:/power.png", SF2D_PLACE_RAM);
+	load_PNG(power1, "romfs:/power.png", SF2D_PLACE_RAM);
+	/*power = sf2d_create_texture_mem_RGBA8(power_img.pixel_data, power_img.width, power_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	power1 = sf2d_create_texture_mem_RGBA8(power1_img.pixel_data, power1_img.width, power1_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 
 	while (aptMainLoop())
 	{

@@ -33,10 +33,11 @@ include $(DEVKITARM)/3ds_rules
 
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-RESOURCES   := resources
+RESOURCES   :=	resources
 SOURCES		:=	source source/res
 DATA		:=	data
 INCLUDES	:=	include
+ROMFS		:=	romfs
 
 APP_TITLE	:= Cyanogen3DS
 APP_DESCRIPTION	:= Custom GUI Menu for 3DS. This GUI menu serves to replicate the Android OS, on your 3DS.
@@ -59,7 +60,7 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lsftd -lfreetype -lpng -lz -lsf2d -lctru -lm
+LIBS	:= -lsftd -lsfil -lfreetype -lpng -lz -lsf2d -lctru -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -126,6 +127,10 @@ endif
 
 ifeq ($(strip $(NO_SMDH)),)
 	export _3DSXFLAGS += --smdh=$(CURDIR)/$(TARGET).smdh
+endif
+
+ifneq ($(ROMFS),)
+	export _3DSXFLAGS += --romfs=$(CURDIR)/$(ROMFS)
 endif
 
 .PHONY: $(BUILD) clean all

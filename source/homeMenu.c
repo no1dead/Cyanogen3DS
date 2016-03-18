@@ -13,13 +13,6 @@ int yPos2 = -240;
 int yLine1 = -240;
 int yLine2 = -240;
 
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} ic_allapps_pressed_img;
-
 int cursorController()
 {
 	//hidKeysHeld returns information about which buttons have are held down in this frame
@@ -50,8 +43,12 @@ int cursorController()
 
 int batteryStatus(int x, int y)
 {
-	int batt = 100; //This is temporary until I find how to get battery status. I know 3DS doesn't use percentages, but only values from 1-5.
+	//int batt = 100; //This is temporary until I find how to get battery status. I know 3DS doesn't use percentages, but only values from 1-5.
 
+	u8 batt_level = 5;
+	PTMU_GetBatteryLevel(&batt_level);
+	int batt = (u32)batt_level * 20;
+	
 	sf2d_draw_texture(_100, 300, y);
 	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
 	
@@ -250,7 +247,7 @@ int dayNightWidget()
 	else
 		sf2d_draw_texture(nightWidget, 167, 60);
 		
-	sftd_draw_textf(roboto, 142, 20, RGBA8(255, 255, 255, 255), 34, "0%2d : %02d", hours, minutes);
+	sftd_draw_textf(roboto, 142, 20, RGBA8(255, 255, 255, 255), 34, "%02d : %02d", hours, minutes);
 	sftd_draw_textf(roboto, 130, 80, RGBA8(255, 255, 255, 255), 10, "Tuesday");
 	getMonthOfYear(230, 80, 10);
 	
@@ -260,22 +257,32 @@ int dayNightWidget()
 int home()
 {
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
-
-	ic_allapps = sf2d_create_texture_mem_RGBA8(ic_allapps_img.pixel_data, ic_allapps_img.width, ic_allapps_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_allapps_pressed = sf2d_create_texture_mem_RGBA8(ic_allapps_pressed_img.pixel_data, ic_allapps_pressed_img.width, ic_allapps_pressed_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	
-	ic_launcher_browser = sf2d_create_texture_mem_RGBA8(ic_launcher_browser_img.pixel_data, ic_launcher_browser_img.width, ic_launcher_browser_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	/*ic_allapps = sf2d_create_texture_mem_RGBA8(ic_allapps_img.pixel_data, ic_allapps_img.width, ic_allapps_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	ic_allapps_pressed = sf2d_create_texture_mem_RGBA8(ic_allapps_pressed_img.pixel_data, ic_allapps_pressed_img.width, ic_allapps_pressed_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
+
+	load_PNG(ic_allapps, "romfs:/ic_allapps.png", SF2D_PLACE_RAM);
+	load_PNG(ic_allapps_pressed, "romfs:/ic_allapps_pressed.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_browser, "romfs:/ic_launcher_browser.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_messenger, "romfs:/ic_launcher_messenger.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_apollo, "romfs:/ic_launcher_apollo.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_settings, "romfs:/ic_launcher_settings.png", SF2D_PLACE_RAM);
+
+	/*ic_launcher_browser = sf2d_create_texture_mem_RGBA8(ic_launcher_browser_img.pixel_data, ic_launcher_browser_img.width, ic_launcher_browser_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_launcher_messenger = sf2d_create_texture_mem_RGBA8(ic_launcher_messenger_img.pixel_data, ic_launcher_messenger_img.width, ic_launcher_messenger_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_launcher_apollo = sf2d_create_texture_mem_RGBA8(ic_launcher_apollo_img.pixel_data, ic_launcher_apollo_img.width, ic_launcher_apollo_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_launcher_settings = sf2d_create_texture_mem_RGBA8(ic_launcher_settings_img.pixel_data, ic_launcher_settings_img.width, ic_launcher_settings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	
+	ic_launcher_settings = sf2d_create_texture_mem_RGBA8(ic_launcher_settings_img.pixel_data, ic_launcher_settings_img.width, ic_launcher_settings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
+
 	// Main loop
 	while (aptMainLoop())
 	{
 
 		//Scan all the inputs. This should be done once for each frame
 		hidScanInput();
-		
+
+		if (hidKeysDown() & KEY_START)
+			break;
+
 		//hidKeysDown returns information about which buttons have been just pressed (and they weren't in the previous frame)
 		u32 kDown = hidKeysDown();
 		//hidKeysUp returns information about which buttons have been just released

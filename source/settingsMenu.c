@@ -5,6 +5,7 @@
 #include "lockScreen.h"
 #include "powerMenu.h"
 #include "settingsMenu.h"
+#include "main.h"
 
 extern const struct {
   unsigned int 	 width;
@@ -120,8 +121,10 @@ extern const struct {
 
 int aboutMenu()
 {
-	aboutBg = sf2d_create_texture_mem_RGBA8(about_img.pixel_data, about_img.width, about_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	highlight = sf2d_create_texture_mem_RGBA8(highlight_img.pixel_data, highlight_img.width, highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	load_PNG(aboutBg, "romfs:/aboutBg.png", SF2D_PLACE_RAM);
+	load_PNG(highlight, "romfs:/highlight.png", SF2D_PLACE_RAM);
+	/*aboutBg = sf2d_create_texture_mem_RGBA8(about_img.pixel_data, about_img.width, about_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	highlight = sf2d_create_texture_mem_RGBA8(highlight_img.pixel_data, highlight_img.width, highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
@@ -202,8 +205,10 @@ int aboutMenu()
 
 int developerMenu()
 {
-	developerBg = sf2d_create_texture_mem_RGBA8(developerbg_img.pixel_data, developerbg_img.width, developerbg_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	highlight = sf2d_create_texture_mem_RGBA8(highlight_img.pixel_data, highlight_img.width, highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	load_PNG(developerBg, "romfs:/developerBg.png", SF2D_PLACE_RAM);
+	load_PNG(highlight, "romfs:/highlight.png", SF2D_PLACE_RAM);
+	/*developerBg = sf2d_create_texture_mem_RGBA8(developerbg_img.pixel_data, developerbg_img.width, developerbg_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	highlight = sf2d_create_texture_mem_RGBA8(highlight_img.pixel_data, highlight_img.width, highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
@@ -264,8 +269,10 @@ int developerMenu()
 
 int displayMenu()
 {
-	displayBg = sf2d_create_texture_mem_RGBA8(displaybg_img.pixel_data, displaybg_img.width, displaybg_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	highlight = sf2d_create_texture_mem_RGBA8(highlight_img.pixel_data, highlight_img.width, highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	load_PNG(displayBg, "romfs:/displayBg.png", SF2D_PLACE_RAM);
+	load_PNG(highlight, "romfs:/highlight.png", SF2D_PLACE_RAM);
+	/*displayBg = sf2d_create_texture_mem_RGBA8(displaybg_img.pixel_data, displaybg_img.width, displaybg_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	highlight = sf2d_create_texture_mem_RGBA8(highlight_img.pixel_data, highlight_img.width, highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
@@ -417,14 +424,22 @@ int settingsUnload()
 
 int settingsMenu()
 {
-	settingsBg = sf2d_create_texture_mem_RGBA8(settings_img.pixel_data, settings_img.width, settings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	
-	about_highlight = sf2d_create_texture_mem_RGBA8(about_highlight_img.pixel_data, about_highlight_img.width, about_highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	load_PNG(settingsBg, "romfs:/settingsBg.png", SF2D_PLACE_RAM);
+	//settingsBg = sf2d_create_texture_mem_RGBA8(settings_img.pixel_data, settings_img.width, settings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+
+	load_PNG(about_highlight, "romfs:/about_highlight.png", SF2D_PLACE_RAM);
+	load_PNG(display_highlight, "romfs:/display_highlight.png", SF2D_PLACE_RAM);
+	load_PNG(developeroptions_highlight, "romfs:/developersoptions_highlight.png", SF2D_PLACE_RAM);
+	load_PNG(performance_highlight, "romfs:/performance_highlight.png", SF2D_PLACE_RAM);
+	load_PNG(security_highlight, "romfs:/security_highlight.png", SF2D_PLACE_RAM);
+	load_PNG(wifi_highlight, "romfs:/wifi_highlight.png", SF2D_PLACE_RAM);
+
+	/*about_highlight = sf2d_create_texture_mem_RGBA8(about_highlight_img.pixel_data, about_highlight_img.width, about_highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	display_highlight = sf2d_create_texture_mem_RGBA8(display_highlight_img.pixel_data, display_highlight_img.width, display_highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	developeroptions_highlight = sf2d_create_texture_mem_RGBA8(developeroptions_highlight_img.pixel_data, developeroptions_highlight_img.width, developeroptions_highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	performance_highlight = sf2d_create_texture_mem_RGBA8(performance_highlight_img.pixel_data, performance_highlight_img.width, performance_highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	security_highlight = sf2d_create_texture_mem_RGBA8(security_highlight_img.pixel_data, security_highlight_img.width, security_highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	wifi_highlight = sf2d_create_texture_mem_RGBA8(wifi_highlight_img.pixel_data, wifi_highlight_img.width, wifi_highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	wifi_highlight = sf2d_create_texture_mem_RGBA8(wifi_highlight_img.pixel_data, wifi_highlight_img.width, wifi_highlight_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
