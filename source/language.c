@@ -198,17 +198,17 @@ const char lang_settingsBattery[][3][60] =
 
 const char lang_settingsAbout[][6][100] = 
 {	
-	{"Cyanogen3DS updates", "Click for, view or install available updates", "Cyanogen3DS version:", "UNOFFICIAL", "Mac Address:", "Kernel version:"},
-	{"Mises à jour de Cyanogen3DS", "Cliquez pour voir et installer les mises à jour disponibles", "Version Cyanogen3DS :", "UNOFFICIEL", "Adresse MAC :", "Version du noyau :"},
-	{"Aktualizacje Cyanogen3DS", "Nacisnij aby sprawdzic/zainstalowac aktualizacje", "Wersja Cyanogen3DS:", "UNOFFICIAL", "Adres Mac:", "Wersja jadra:"},
-	{"Cyanogen3DS updates", "Click for, view or install available updates", "Cyanogen3DS version:", "INOFFIZIELL", "Mac Adresse:", "Kernel version:"},
-	{"Cyanogen3DS updates", "Klik om updates weer te geven/installeren", "Cyanogen3DS versie:", "NIET OFFICIEEL", "Mac Adres:", "Kernel versie:"},
-	{"Actualizaciones de Cyanogen3DS", "Haga click para ver o instalar actualizaciones", "Versión de Cyanogen3DS:", "NO OFICIAL", "Dirección MAC:", "Versión del Kernel:"},
-	{"Atualizações Cyanogen3DS", "Clique para, ver ou instalar atualizações disponiveis", "versão Cyanogen3DS:", "NÃO-OFICIAL", "Endereço MAC:", "Versão do kernel:"},
-	{"Atualizações do Cyanogen3DS", "Clique para, ver ou instalar atualizações disponíveis", "Versão do Cyanogen3DS:", "NÃO-OFICIAL", "Endereço Mac:", "Versão do Kernel:"},
-	{"Cyanogen3DS oppdateringer", "Trykk for, vis eller installer tilgjengelige oppdateringer", "Cyanogen3DS versjon:", "UOFFISIELL", "Mac Adresse:", "Kernel versjon:"},
-	{"Actualizări Cyanogen3DS", "Apasă pentru a vedea și instala actualizări disponibile", "Versiune Cyanogen3DS:", "NEOFICIAL", "Adresă Mac:", "Versiune de kernel:"},
-	{"Aggiornamenti Cyanogen3DS", "Clicca per, vedere o installare gli aggiornamenti disponibili", "Versione Cyanogen3DS:", "NON UFFICIALE", "Indirizzo MAC:", "Versione kernel:"}
+	{"Cyanogen3DS updates", "Click for, view or install available updates", "Cyanogen3DS version:", "OFFICIAL", "Mac Address:", "Kernel version:"},
+	{"Mises à jour de Cyanogen3DS", "Cliquez pour voir et installer les mises à jour disponibles", "Version Cyanogen3DS :", "OFFICIEL", "Adresse MAC :", "Version du noyau :"},
+	{"Aktualizacje Cyanogen3DS", "Nacisnij aby sprawdzic/zainstalowac aktualizacje", "Wersja Cyanogen3DS:", "OFFICIAL", "Adres Mac:", "Wersja jadra:"},
+	{"Cyanogen3DS updates", "Click for, view or install available updates", "Cyanogen3DS version:", "OFFIZIELL", "Mac Adresse:", "Kernel version:"},
+	{"Cyanogen3DS updates", "Klik om updates weer te geven/installeren", "Cyanogen3DS versie:", "OFFICIEEL", "Mac Adres:", "Kernel versie:"},
+	{"Actualizaciones de Cyanogen3DS", "Haga click para ver o instalar actualizaciones", "Versión de Cyanogen3DS:", "OFICIAL", "Dirección MAC:", "Versión del Kernel:"},
+	{"Atualizações Cyanogen3DS", "Clique para, ver ou instalar atualizações disponiveis", "versão Cyanogen3DS:", "OFICIAL", "Endereço MAC:", "Versão do kernel:"},
+	{"Atualizações do Cyanogen3DS", "Clique para, ver ou instalar atualizações disponíveis", "Versão do Cyanogen3DS:", "OFICIAL", "Endereço Mac:", "Versão do Kernel:"},
+	{"Cyanogen3DS oppdateringer", "Trykk for, vis eller installer tilgjengelige oppdateringer", "Cyanogen3DS versjon:", "OFFISIELL", "Mac Adresse:", "Kernel versjon:"},
+	{"Actualizări Cyanogen3DS", "Apasă pentru a vedea și instala actualizări disponibile", "Versiune Cyanogen3DS:", "OFICIAL", "Adresă Mac:", "Versiune de kernel:"},
+	{"Aggiornamenti Cyanogen3DS", "Clicca per, vedere o installare gli aggiornamenti disponibili", "Versione Cyanogen3DS:", "UFFICIALE", "Indirizzo MAC:", "Versione kernel:"}
 };
 
 const char lang_settingsUpdates[][1][100] = 
