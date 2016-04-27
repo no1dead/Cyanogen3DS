@@ -22,9 +22,9 @@ int main(int argc, char **argv)
 	load_PNG(quickSettings, "romfs:/quickSettings.png", SF2D_PLACE_RAM);
 
 	load_PNG(navbar, "romfs:/navbar.png", SF2D_PLACE_RAM);
-	load_PNG(backicon, "romfs:/navbar.png", SF2D_PLACE_RAM);
-	load_PNG(homeicon, "romfs:/navbar.png", SF2D_PLACE_RAM);
-	load_PNG(multicon, "romfs:/navbar.png", SF2D_PLACE_RAM);
+	load_PNG(backicon, "romfs:/backicon.png", SF2D_PLACE_RAM);
+	load_PNG(homeicon, "romfs:/homeicon.png", SF2D_PLACE_RAM);
+	load_PNG(multicon, "romfs:/multicon.png", SF2D_PLACE_RAM);
 
 	load_PNG(dayWidget, "romfs:/day.png", SF2D_PLACE_RAM);
 	load_PNG(nightWidget, "romfs:/night.png", SF2D_PLACE_RAM);
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 	while (aptMainLoop())
 	{
 		home();
-			break;
+		break;
 	}
 
 	sftd_fini();
