@@ -43,13 +43,30 @@ int cursorController()
 
 int batteryStatus(int x, int y)
 {
-	//int batt = 100; //This is temporary until I find how to get battery status. I know 3DS doesn't use percentages, but only values from 1-5.
+	u8 batteryPercent;
+	PTMU_GetBatteryLevel(&batteryPercent);
+	
+	u8 batteryState; //boolean that represnets charging state
+	PTMU_GetBatteryChargeState(&batteryStateBool);
 
-	u8 batt_level = 5;
-	PTMU_GetBatteryLevel(&batt_level);
 	int batt = (u32)batt_level * 20;
 	
-	sf2d_draw_texture(_100, 300, y);
+	if(batt == 0)
+		sf2d_draw_texture(_0, 300, y);	
+	else if(batt == 20)
+		sf2d_draw_texture(_20, 300, y);
+	else if(batt == 40)
+		sf2d_draw_texture(_40, 300, y);
+	else if(batt == 60)
+		sf2d_draw_texture(_60, 300, y);
+	else if(batt == 80)
+		sf2d_draw_texture(_80, 300, y);
+	
+	if (batteryStateBool == 1) 
+	{
+		sf2d_draw_texture(_charge, 300, y);
+	}
+	
 	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
 	
 	return 0;
