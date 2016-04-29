@@ -52,19 +52,19 @@ int batteryStatus(int x, int y)
 	int batt = (u32)batt_level * 20;
 	
 	if(batt == 0)
-		sf2d_draw_texture(_0, 300, y);	
+		sf2d_draw_texture(_0, x, y);	
 	else if(batt == 20)
-		sf2d_draw_texture(_20, 300, y);
+		sf2d_draw_texture(_20, x, y);
 	else if(batt == 40)
-		sf2d_draw_texture(_40, 300, y);
+		sf2d_draw_texture(_40, x, y);
 	else if(batt == 60)
-		sf2d_draw_texture(_60, 300, y);
+		sf2d_draw_texture(_60, x, y);
 	else if(batt == 80)
-		sf2d_draw_texture(_80, 300, y);
+		sf2d_draw_texture(_80, x, y);
 	
 	if (batteryStateBool == 1) 
 	{
-		sf2d_draw_texture(_charge, 300, y);
+		sf2d_draw_texture(_charge, x-1, y);
 	}
 	
 	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
@@ -319,7 +319,7 @@ int home()
 		
 		navbarControls(0); //Displays navbar
 		digitalTime(350, 2); //Displays digital time
-		batteryStatus(316, 2); //Displays battery status
+		batteryStatus(300, 2); //Displays battery status
 		//androidQuickSettings();
 		cursorController();
 		
