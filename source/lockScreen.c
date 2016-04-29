@@ -33,7 +33,7 @@ int lockScreen()
 		sftd_draw_textf(roboto, 220, 80, RGBA8(255, 255, 255, 255), 10, "October");
 		
 		digitalTime(350, 2); 
-		batteryStatus(316, 2); 
+		batteryStatus(300, 2); 
 		cursorController();
 		
 		sf2d_end_frame();

@@ -43,14 +43,31 @@ int cursorController()
 
 int batteryStatus(int x, int y)
 {
-	//int batt = 100; //This is temporary until I find how to get battery status. I know 3DS doesn't use percentages, but only values from 1-5.
-
-	u8 batt_level = 5;
-	PTMU_GetBatteryLevel(&batt_level);
-	int batt = (u32)batt_level * 20;
+	u8 batteryPercent;
+	PTMU_GetBatteryLevel(&batteryPercent);
 	
-	sf2d_draw_texture(_100, 300, y);
-	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+	u8 batteryState; //boolean that represnets charging state
+	PTMU_GetBatteryChargeState(&batteryState);
+
+	int batt = (u32)batteryPercent * 20;
+	
+	if(batt == 20)
+		sf2d_draw_texture(_20, x, y);	
+	else if(batt == 40)
+		sf2d_draw_texture(_40, x, y);
+	else if(batt == 60)
+		sf2d_draw_texture(_60, x, y);
+	else if(batt == 80)
+		sf2d_draw_texture(_80, x, y);
+	else if(batt == 100)
+		sf2d_draw_texture(_100, x, y);
+	
+	if (batteryState == 1) 
+	{
+		sf2d_draw_texture(_charge, x+1, y);
+	}
+	
+	sftd_draw_textf(roboto, x+16, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
 	
 	return 0;
 }
@@ -302,7 +319,7 @@ int home()
 		
 		navbarControls(0); //Displays navbar
 		digitalTime(350, 2); //Displays digital time
-		batteryStatus(316, 2); //Displays battery status
+		batteryStatus(300, 2); //Displays battery status
 		//androidQuickSettings();
 		cursorController();
 		

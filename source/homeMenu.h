@@ -34,6 +34,7 @@ sf2d_texture *_80;
 sf2d_texture *_60;
 sf2d_texture *_40;
 sf2d_texture *_20;
+sf2d_texture *_charge;
 
 // Widget Assets
 sf2d_texture *dayWidget;

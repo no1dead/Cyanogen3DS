@@ -159,7 +159,7 @@ int aboutMenu()
 		}
 		 
 		digitalTime(350, 2); 
-		batteryStatus(316, 2); 
+		batteryStatus(300, 2);
 		//androidQuickSettings();
 		cursorController();
 		
@@ -223,7 +223,7 @@ int developerMenu()
 		sf2d_draw_texture(developerBg, 0, 0);
 		
 		digitalTime(350, 2); 
-		batteryStatus(316, 2); 
+		batteryStatus(300, 2); 
 		//androidQuickSettings();
 		cursorController();
 		
@@ -302,7 +302,7 @@ int displayMenu()
 		}
 		 
 		digitalTime(350, 2); 
-		batteryStatus(316, 2); 
+		batteryStatus(300, 2);
 		//androidQuickSettings();
 		cursorController();
 		
@@ -463,7 +463,7 @@ int settingsMenu()
 		settingsHighlight();
 		
 		digitalTime(350, 2); 
-		batteryStatus(316, 2); 
+		batteryStatus(300, 2); 
 		//androidQuickSettings();
 		cursorController();
 		

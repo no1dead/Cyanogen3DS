@@ -30,6 +30,11 @@ int main(int argc, char **argv)
 	load_PNG(nightWidget, "romfs:/night.png", SF2D_PLACE_RAM);
 
 	load_PNG(_100, "romfs:/100.png", SF2D_PLACE_RAM);
+	load_PNG(_80, "romfs:/80.png", SF2D_PLACE_RAM);
+	load_PNG(_60, "romfs:/60.png", SF2D_PLACE_RAM);
+	load_PNG(_40, "romfs:/40.png", SF2D_PLACE_RAM);
+	load_PNG(_20, "romfs:/20.png", SF2D_PLACE_RAM);
+	load_PNG(_charge, "romfs:/charge.png", SF2D_PLACE_RAM);
 		
 	// Main loop
 	while (aptMainLoop())
