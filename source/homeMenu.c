@@ -47,27 +47,27 @@ int batteryStatus(int x, int y)
 	PTMU_GetBatteryLevel(&batteryPercent);
 	
 	u8 batteryState; //boolean that represnets charging state
-	PTMU_GetBatteryChargeState(&batteryStateBool);
+	PTMU_GetBatteryChargeState(&batteryState);
 
-	int batt = (u32)batt_level * 20;
+	int batt = (u32)batteryPercent * 20;
 	
-	if(batt == 0)
-		sf2d_draw_texture(_0, x, y);	
-	else if(batt == 20)
-		sf2d_draw_texture(_20, x, y);
+	if(batt == 20)
+		sf2d_draw_texture(_20, x, y);	
 	else if(batt == 40)
 		sf2d_draw_texture(_40, x, y);
 	else if(batt == 60)
 		sf2d_draw_texture(_60, x, y);
 	else if(batt == 80)
 		sf2d_draw_texture(_80, x, y);
+	else if(batt == 100)
+		sf2d_draw_texture(_100, x, y);
 	
-	if (batteryStateBool == 1) 
+	if (batteryState == 1) 
 	{
-		sf2d_draw_texture(_charge, x-1, y);
+		sf2d_draw_texture(_charge, x+1, y);
 	}
 	
-	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+	sftd_draw_textf(roboto, x+16, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
 	
 	return 0;
 }

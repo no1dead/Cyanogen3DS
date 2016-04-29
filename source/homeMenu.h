@@ -29,11 +29,11 @@ sf2d_texture *homeicon;
 sf2d_texture *multicon;
 
 // Battery Icon assets (1-5)
+sf2d_texture *_100;
 sf2d_texture *_80;
 sf2d_texture *_60;
 sf2d_texture *_40;
 sf2d_texture *_20;
-sf2d_texture *_0;
 sf2d_texture *_charge;
 
 // Widget Assets
