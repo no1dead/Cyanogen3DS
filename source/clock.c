@@ -3,22 +3,29 @@
 
 void digitalTime(int x, int y)
 {
-	time_t unixTime = time(NULL);
-	struct tm* timeStruct = gmtime((const time_t *)&unixTime);
+	bool hour24 = false; //Until I add an option this will be default
+	
+	struct tm *ts = localtime(&now);
 
-	int hours = timeStruct->tm_hour;
-	int minutes = timeStruct->tm_min;
-	//int seconds = timeStruct->tm_sec;
-	//int day = timeStruct->tm_mday;
-	//int month = timeStruct->tm_mon;
-	//int year = timeStruct->tm_year +1900;
+	int hours = ts->tm_hour;
+	int minutes = ts->tm_min;
+
+    	char * state;
+
+	
 
 	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%2d:%02d", hours, minutes);
 	
-	if (hours < 12)
-		sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
-	else 
-		sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
+	if (hour24) state = "";
+  	else 
+  	{
+        	if (hours > 12)
+			sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
+		else 
+			sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
+        	if (hour > 12) 
+        		hour -= 12;
+    	}
 }
 
 void getMonthOfYear(int x, int y, int size)
@@ -28,10 +35,9 @@ void getMonthOfYear(int x, int y, int size)
 		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
 	};
        
-    time_t unixTime = time(NULL);
-	struct tm* timeStruct = gmtime((const time_t *)&unixTime);
-	int month = timeStruct->tm_mon;
-	int day = timeStruct->tm_mday;
+	struct tm *ts = localtime(&now);
+	int month = ts->tm_mon;
+	int day = ts->tm_mday;
 	
     sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), size, "%d %s", day, months[month]);
 }
