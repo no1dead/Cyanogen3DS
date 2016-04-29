@@ -62,7 +62,7 @@ int appDrawer()
 		
 		navbarControls(0);
 		digitalTime(350, 2); 
-		batteryStatus(316, 2);
+		batteryStatus(300, 2);
 		//androidQuickSettings();		
 		cursorController();
 		
