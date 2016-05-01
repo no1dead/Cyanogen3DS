@@ -5,8 +5,8 @@
 
 int powerMenu()
 {
-	load_PNG(power, "romfs:/power.png", SF2D_PLACE_RAM);
-	load_PNG(power1, "romfs:/power.png", SF2D_PLACE_RAM);
+	load_PNG(power, "romfs:/powerMenu.png", SF2D_PLACE_RAM);
+	load_PNG(power1, "romfs:/powerSelection.png", SF2D_PLACE_RAM);
 	/*power = sf2d_create_texture_mem_RGBA8(power_img.pixel_data, power_img.width, power_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	power1 = sf2d_create_texture_mem_RGBA8(power1_img.pixel_data, power1_img.width, power1_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 
@@ -20,12 +20,13 @@ int powerMenu()
 		
 		sf2d_draw_texture(background, 0, 0);
 		
-		sf2d_draw_texture(ic_launcher_browser, 49, 135);
-		sf2d_draw_texture(ic_launcher_messenger, 114, 135);
-		sf2d_draw_texture(ic_allapps, 179, 148);
-		sf2d_draw_texture(ic_launcher_apollo, 241, 135);
-		sf2d_draw_texture(ic_launcher_settings, 306, 135);
-		sf2d_draw_texture(navbar, 70, 201);
+		sf2d_draw_texture(ic_launcher_browser, 49, 145);
+		sf2d_draw_texture(ic_launcher_messenger, 114, 145);
+		sf2d_draw_texture(ic_launcher_apollo, 241, 145);
+		sf2d_draw_texture(ic_launcher_settings, 306, 145);
+		appDrawerIcon();
+		
+		dayNightWidget();
 
 		sf2d_draw_texture(power, 62, 90);
 		if (touch.px  >= 62 && touch.px  <= 338 && touch.py >= 70 && touch.py <= 149)
@@ -33,10 +34,11 @@ int powerMenu()
 			sf2d_draw_texture(power1, 62, 90);
 			if (kDown & KEY_TOUCH)
 				break;
-		}	
+		}
 		
+		navbarControls(0); //Displays navbar
 		digitalTime(350, 2); 
-		batteryStatus(316, 2); 
+		batteryStatus(300, 2);
 		cursorController();
 		
 		sf2d_end_frame();
