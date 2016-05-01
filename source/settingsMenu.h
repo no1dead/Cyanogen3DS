@@ -1,5 +1,7 @@
 #include <3ds.h>
 
+sftd_font *robotoSettingsMenu;
+
 sf2d_texture *highlight;
 
 sf2d_texture *aboutBg;

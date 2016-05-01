@@ -48,6 +48,7 @@ int main(int argc, char **argv)
 		break;
 	}
 
+	sftd_free_font(roboto);
 	sftd_fini();
 	sf2d_fini();
 	romfsExit();
