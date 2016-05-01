@@ -20,6 +20,8 @@ int powerMenu()
 		
 		sf2d_draw_texture(background, 0, 0);
 		
+		sf2d_draw_texture(background, 0, 0);
+		
 		sf2d_draw_texture(ic_launcher_browser, 49, 145);
 		sf2d_draw_texture(ic_launcher_messenger, 114, 145);
 		sf2d_draw_texture(ic_launcher_apollo, 241, 145);
@@ -29,6 +31,7 @@ int powerMenu()
 		dayNightWidget();
 
 		sf2d_draw_texture(power, 62, 90);
+		
 		if (touch.px  >= 62 && touch.px  <= 338 && touch.py >= 70 && touch.py <= 149)
 		{
 			sf2d_draw_texture(power1, 62, 90);
