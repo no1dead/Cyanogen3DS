@@ -11,6 +11,8 @@ int main(int argc, char **argv)
 	// Font loading
 	sftd_init();
 	ptmuInit();
+	
+	osSetSpeedupEnable(true); //Enable n3DS speedup
 
 	roboto = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
 
