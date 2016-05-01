@@ -23,11 +23,11 @@ void digitalTime(int x, int y)
 	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%2d:%02d", hours, minutes);
 
     if (hours > 12)
-		sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
-	else 
 		sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
-       	if (hours > 12) 
-       		hours -= 12;
+	else 
+		sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
+    if (hours > 12) 
+		hours -= 12;
 }
 
 void getMonthOfYear(int x, int y, int size)
