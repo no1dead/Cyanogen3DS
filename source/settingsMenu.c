@@ -128,6 +128,8 @@ int aboutMenu()
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
+	//u32 SYSTEM_VERSION = osGetFirmVersion();
+	
 	while (aptMainLoop())
 	{
 		hidScanInput();
@@ -141,7 +143,7 @@ int aboutMenu()
 		sftd_draw_textf(roboto, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
 		sftd_draw_textf(roboto, 20, 83, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][1]);
 		sftd_draw_textf(roboto, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s 0.1-20160319-%s", lang_settingsAbout[language][2], lang_settingsAbout[language][3]);
-		sftd_draw_textf(roboto, 20, 132, RGBA8(0, 0, 0, 255), 12, "Model:");
+		sftd_draw_textf(roboto, 20, 132, RGBA8(0, 0, 0, 255), 12, "Version: %s"/*, SYSTEM_VERSION*/);
 		sftd_draw_textf(roboto, 20, 168, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][5]);
 		//sftd_draw_textf(roboto, 20, 183, RGBA8(0, 0, 0, 255), 12, "NinjaHax version: NULL");
 		
@@ -155,7 +157,7 @@ int aboutMenu()
 		{
 			sf2d_draw_texture(highlight, 0, 105);
 			sftd_draw_textf(roboto, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s 0.1-20160319-%s", lang_settingsAbout[language][2], lang_settingsAbout[language][3]);
-			sftd_draw_textf(roboto, 20, 132, RGBA8(0, 0, 0, 255), 12, "Model:");
+			sftd_draw_textf(roboto, 20, 132, RGBA8(0, 0, 0, 255), 12, "Version: %s"/*, SYSTEM_VERSION*/);
 		}
 		 
 		digitalTime(350, 2); 
@@ -362,7 +364,7 @@ int settingsHighlight()
 	else if (touch.px  >= 0 && touch.px  <= 198 && touch.py >= 134 && touch.py <= 174)
 	{
 		sf2d_draw_texture(display_highlight, 0, 135);
-		sftd_draw_textf(roboto, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
+		sftd_draw_textf(roboto, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -371,7 +373,7 @@ int settingsHighlight()
 	else if (touch.px  >= 0 && touch.px  <= 198 && touch.py >= 175 && touch.py <= 240)
 	{
 		sf2d_draw_texture(developeroptions_highlight, 0, 183);
-		sftd_draw_textf(roboto, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
+		sftd_draw_textf(roboto, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -380,7 +382,7 @@ int settingsHighlight()
 	else if (touch.px  >= 203 && touch.px  <= 400 && touch.py >= 75 && touch.py <= 133)
 	{
 		sf2d_draw_texture(security_highlight, 199, 87);
-		sftd_draw_textf(roboto, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
+		sftd_draw_textf(roboto, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -389,7 +391,7 @@ int settingsHighlight()
 	else if (touch.px  >= 203 && touch.px  <= 400 && touch.py >= 134 && touch.py <= 174)
 	{
 		sf2d_draw_texture(performance_highlight, 203, 135);
-		sftd_draw_textf(roboto, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
+		sftd_draw_textf(roboto, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -454,10 +456,10 @@ int settingsMenu()
 		sf2d_draw_texture(settingsBg, 0, 0);
 		
 		sftd_draw_textf(roboto, 48, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][0]);
-		sftd_draw_textf(roboto, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
-		sftd_draw_textf(roboto, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
-		sftd_draw_textf(roboto, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
-		sftd_draw_textf(roboto, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
+		sftd_draw_textf(roboto, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
+		sftd_draw_textf(roboto, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
+		sftd_draw_textf(roboto, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
+		sftd_draw_textf(roboto, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
 		sftd_draw_textf(roboto, 250, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][5]);
 		
 		settingsHighlight();
