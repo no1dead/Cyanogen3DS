@@ -13,6 +13,8 @@ int yPos2 = -240;
 int yLine1 = -240;
 int yLine2 = -240;
 
+u32 wifiStatus = 0;
+
 int cursorController()
 {
 	//hidKeysHeld returns information about which buttons have are held down in this frame
@@ -68,6 +70,17 @@ int batteryStatus(int x, int y)
 	}
 	
 	sftd_draw_textf(roboto, x+16, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+	
+	ACU_GetWifiStatus(&wifiStatus);
+	
+	if(wifiStatus)
+	{
+		sf2d_draw_texture(wifiIconFull, x-26, y-1);
+	}
+	else
+	{
+		sf2d_draw_texture(wifiIconNull, x-26, y-1);
+	}
 	
 	return 0;
 }

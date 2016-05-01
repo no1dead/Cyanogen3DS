@@ -36,6 +36,10 @@ sf2d_texture *_40;
 sf2d_texture *_20;
 sf2d_texture *_charge;
 
+//Wifi icons
+sf2d_texture *wifiIconFull;
+sf2d_texture *wifiIconNull;
+
 // Widget Assets
 sf2d_texture *dayWidget;
 sf2d_texture *nightWidget;

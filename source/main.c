@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 	sftd_init();
 	ptmuInit();
 	
-	osSetSpeedupEnable(true); //Enable n3DS speedup
+	//osSetSpeedupEnable(true); //Enable n3DS speedup
 
 	roboto = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
 
@@ -37,6 +37,9 @@ int main(int argc, char **argv)
 	load_PNG(_40, "romfs:/40.png", SF2D_PLACE_RAM);
 	load_PNG(_20, "romfs:/20.png", SF2D_PLACE_RAM);
 	load_PNG(_charge, "romfs:/charge.png", SF2D_PLACE_RAM);
+	
+	load_PNG(wifiIconFull, "romfs:/stat_sys_wifi_signal_4_fully.png", SF2D_PLACE_RAM);
+	load_PNG(wifiIconNull, "romfs:/stat_sys_wifi_signal_null.png", SF2D_PLACE_RAM);
 		
 	// Main loop
 	while (aptMainLoop())
