@@ -20,8 +20,6 @@ int powerMenu()
 		
 		sf2d_draw_texture(background, 0, 0);
 		
-		sf2d_draw_texture(background, 0, 0);
-		
 		sf2d_draw_texture(ic_launcher_browser, 49, 145);
 		sf2d_draw_texture(ic_launcher_messenger, 114, 145);
 		sf2d_draw_texture(ic_launcher_apollo, 241, 145);
