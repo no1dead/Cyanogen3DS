@@ -5,8 +5,8 @@
 
 int powerMenu()
 {
-	load_PNG(power, "romfs:/power.png", SF2D_PLACE_RAM);
-	load_PNG(power1, "romfs:/power.png", SF2D_PLACE_RAM);
+	load_PNG(power, "romfs:/powerMenu.png", SF2D_PLACE_RAM);
+	load_PNG(power1, "romfs:/powerSelection.png", SF2D_PLACE_RAM);
 	/*power = sf2d_create_texture_mem_RGBA8(power_img.pixel_data, power_img.width, power_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	power1 = sf2d_create_texture_mem_RGBA8(power1_img.pixel_data, power1_img.width, power1_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 
@@ -29,6 +29,7 @@ int powerMenu()
 		dayNightWidget();
 
 		sf2d_draw_texture(power, 62, 90);
+		
 		if (touch.px  >= 62 && touch.px  <= 338 && touch.py >= 70 && touch.py <= 149)
 		{
 			sf2d_draw_texture(power1, 62, 90);
