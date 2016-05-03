@@ -13,6 +13,8 @@ int yPos2 = -240;
 int yLine1 = -240;
 int yLine2 = -240;
 
+u32 wifiStatus = 0;
+
 int cursorController()
 {
 	//hidKeysHeld returns information about which buttons have are held down in this frame
@@ -68,6 +70,17 @@ int batteryStatus(int x, int y)
 	}
 	
 	sftd_draw_textf(roboto, x+16, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+	
+	ACU_GetWifiStatus(&wifiStatus);
+	
+	if(wifiStatus)
+	{
+		sf2d_draw_texture(wifiIconFull, x-26, y-1);
+	}
+	else
+	{
+		sf2d_draw_texture(wifiIconNull, x-26, y-1);
+	}
 	
 	return 0;
 }
@@ -253,19 +266,30 @@ void androidQuickSettings()
 
 int dayNightWidget()
 {
-	time_t unixTime = time(NULL);
-	struct tm* timeStruct = gmtime((const time_t *)&unixTime);
+	u64 lastTimeInSeconds = 0;
+	
+	if(lastTimeInSeconds == 0) 
+	{
+		lastTimeInSeconds = osGetTime() / 1000; //get on boot.
+	}
+	u64 timeInSeconds = osGetTime() / 1000;
 
-	int hours = timeStruct->tm_hour;
-	int minutes = timeStruct->tm_min;
+	lastTimeInSeconds = timeInSeconds;
+	
+	u64 convert = ( (70*365+17) * 86400LLU );
+	time_t now = timeInSeconds- convert;
+	struct tm *ts = localtime(&now);
+
+	int hours = ts->tm_hour;
+	int minutes = ts->tm_min;
 	
 	if (hours < 6)
 		sf2d_draw_texture(dayWidget, 172, 60);
 	else
 		sf2d_draw_texture(nightWidget, 167, 60);
 		
-	sftd_draw_textf(roboto, 142, 20, RGBA8(255, 255, 255, 255), 34, "%02d : %02d", hours, minutes);
-	sftd_draw_textf(roboto, 130, 80, RGBA8(255, 255, 255, 255), 10, "Tuesday");
+	sftd_draw_textf(robotoWidget1, 152, 20, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
+	sftd_draw_textf(robotoWidget2, 130, 80, RGBA8(255, 255, 255, 255), 10, "Day");
 	getMonthOfYear(230, 80, 10);
 	
 	return 0;
@@ -290,6 +314,9 @@ int home()
 	ic_launcher_apollo = sf2d_create_texture_mem_RGBA8(ic_launcher_apollo_img.pixel_data, ic_launcher_apollo_img.width, ic_launcher_apollo_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_launcher_settings = sf2d_create_texture_mem_RGBA8(ic_launcher_settings_img.pixel_data, ic_launcher_settings_img.width, ic_launcher_settings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 
+	robotoWidget1 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
+	robotoWidget2 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
+	
 	// Main loop
 	while (aptMainLoop())
 	{
@@ -349,6 +376,8 @@ int home()
 		sf2d_swapbuffers();
 	}
 
+	sftd_free_font(robotoWidget1);
+	sftd_free_font(robotoWidget2);
 	sf2d_free_texture(ic_allapps);
 	sf2d_free_texture(ic_allapps_pressed);
 	

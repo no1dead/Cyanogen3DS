@@ -1,10 +1,10 @@
 #include "clock.h"
 #include "homeMenu.h"
 
-u64 lastTimeInSeconds = 0;
-
 void digitalTime(int x, int y)
 {
+	u64 lastTimeInSeconds = 0;
+	
 	if(lastTimeInSeconds == 0) 
 	{
 		lastTimeInSeconds = osGetTime() / 1000; //get on boot.
@@ -20,7 +20,7 @@ void digitalTime(int x, int y)
 	int hours = ts->tm_hour;
 	int minutes = ts->tm_min;
 	
-	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%2d:%02d", hours, minutes);
+	sftd_draw_textf(roboto, x+10, y, RGBA8(255, 255, 255, 255), 12, "%2d:%02d", hours, minutes);
 
     if (hours > 12)
 		sftd_draw_textf(roboto, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
@@ -32,6 +32,8 @@ void digitalTime(int x, int y)
 
 void getMonthOfYear(int x, int y, int size)
 {
+	u64 lastTimeInSeconds = 0;
+	
 	static const char months[12][16] =
 	{
 		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"

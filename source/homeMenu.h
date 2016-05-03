@@ -9,6 +9,8 @@
 #include "Roboto_ttf.h"
 
 sftd_font *roboto;
+sftd_font *robotoWidget1;
+sftd_font *robotoWidget2;
 
 sf2d_texture *background;
 sf2d_texture *cursor;
@@ -35,6 +37,10 @@ sf2d_texture *_60;
 sf2d_texture *_40;
 sf2d_texture *_20;
 sf2d_texture *_charge;
+
+//Wifi icons
+sf2d_texture *wifiIconFull;
+sf2d_texture *wifiIconNull;
 
 // Widget Assets
 sf2d_texture *dayWidget;
