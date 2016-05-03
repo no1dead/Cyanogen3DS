@@ -40,7 +40,7 @@ INCLUDES	:=	include
 ROMFS		:=	romfs
 
 APP_TITLE	:= Cyanogen3DS
-APP_DESCRIPTION	:= An alterntive Custom GUI Menu for 3DS.
+APP_DESCRIPTION	:= An alternative Custom GUI Menu for 3DS.
 APP_AUTHOR	:= Joel16
 ICON := $(RESOURCES)/icon.png
 
@@ -150,24 +150,11 @@ clean:
 $(TARGET)-strip.elf: $(BUILD)
 	@$(STRIP) --strip-all $(TARGET).elf -o $(TARGET)-strip.elf
 #---------------------------------------------------------------------------------
-cci: $(TARGET)-strip.elf
-	@makerom -f cci -rsf resources/$(TARGET).rsf -target d -exefslogo -elf $(TARGET)-strip.elf -o $(TARGET).3ds
-	@echo "built ... sf2d_sample.3ds"
-#---------------------------------------------------------------------------------
-cia: $(TARGET)-strip.elf
-	@makerom -f cia -o $(TARGET).cia -elf $(TARGET)-strip.elf -rsf resources/$(TARGET).rsf -icon resources/icon.icn -banner resources/banner.bnr -exefslogo -target t
-	@echo "built ... sf2d_sample.cia"
-#---------------------------------------------------------------------------------
 send: $(BUILD)
 	@3dslink $(TARGET).3dsx
 #---------------------------------------------------------------------------------
 run: $(BUILD)
 	@citra $(TARGET).3dsx
-#---------------------------------------------------------------------------------
-copy_cia: $(TARGET).cia
-	@cp $(TARGET).cia /mnt/GATEWAYNAND
-	sync
-
 #---------------------------------------------------------------------------------
 else
 
