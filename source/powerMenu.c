@@ -39,7 +39,7 @@ int powerMenu()
 			sf2d_draw_texture(power1, 62, 90);
 			sftd_draw_textf(robotoPowerMenu, 140, 108, RGBA8(0, 0, 0, 255), 18, "Power Off");
 			if (kDown & KEY_TOUCH)
-				break;
+				hbExit();
 		}
 		
 		navbarControls(0); //Displays navbar

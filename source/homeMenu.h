@@ -9,6 +9,8 @@
 #include "Roboto_ttf.h"
 
 sftd_font *roboto;
+sftd_font *robotoWidget1;
+sftd_font *robotoWidget2;
 
 sf2d_texture *background;
 sf2d_texture *cursor;
