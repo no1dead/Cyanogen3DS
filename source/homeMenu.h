@@ -9,6 +9,8 @@
 #include "Roboto_ttf.h"
 
 sftd_font *roboto;
+sftd_font *robotoWidget1;
+sftd_font *robotoWidget2;
 
 sf2d_texture *background;
 sf2d_texture *cursor;
@@ -34,115 +36,15 @@ sf2d_texture *_80;
 sf2d_texture *_60;
 sf2d_texture *_40;
 sf2d_texture *_20;
+sf2d_texture *_charge;
+
+//Wifi icons
+sf2d_texture *wifiIconFull;
+sf2d_texture *wifiIconNull;
 
 // Widget Assets
 sf2d_texture *dayWidget;
 sf2d_texture *nightWidget;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} background_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} cursor_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} quickSettings_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} ic_launcher_browser_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} ic_launcher_messenger_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} ic_launcher_apollo_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} ic_launcher_settings_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} navbar_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} backicon_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} homeicon_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} multicon_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} ic_allapps_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} _100_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} day_img;
-
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} night_img;
 
 u16 touch_x;
 u16 touch_y;

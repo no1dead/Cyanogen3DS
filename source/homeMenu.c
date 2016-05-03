@@ -13,12 +13,7 @@ int yPos2 = -240;
 int yLine1 = -240;
 int yLine2 = -240;
 
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} ic_allapps_pressed_img;
+u32 wifiStatus = 0;
 
 int cursorController()
 {
@@ -50,10 +45,42 @@ int cursorController()
 
 int batteryStatus(int x, int y)
 {
-	int batt = 100; //This is temporary until I find how to get battery status. I know 3DS doesn't use percentages, but only values from 1-5.
+	u8 batteryPercent;
+	PTMU_GetBatteryLevel(&batteryPercent);
+	
+	u8 batteryState; //boolean that represnets charging state
+	PTMU_GetBatteryChargeState(&batteryState);
 
-	sf2d_draw_texture(_100, 300, y);
-	sftd_draw_textf(roboto, x, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+	int batt = (u32)batteryPercent * 20;
+	
+	if(batt == 20)
+		sf2d_draw_texture(_20, x, y);	
+	else if(batt == 40)
+		sf2d_draw_texture(_40, x, y);
+	else if(batt == 60)
+		sf2d_draw_texture(_60, x, y);
+	else if(batt == 80)
+		sf2d_draw_texture(_80, x, y);
+	else if(batt == 100)
+		sf2d_draw_texture(_100, x, y);
+	
+	if (batteryState == 1) 
+	{
+		sf2d_draw_texture(_charge, x+1, y);
+	}
+	
+	sftd_draw_textf(roboto, x+16, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+	
+	ACU_GetWifiStatus(&wifiStatus);
+	
+	if(wifiStatus)
+	{
+		sf2d_draw_texture(wifiIconFull, x-26, y-1);
+	}
+	else
+	{
+		sf2d_draw_texture(wifiIconNull, x-26, y-1);
+	}
 	
 	return 0;
 }
@@ -239,19 +266,30 @@ void androidQuickSettings()
 
 int dayNightWidget()
 {
-	time_t unixTime = time(NULL);
-	struct tm* timeStruct = gmtime((const time_t *)&unixTime);
+	u64 lastTimeInSeconds = 0;
+	
+	if(lastTimeInSeconds == 0) 
+	{
+		lastTimeInSeconds = osGetTime() / 1000; //get on boot.
+	}
+	u64 timeInSeconds = osGetTime() / 1000;
 
-	int hours = timeStruct->tm_hour;
-	int minutes = timeStruct->tm_min;
+	lastTimeInSeconds = timeInSeconds;
+	
+	u64 convert = ( (70*365+17) * 86400LLU );
+	time_t now = timeInSeconds- convert;
+	struct tm *ts = localtime(&now);
+
+	int hours = ts->tm_hour;
+	int minutes = ts->tm_min;
 	
 	if (hours < 6)
 		sf2d_draw_texture(dayWidget, 172, 60);
 	else
 		sf2d_draw_texture(nightWidget, 167, 60);
 		
-	sftd_draw_textf(roboto, 142, 20, RGBA8(255, 255, 255, 255), 34, "0%2d : %02d", hours, minutes);
-	sftd_draw_textf(roboto, 130, 80, RGBA8(255, 255, 255, 255), 10, "Tuesday");
+	sftd_draw_textf(robotoWidget1, 152, 20, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
+	sftd_draw_textf(robotoWidget2, 130, 80, RGBA8(255, 255, 255, 255), 10, "Day");
 	getMonthOfYear(230, 80, 10);
 	
 	return 0;
@@ -260,14 +298,24 @@ int dayNightWidget()
 int home()
 {
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
-
-	ic_allapps = sf2d_create_texture_mem_RGBA8(ic_allapps_img.pixel_data, ic_allapps_img.width, ic_allapps_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_allapps_pressed = sf2d_create_texture_mem_RGBA8(ic_allapps_pressed_img.pixel_data, ic_allapps_pressed_img.width, ic_allapps_pressed_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	
-	ic_launcher_browser = sf2d_create_texture_mem_RGBA8(ic_launcher_browser_img.pixel_data, ic_launcher_browser_img.width, ic_launcher_browser_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	/*ic_allapps = sf2d_create_texture_mem_RGBA8(ic_allapps_img.pixel_data, ic_allapps_img.width, ic_allapps_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	ic_allapps_pressed = sf2d_create_texture_mem_RGBA8(ic_allapps_pressed_img.pixel_data, ic_allapps_pressed_img.width, ic_allapps_pressed_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
+
+	load_PNG(ic_allapps, "romfs:/ic_allapps.png", SF2D_PLACE_RAM);
+	load_PNG(ic_allapps_pressed, "romfs:/ic_allapps_pressed.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_browser, "romfs:/ic_launcher_browser.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_messenger, "romfs:/ic_launcher_messenger.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_apollo, "romfs:/ic_launcher_apollo.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_settings, "romfs:/ic_launcher_settings.png", SF2D_PLACE_RAM);
+
+	/*ic_launcher_browser = sf2d_create_texture_mem_RGBA8(ic_launcher_browser_img.pixel_data, ic_launcher_browser_img.width, ic_launcher_browser_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_launcher_messenger = sf2d_create_texture_mem_RGBA8(ic_launcher_messenger_img.pixel_data, ic_launcher_messenger_img.width, ic_launcher_messenger_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_launcher_apollo = sf2d_create_texture_mem_RGBA8(ic_launcher_apollo_img.pixel_data, ic_launcher_apollo_img.width, ic_launcher_apollo_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_launcher_settings = sf2d_create_texture_mem_RGBA8(ic_launcher_settings_img.pixel_data, ic_launcher_settings_img.width, ic_launcher_settings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	ic_launcher_settings = sf2d_create_texture_mem_RGBA8(ic_launcher_settings_img.pixel_data, ic_launcher_settings_img.width, ic_launcher_settings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
+
+	robotoWidget1 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
+	robotoWidget2 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
 	
 	// Main loop
 	while (aptMainLoop())
@@ -275,7 +323,10 @@ int home()
 
 		//Scan all the inputs. This should be done once for each frame
 		hidScanInput();
-		
+
+		if (hidKeysDown() & KEY_START)
+			break;
+
 		//hidKeysDown returns information about which buttons have been just pressed (and they weren't in the previous frame)
 		u32 kDown = hidKeysDown();
 		//hidKeysUp returns information about which buttons have been just released
@@ -295,7 +346,7 @@ int home()
 		
 		navbarControls(0); //Displays navbar
 		digitalTime(350, 2); //Displays digital time
-		batteryStatus(316, 2); //Displays battery status
+		batteryStatus(300, 2); //Displays battery status
 		//androidQuickSettings();
 		cursorController();
 		
@@ -325,6 +376,8 @@ int home()
 		sf2d_swapbuffers();
 	}
 
+	sftd_free_font(robotoWidget1);
+	sftd_free_font(robotoWidget2);
 	sf2d_free_texture(ic_allapps);
 	sf2d_free_texture(ic_allapps_pressed);
 	

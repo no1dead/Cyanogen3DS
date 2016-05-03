@@ -2,16 +2,10 @@
 #include "homeMenu.h"
 #include "lockScreen.h"
 
-extern const struct {
-  unsigned int 	 width;
-  unsigned int 	 height;
-  unsigned int 	 bytes_per_pixel;
-  unsigned char	 pixel_data[];
-} lockscreen_img;
-
 int lockScreen()
 {
-	lockscreenBg = sf2d_create_texture_mem_RGBA8(lockscreen_img.pixel_data, lockscreen_img.width, lockscreen_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	load_PNG(lockscreenBg, "romfs:/lockscreenBg.png", SF2D_PLACE_RAM);
+	//lockscreenBg = sf2d_create_texture_mem_RGBA8(lockscreen_img.pixel_data, lockscreen_img.width, lockscreen_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	
 	time_t unixTime = time(NULL);
 	struct tm* timeStruct = gmtime((const time_t *)&unixTime);
@@ -39,7 +33,7 @@ int lockScreen()
 		sftd_draw_textf(roboto, 220, 80, RGBA8(255, 255, 255, 255), 10, "October");
 		
 		digitalTime(350, 2); 
-		batteryStatus(316, 2); 
+		batteryStatus(300, 2); 
 		cursorController();
 		
 		sf2d_end_frame();

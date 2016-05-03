@@ -17,11 +17,18 @@ void appDrawerUnload()
 
 int appDrawer()
 {	
-	backdrop = sf2d_create_texture_mem_RGBA8(backdrop_img.pixel_data, backdrop_img.width, backdrop_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+
+	load_PNG(backdrop, "romfs:/backdrop.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_clock, "romfs:/ic_launcher_clock.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_filemanager, "romfs:/ic_launcher_filemanager.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_gallery, "romfs:/ic_launcher_gallery.png", SF2D_PLACE_RAM);
+	load_PNG(ic_launcher_game, "romfs:/ic_launcher_game.png", SF2D_PLACE_RAM);
+
+	/*backdrop = sf2d_create_texture_mem_RGBA8(backdrop_img.pixel_data, backdrop_img.width, backdrop_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_launcher_clock = sf2d_create_texture_mem_RGBA8(ic_launcher_clock_img.pixel_data, ic_launcher_clock_img.width, ic_launcher_clock_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_launcher_filemanager = sf2d_create_texture_mem_RGBA8(ic_launcher_filemanager_img.pixel_data, ic_launcher_filemanager_img.width, ic_launcher_filemanager_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	ic_launcher_gallery = sf2d_create_texture_mem_RGBA8(ic_launcher_gallery_img.pixel_data, ic_launcher_gallery_img.width, ic_launcher_gallery_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_launcher_game = sf2d_create_texture_mem_RGBA8(ic_launcher_game_img.pixel_data, ic_launcher_game_img.width, ic_launcher_game_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	ic_launcher_game = sf2d_create_texture_mem_RGBA8(ic_launcher_game_img.pixel_data, ic_launcher_game_img.width, ic_launcher_game_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
 
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
@@ -55,7 +62,7 @@ int appDrawer()
 		
 		navbarControls(0);
 		digitalTime(350, 2); 
-		batteryStatus(316, 2);
+		batteryStatus(300, 2);
 		//androidQuickSettings();		
 		cursorController();
 		

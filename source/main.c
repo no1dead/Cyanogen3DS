@@ -6,35 +6,53 @@ int main(int argc, char **argv)
 	sf2d_init();
 	sf2d_set_clear_color(RGBA8(0x40, 0x40, 0x40, 0xFF));
 	sf2d_set_vblank_wait(0);
-	
+	romfsInit();
+
 	// Font loading
 	sftd_init();
+	ptmuInit();
 	
+	//osSetSpeedupEnable(true); //Enable n3DS speedup
+
 	roboto = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
 
-	//Loading images
-	background = sf2d_create_texture_mem_RGBA8(background_img.pixel_data, background_img.width, background_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	cursor = sf2d_create_texture_mem_RGBA8(cursor_img.pixel_data, cursor_img.width, cursor_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	quickSettings = sf2d_create_texture_mem_RGBA8(quickSettings_img.pixel_data, quickSettings_img.width, quickSettings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+
+	// Load images from RomFS, and tile them
+	load_PNG(background, "romfs:/background.png", SF2D_PLACE_RAM);
+	load_PNG(cursor, "romfs:/cursor.png", SF2D_PLACE_RAM);
+
+	load_PNG(quickSettings, "romfs:/quickSettings.png", SF2D_PLACE_RAM);
+
+	load_PNG(navbar, "romfs:/navbar.png", SF2D_PLACE_RAM);
+	load_PNG(backicon, "romfs:/backicon.png", SF2D_PLACE_RAM);
+	load_PNG(homeicon, "romfs:/homeicon.png", SF2D_PLACE_RAM);
+	load_PNG(multicon, "romfs:/multicon.png", SF2D_PLACE_RAM);
+
+	load_PNG(dayWidget, "romfs:/day.png", SF2D_PLACE_RAM);
+	load_PNG(nightWidget, "romfs:/night.png", SF2D_PLACE_RAM);
+
+	load_PNG(_100, "romfs:/100.png", SF2D_PLACE_RAM);
+	load_PNG(_80, "romfs:/80.png", SF2D_PLACE_RAM);
+	load_PNG(_60, "romfs:/60.png", SF2D_PLACE_RAM);
+	load_PNG(_40, "romfs:/40.png", SF2D_PLACE_RAM);
+	load_PNG(_20, "romfs:/20.png", SF2D_PLACE_RAM);
+	load_PNG(_charge, "romfs:/charge.png", SF2D_PLACE_RAM);
 	
-	navbar = sf2d_create_texture_mem_RGBA8(navbar_img.pixel_data, navbar_img.width, navbar_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	backicon = sf2d_create_texture_mem_RGBA8(backicon_img.pixel_data, backicon_img.width, backicon_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	homeicon = sf2d_create_texture_mem_RGBA8(homeicon_img.pixel_data, homeicon_img.width, homeicon_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	multicon = sf2d_create_texture_mem_RGBA8(multicon_img.pixel_data, multicon_img.width, multicon_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	
-	dayWidget = sf2d_create_texture_mem_RGBA8(day_img.pixel_data, day_img.width, day_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	nightWidget = sf2d_create_texture_mem_RGBA8(night_img.pixel_data, night_img.width, night_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	
-	_100 = sf2d_create_texture_mem_RGBA8(_100_img.pixel_data, _100_img.width, _100_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	
+	load_PNG(wifiIconFull, "romfs:/stat_sys_wifi_signal_4_fully.png", SF2D_PLACE_RAM);
+	load_PNG(wifiIconNull, "romfs:/stat_sys_wifi_signal_null.png", SF2D_PLACE_RAM);
+		
 	// Main loop
 	while (aptMainLoop())
 	{
 		home();
+		break;
 	}
 
+	sftd_free_font(roboto);
 	sftd_fini();
 	sf2d_fini();
+	romfsExit();
+	ptmuExit();
 	
 	return 0;
 }
