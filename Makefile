@@ -40,7 +40,7 @@ INCLUDES	:=	include
 ROMFS		:=	romfs
 
 APP_TITLE	:= Cyanogen3DS
-APP_DESCRIPTION	:= Custom GUI Menu for 3DS. This GUI menu serves to replicate the Android OS, on your 3DS.
+APP_DESCRIPTION	:= An alterntive Custom GUI Menu for 3DS.
 APP_AUTHOR	:= Joel16
 ICON := $(RESOURCES)/icon.png
 
