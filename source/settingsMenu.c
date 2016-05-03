@@ -137,22 +137,22 @@ int aboutMenu()
 		
 		sftd_draw_textf(roboto, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
 		sftd_draw_textf(roboto, 20, 83, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][1]);
-		sftd_draw_textf(roboto, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s 0.1-20160319-%s", lang_settingsAbout[language][2], lang_settingsAbout[language][3]);
-		sftd_draw_textf(roboto, 20, 132, RGBA8(0, 0, 0, 255), 12, "Model:");
+		sftd_draw_textf(roboto, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][2]);
+		//sftd_draw_textf(roboto, 20, 132, RGBA8(0, 0, 0, 255), 12, "Model = NULL");
 		sftd_draw_textf(roboto, 20, 168, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][5]);
 		//sftd_draw_textf(roboto, 20, 183, RGBA8(0, 0, 0, 255), 12, "NinjaHax version: NULL");
 		
 		if (touch.px  >= 0 && touch.px  <= 480 && touch.py >= 58 && touch.py <= 105)
 		{
 			sf2d_draw_texture(highlight, 0, 56);
-			sftd_draw_textf(roboto, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
-			sftd_draw_textf(roboto, 20, 83, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][1]);
+			sftd_draw_textf(roboto, 20, 68, RGBA8(0, 0, 0, 255), 12, "Cyanogen3DS Updates");
+			sftd_draw_textf(roboto, 20, 83, RGBA8(0, 0, 0, 255), 12, "Click for, view or isntall available updates");
 		}
 		else if (touch.px  >= 0 && touch.px  <= 480 && touch.py >= 106 && touch.py <= 157)
 		{
 			sf2d_draw_texture(highlight, 0, 105);
-			sftd_draw_textf(roboto, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s 0.1-20160319-%s", lang_settingsAbout[language][2], lang_settingsAbout[language][3]);
-			sftd_draw_textf(roboto, 20, 132, RGBA8(0, 0, 0, 255), 12, "Model:");
+			sftd_draw_textf(roboto, 20, 116, RGBA8(0, 0, 0, 255), 12, "Cyanogen3DS version: 0.01-20151019-UNOFFICIAL");
+			sftd_draw_textf(roboto, 20, 132, RGBA8(0, 0, 0, 255), 12, "Model = NULL");
 		}
 		 
 		digitalTime(350, 2); 
