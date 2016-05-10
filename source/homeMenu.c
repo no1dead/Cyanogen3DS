@@ -15,32 +15,34 @@ int yLine2 = -240;
 
 u32 wifiStatus = 0;
 
-int cursorController()
+void cursorController()
 {
-	//hidKeysHeld returns information about which buttons have are held down in this frame
-	u32 kHeld = hidKeysHeld();
 	
-	if(hidKeysDown()&KEY_TOUCH)
-    {
-		touchTimer = 0;
-		firstTouch = touch;
-    }
-    if(hidKeysHeld()&KEY_TOUCH)
-	{
-		touchTimer++;
-    }
-	
-	//Read the touch screen coordinates
-	if (kHeld & KEY_TOUCH) 
-	{
-		hidTouchRead(&touch);
-		touch_x = touch.px;
-		touch_y = touch.py;
-	}
+	hidScanInput();
 
-	sf2d_draw_texture(cursor, touch_x, touch_y);
-	
-	return 0;
+    kDown = hidKeysDown();
+    kHeld = hidKeysHeld();
+    kUp = hidKeysUp();
+
+    hidTouchRead(&touch);
+
+    if(kHeld & (KEY_LEFT | KEY_CPAD_LEFT | KEY_CSTICK_LEFT))
+        if(cursorX > 0)
+            cursorX--;
+
+    if(kHeld & (KEY_RIGHT | KEY_CPAD_RIGHT | KEY_CSTICK_RIGHT))
+        if(cursorX < 380)
+            cursorX++;
+
+    if(kHeld & (KEY_DOWN | KEY_CPAD_DOWN | KEY_CSTICK_DOWN))
+        if(cursorY < 220)
+            cursorY++;
+
+    if(kHeld & (KEY_UP | KEY_CPAD_UP | KEY_CSTICK_UP))
+        if(cursorY > 0)
+			cursorY--;
+		
+	sf2d_draw_texture(cursor, cursorX, cursorY);
 }
 
 int batteryStatus(int x, int y)
@@ -87,7 +89,7 @@ int batteryStatus(int x, int y)
 
 void appDrawerIcon() //Draws the app drawer icon. Draws a different icon of the same size once hovered with the cursor.
 {
-	if (touch.px  >= 170 && touch.px  <= 210 && touch.py >= 145 && touch.py <= 190)
+	if (cursorX  >= 170 && cursorX  <= 210 && cursorY >= 145 && cursorY <= 190)
 		sf2d_draw_texture(ic_allapps_pressed, 179, 158);
 	
 	else
@@ -98,17 +100,17 @@ int navbarControls(int type)
 {
 	if (type == 0)
 	{
-		if (touch.px  >= 84 && touch.px  <= 159 && touch.py >= 201 && touch.py <= 240)
+		if (cursorX  >= 84 && cursorX  <= 159 && cursorY >= 201 && cursorY <= 240)
 			sf2d_draw_texture(backicon, 70, 201);
 		else
 			sf2d_draw_texture(navbar, 70, 201);
 
-		if (touch.px  >= 160 && touch.px  <= 235 && touch.py >= 201 && touch.py <= 240)
+		if (cursorX  >= 160 && cursorX  <= 235 && cursorY >= 201 && cursorY <= 240)
 			sf2d_draw_texture(homeicon, 70, 201);
 		else
 			sf2d_draw_texture(navbar, 70, 201);
 	
-		if (touch.px  >= 236 && touch.px  <= 311 && touch.py >= 201 && touch.py <= 240)
+		if (cursorX  >= 236 && cursorX  <= 311 && cursorY >= 201 && cursorY <= 240)
 			sf2d_draw_texture(multicon, 70, 201);
 		else
 			sf2d_draw_texture(navbar, 70, 201);
@@ -118,17 +120,17 @@ int navbarControls(int type)
 	{
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 		
-		if (touch.px  >= 44 && touch.px  <= 119 && touch.py >= 201 && touch.py <= 240)
+		if (cursorX  >= 44 && cursorX  <= 119 && cursorY >= 201 && cursorY <= 240)
 			sf2d_draw_texture(backicon, 30, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
 
-		if (touch.px  >= 120 && touch.px  <= 195 && touch.py >= 201 && touch.py <= 240)
+		if (cursorX  >= 120 && cursorX  <= 195 && cursorY >= 201 && cursorY <= 240)
 			sf2d_draw_texture(homeicon, 30, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
 	
-		if (touch.px  >= 196 && touch.px  <= 271 && touch.py >= 201 && touch.py <= 240)
+		if (cursorX  >= 196 && cursorX  <= 271 && cursorY >= 201 && cursorY <= 240)
 			sf2d_draw_texture(multicon, 30, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
@@ -161,19 +163,19 @@ void androidQuickSettings()
 
 	notif_enabled = 0;
 	
-	if ((kHeld & KEY_TOUCH) && (touch.px >= 0 && touch.px <= 400 && touch.py >= 0 && touch.py <= 20)) 
+	if ((kHeld & KEY_TOUCH) && (cursorX >= 0 && cursorX <= 400 && cursorY >= 0 && cursorY <= 20)) 
 	{
 		notif_down = 1;
 	}
 
-	else if ((kHeld & KEY_TOUCH) && (touch.px >= 0 && touch.px <= 400 && touch.py >= 220 && notif_y == 0))
+	else if ((kHeld & KEY_TOUCH) && (cursorX >= 0 && cursorX <= 400 && cursorY >= 220 && notif_y == 0))
 	{
 		notif_up = 1;
 	}
 			
-	if (notif_down == 1) //&& touch.py <= 20)
+	if (notif_down == 1) //&& cursorY <= 20)
 	{				
-		if ((kHeld & KEY_TOUCH) && (touch.py >= oldTouch.py))
+		if ((kHeld & KEY_TOUCH) && (cursorY >= 0))
 		{
 			notif_y = notif_y+6;
 			yPos1 = yPos1+6;
@@ -211,7 +213,7 @@ void androidQuickSettings()
 	
 	if (notif_enabled == 1)
 	{	
-		if ((touch.px >= 386 && touch.px <= 414 && touch.py >= 12 && touch.py <= 38) && (kDown & KEY_TOUCH))
+		if ((cursorX >= 386 && cursorX <= 414 && cursorY >= 12 && cursorY <= 38) && (kDown & KEY_A))
 		{	 
 			notif_y = notif_y-240;
 			yPos1 = yPos1-240;
@@ -221,7 +223,7 @@ void androidQuickSettings()
 			settingsMenu();
 		}
 		
-		if ((touch.px >= 198 && touch.px <= 240 && touch.py >= 204 && touch.py <= 258) && (kDown & KEY_TOUCH))
+		if ((cursorX >= 198 && cursorX <= 240 && cursorY >= 204 && cursorY <= 258) && (kDown & KEY_A))
 		{
 			notif_y = notif_y-240;
 			yPos1 = yPos1-240;
@@ -244,7 +246,7 @@ void androidQuickSettings()
 	{		
 		notif_enabled = 0;
 		
-		if ((kHeld & KEY_TOUCH) && (oldTouch.py >= touch.py))
+		if ((kHeld & KEY_TOUCH) && (230 >= cursorY))
 		{
 			notif_y = notif_y-6;
 			yPos1 = yPos1-6;
@@ -299,28 +301,20 @@ int home()
 {
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
-	/*ic_allapps = sf2d_create_texture_mem_RGBA8(ic_allapps_img.pixel_data, ic_allapps_img.width, ic_allapps_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_allapps_pressed = sf2d_create_texture_mem_RGBA8(ic_allapps_pressed_img.pixel_data, ic_allapps_pressed_img.width, ic_allapps_pressed_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
-
-	load_PNG(ic_allapps, "romfs:/ic_allapps.png", SF2D_PLACE_RAM);
-	load_PNG(ic_allapps_pressed, "romfs:/ic_allapps_pressed.png", SF2D_PLACE_RAM);
-	load_PNG(ic_launcher_browser, "romfs:/ic_launcher_browser.png", SF2D_PLACE_RAM);
-	load_PNG(ic_launcher_messenger, "romfs:/ic_launcher_messenger.png", SF2D_PLACE_RAM);
-	load_PNG(ic_launcher_apollo, "romfs:/ic_launcher_apollo.png", SF2D_PLACE_RAM);
-	load_PNG(ic_launcher_settings, "romfs:/ic_launcher_settings.png", SF2D_PLACE_RAM);
-
-	/*ic_launcher_browser = sf2d_create_texture_mem_RGBA8(ic_launcher_browser_img.pixel_data, ic_launcher_browser_img.width, ic_launcher_browser_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_launcher_messenger = sf2d_create_texture_mem_RGBA8(ic_launcher_messenger_img.pixel_data, ic_launcher_messenger_img.width, ic_launcher_messenger_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_launcher_apollo = sf2d_create_texture_mem_RGBA8(ic_launcher_apollo_img.pixel_data, ic_launcher_apollo_img.width, ic_launcher_apollo_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	ic_launcher_settings = sf2d_create_texture_mem_RGBA8(ic_launcher_settings_img.pixel_data, ic_launcher_settings_img.width, ic_launcher_settings_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);*/
-
-	robotoWidget1 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
-	robotoWidget2 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
+	load_PNG(ic_allapps, "romfs:/ic_allapps.png");
+	load_PNG(ic_allapps_pressed, "romfs:/ic_allapps_pressed.png");
+	load_PNG(ic_launcher_browser, "romfs:/ic_launcher_browser.png");
+	load_PNG(ic_launcher_messenger, "romfs:/ic_launcher_messenger.png");
+	load_PNG(ic_launcher_apollo, "romfs:/ic_launcher_apollo.png");
+	load_PNG(ic_launcher_settings, "romfs:/ic_launcher_settings.png");
 	
+	
+	robotoWidget1 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
+	robotoWidget2 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
+
 	// Main loop
 	while (aptMainLoop())
 	{
-
 		//Scan all the inputs. This should be done once for each frame
 		hidScanInput();
 
@@ -331,7 +325,7 @@ int home()
 		u32 kDown = hidKeysDown();
 		//hidKeysUp returns information about which buttons have been just released
 		//u32 kUp = hidKeysUp();
-		
+
 		sf2d_start_frame(GFX_TOP, GFX_LEFT);
 		
 		sf2d_draw_texture(background, 0, 0);
@@ -352,14 +346,14 @@ int home()
 		
 		sf2d_end_frame();
 		
-		if ((touch.px  >= 170 && touch.px  <= 210 && touch.py >= 148 && touch.py <= 190) && (kDown & KEY_TOUCH))
+		if ((cursorX  >= 170 && cursorX  <= 210 && cursorY >= 148 && cursorY <= 190) && (kDown & KEY_A))
 		{
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
 			appDrawer(); //Opens app drawer
 		}
 		
-		if ((touch.px  >= 306 && touch.px  <= 351 && touch.py >= 145 && touch.py <= 190) && (kDown & KEY_TOUCH))
+		if ((cursorX  >= 306 && cursorX  <= 351 && cursorY >= 145 && cursorY <= 190) && (kDown & KEY_A))
 		{
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);

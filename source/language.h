@@ -1,3 +1,5 @@
+#pragma once
+
 const char lang_welcome[11][4][100];
 const char lang_appDrawer[11][8][100];
 const char lang_settingsMain[11][6][100];

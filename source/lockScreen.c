@@ -4,7 +4,7 @@
 
 int lockScreen()
 {
-	load_PNG(lockscreenBg, "romfs:/lockscreenBg.png", SF2D_PLACE_RAM);
+	load_PNG(lockscreenBg, "romfs:/lockscreenBg.png");
 	//lockscreenBg = sf2d_create_texture_mem_RGBA8(lockscreen_img.pixel_data, lockscreen_img.width, lockscreen_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	
 	time_t unixTime = time(NULL);
@@ -38,7 +38,7 @@ int lockScreen()
 		
 		sf2d_end_frame();
 		
-		if ((touch.px  >= 160 && touch.px  <= 235 && touch.py >= 210 && touch.py <= 240) && (kDown & KEY_A))
+		if ((cursorX  >= 160 && cursorX  <= 235 && cursorY >= 210 && cursorY <= 240) && (kDown & KEY_A))
 		{	
 			sf2d_free_texture(lockscreenBg);
 			return 1;

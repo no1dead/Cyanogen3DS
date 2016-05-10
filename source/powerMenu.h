@@ -1,4 +1,7 @@
+#pragma once
+
 #include <3ds.h>
+#include <setjmp.h>
 
 sftd_font *robotoPowerMenu;
 

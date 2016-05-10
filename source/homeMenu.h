@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -7,6 +9,13 @@
 #include <sftd.h>
 
 #include "Roboto_ttf.h"
+
+touchPosition touch, oldTouch;
+
+u32 kDown;
+u32 kHeld;
+u32 kUp;
+int cursorX, cursorY;
 
 sftd_font *roboto;
 sftd_font *robotoWidget1;
@@ -46,13 +55,7 @@ sf2d_texture *wifiIconNull;
 sf2d_texture *dayWidget;
 sf2d_texture *nightWidget;
 
-u16 touch_x;
-u16 touch_y;
-touchPosition touch;
-touchPosition oldTouch, firstTouch;
-u16 touchTimer;
-
-int cursorController();
+void cursorController();
 int batteryStatus(int x, int y);
 void appDrawerIcon();
 int navbarControls(int type);

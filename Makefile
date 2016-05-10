@@ -44,12 +44,15 @@ APP_DESCRIPTION	:= An alternative Custom GUI Menu for 3DS.
 APP_AUTHOR	:= Joel16
 ICON := $(RESOURCES)/icon.png
 
+DATE := '"$(shell date +"%D")"'
+VERSION := '"alpha-0.1"'
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
-CFLAGS	:=	-g -Wall -O2 -mword-relocations \
+CFLAGS	:=	-g -Wall -O2 -mword-relocations -DVERSION=$(VERSION) -DCOMPILE_DATE=$(DATE)\
 			-fomit-frame-pointer -ffast-math \
 			$(ARCH)
 
