@@ -345,7 +345,7 @@ int home()
 
 		dayNightWidget();
 		
-		digitalTime(350, 2); //Displays digital time
+		digitalTime(343, 2); //Displays digital time
 		batteryStatus(300, 2); //Displays battery status
 		//androidQuickSettings();
 		cursorController();

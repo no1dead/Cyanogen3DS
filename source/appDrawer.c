@@ -54,7 +54,7 @@ int appDrawer()
 		sf2d_draw_texture(ic_launcher_settings, 170, 125);
 		sftd_draw_textf(roboto, 167, 180, RGBA8(0, 0, 0, 255), 12, "%s", lang_appDrawer[language][7]);
 		
-		digitalTime(350, 2); 
+		digitalTime(343, 2);
 		batteryStatus(300, 2);
 		//androidQuickSettings();		
 		cursorController();

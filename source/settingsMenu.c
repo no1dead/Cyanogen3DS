@@ -105,7 +105,7 @@ int aboutMenu()
 				sftd_draw_textf(robotoSettingsMenu, 20, 168, RGBA8(0, 0, 0, 255), 12, "Model: %s %s", modelName, regionName); 
 			}
 
-			digitalTime(350, 2); 
+			digitalTime(343, 2);
 			batteryStatus(300, 2);
 			//androidQuickSettings();
 			cursorController();
@@ -154,7 +154,7 @@ int developerMenu()
 		
 		sf2d_draw_texture(developerBg, 0, 0);
 		
-		digitalTime(350, 2); 
+		digitalTime(343, 2);
 		batteryStatus(300, 2); 
 		//androidQuickSettings();
 		cursorController();
@@ -203,7 +203,7 @@ int displayMenu()
 		
 		sf2d_draw_texture(displayBg, 0, 0);
 		
-		digitalTime(350, 2); 
+		digitalTime(343, 2);
 		batteryStatus(300, 2);
 		//androidQuickSettings();
 		cursorController();
@@ -345,7 +345,7 @@ int settingsMenu()
 		
 		settingsHighlight();
 		
-		digitalTime(350, 2); 
+		digitalTime(343, 2);
 		batteryStatus(300, 2); 
 		//androidQuickSettings();
 		cursorController();

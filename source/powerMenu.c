@@ -40,7 +40,7 @@ int powerMenu()
 			}
 		}
 
-		digitalTime(350, 2); 
+		digitalTime(343, 2);
 		batteryStatus(300, 2);
 		cursorController();
 
