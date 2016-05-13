@@ -87,18 +87,18 @@ int aboutMenu()
 			//sftd_draw_textf(robotoSettingsMenu, 20, 132, RGBA8(0, 0, 0, 255), 12, "System Version: %s.%s.%s", major, minor, rev);
 			sftd_draw_textf(robotoSettingsMenu, 20, 168, RGBA8(0, 0, 0, 255), 12, "Model: %s %s", modelName, regionName);
 
-			if (cursorX  >= 0 && cursorX  <= 480 && cursorY >= 58 && cursorY <= 105)
+			if (cursor(0, 480, 58, 105))
 			{
 				sf2d_draw_texture(highlight, 0, 56);
 				sftd_draw_textf(robotoSettingsMenu, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
 				sftd_draw_textf(robotoSettingsMenu, 20, 83, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][1]);
 			}
-			else if (cursorX  >= 0 && cursorX  <= 480 && cursorY >= 106 && cursorY <= 157)
+			else if (cursor(0, 480, 106, 157))
 			{
 				sf2d_draw_texture(highlight, 0, 106);
 				sftd_draw_textf(robotoSettingsMenu, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
 			}
-			else if (cursorX  >= 0 && cursorX  <= 480 && cursorY >= 158 && cursorY <= 209)
+			else if (cursor(0, 480, 158, 209))
 			{
 				sf2d_draw_texture(highlight, 0, 159);
 				//sftd_draw_textf(robotoSettingsMenu, 20, 132, RGBA8(0, 0, 0, 255), 12, "System Version: %s.%s.%s", major, minor, rev);
@@ -112,7 +112,7 @@ int aboutMenu()
 
 		sf2d_end_frame();
 		
-		navbarControls(1);
+		navbarControls(0);
 		
 		if (kDown & KEY_Y)
 			powerMenu(); 
@@ -128,22 +128,6 @@ int aboutMenu()
 			settingsMenu();
 		}
 		
-		if ((cursorX  >= 44 && cursorX  <= 119 && cursorY >= 201 && cursorY <= 240) && (kDown & KEY_A))
-		{
-			sftd_free_font(robotoSettingsMenu);
-			sf2d_free_texture(aboutBg);
-			sf2d_free_texture(highlight);
-			settingsMenu();
-		}
-		
-		else if ((cursorX  >= 120 && cursorX  <= 195 && cursorY >= 201 && cursorY <= 240) && (kDown & KEY_A))
-		{
-			sftd_free_font(robotoSettingsMenu);
-			sf2d_free_texture(aboutBg);
-			sf2d_free_texture(highlight);
-			home();
-		}
-
 		sf2d_swapbuffers();
 	}
 	
@@ -177,7 +161,7 @@ int developerMenu()
 		
 		sf2d_end_frame();
 		
-		navbarControls(1);
+		navbarControls(0);
 		
 		if (kDown & KEY_Y)
 			powerMenu(); 
@@ -191,22 +175,6 @@ int developerMenu()
 			sf2d_free_texture(developerBg);
 			sf2d_free_texture(highlight);
 			settingsMenu();
-		}
-		
-		if ((cursorX  >= 44 && cursorX  <= 119 && cursorY >= 201 && cursorY <= 240) && (kDown & KEY_A))
-		{
-			sftd_free_font(robotoSettingsMenu);
-			sf2d_free_texture(developerBg);
-			sf2d_free_texture(highlight);
-			settingsMenu();
-		}
-		
-		else if ((cursorX  >= 120 && cursorX  <= 195 && cursorY >= 201 && cursorY <= 240) && (kDown & KEY_A))
-		{
-			sftd_free_font(robotoSettingsMenu);
-			sf2d_free_texture(developerBg);
-			sf2d_free_texture(highlight);
-			home();
 		}
 		
 		sf2d_swapbuffers();
@@ -235,22 +203,6 @@ int displayMenu()
 		
 		sf2d_draw_texture(displayBg, 0, 0);
 		
-		sftd_draw_textf(robotoSettingsMenu, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
-		
-		if (cursorX  >= 0 && cursorX  <= 480 && cursorY >= 58 && cursorY <= 105)
-		{
-			sf2d_draw_texture(highlight, 0, 56);
-			sftd_draw_textf(robotoSettingsMenu, 20, 68, RGBA8(0, 0, 0, 255), 12, "Cyanogen3DS Updates");
-			sftd_draw_textf(robotoSettingsMenu, 20, 83, RGBA8(0, 0, 0, 255), 12, "Click for, view or isntall available updates");
-		}
-		else if (cursorX  >= 0 && cursorX  <= 480 && cursorY >= 106 && cursorY <= 157)
-		{
-			sf2d_draw_texture(highlight, 0, 105);
-			//sftd_draw_textf(robotoSettingsMenu, 20, 116, RGBA8(0, 0, 0, 255), 12, "Cyanogen3DS version: 0.01-20151019-UNOFFICIAL");
-			sftd_draw_textf(robotoSettingsMenu, 20, 116, RGBA8(0, 0, 0, 255), 12, "Cyanogen3DS version: %s-%s", VERSION, COMPILE_DATE);
-			sftd_draw_textf(robotoSettingsMenu, 20, 132, RGBA8(0, 0, 0, 255), 12, "Model = NULL");
-		}
-
 		digitalTime(350, 2); 
 		batteryStatus(300, 2);
 		//androidQuickSettings();
@@ -258,7 +210,7 @@ int displayMenu()
 		
 		sf2d_end_frame();
 		
-		navbarControls(1);
+		navbarControls(0);
 		
 		if (kDown & KEY_Y)
 			powerMenu(); 
@@ -269,32 +221,16 @@ int displayMenu()
 		if (kDown & KEY_B)
 		{
 			sftd_free_font(robotoSettingsMenu);
-			sf2d_free_texture(aboutBg);
+			sf2d_free_texture(displayBg);
 			sf2d_free_texture(highlight);
 			settingsMenu();
-		}
-		
-		if ((cursorX  >= 44 && cursorX  <= 119 && cursorY >= 201 && cursorY <= 240) && (kDown & KEY_A))
-		{
-			sftd_free_font(robotoSettingsMenu);
-			sf2d_free_texture(aboutBg);
-			sf2d_free_texture(highlight);
-			settingsMenu();
-		}
-		
-		else if ((cursorX  >= 120 && cursorX  <= 195 && cursorY >= 201 && cursorY <= 240) && (kDown & KEY_A))
-		{
-			sftd_free_font(robotoSettingsMenu);
-			sf2d_free_texture(aboutBg);
-			sf2d_free_texture(highlight);
-			home();
 		}
 		
 		sf2d_swapbuffers();
 	}
 	
 	sftd_free_font(robotoSettingsMenu);
-	sf2d_free_texture(aboutBg);
+	sf2d_free_texture(displayBg);
 	sf2d_free_texture(highlight);
 
 	return 0;
@@ -304,7 +240,7 @@ int settingsHighlight()
 {
 	u32 kDown = hidKeysDown();
 
-	if (cursorX  >= 0 && cursorX  <= 198 && cursorY >= 75 && cursorY <= 133)
+	if (cursor(0, 198, 75, 133))
 	{
 		sf2d_draw_texture(wifi_highlight, 0, 87);
 		sftd_draw_textf(robotoSettingsMenu, 48, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][0]);
@@ -313,7 +249,7 @@ int settingsHighlight()
 			settingsUnload();
 		}*/
 	}
-	else if (cursorX  >= 0 && cursorX  <= 198 && cursorY >= 134 && cursorY <= 174)
+	else if (cursor(0, 198, 134, 174))
 	{
 		sf2d_draw_texture(display_highlight, 0, 135);
 		sftd_draw_textf(robotoSettingsMenu, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
@@ -322,7 +258,7 @@ int settingsHighlight()
 			settingsUnload();
 		}*/
 	}
-	else if (cursorX  >= 0 && cursorX  <= 198 && cursorY >= 175 && cursorY <= 240)
+	else if (cursor(0, 198, 175, 240))
 	{
 		sf2d_draw_texture(developeroptions_highlight, 0, 183);
 		sftd_draw_textf(robotoSettingsMenu, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
@@ -331,7 +267,7 @@ int settingsHighlight()
 			settingsUnload();
 		}*/
 	}
-	else if (cursorX  >= 203 && cursorX  <= 400 && cursorY >= 75 && cursorY <= 133)
+	else if (cursor(203, 400, 75, 133))
 	{
 		sf2d_draw_texture(security_highlight, 199, 87);
 		sftd_draw_textf(robotoSettingsMenu, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
@@ -340,7 +276,7 @@ int settingsHighlight()
 			settingsUnload();
 		}*/
 	}
-	else if (cursorX  >= 203 && cursorX  <= 400 && cursorY >= 134 && cursorY <= 174)
+	else if (cursor(203, 400, 134, 174))
 	{
 		sf2d_draw_texture(performance_highlight, 203, 135);
 		sftd_draw_textf(robotoSettingsMenu, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
@@ -349,7 +285,7 @@ int settingsHighlight()
 			settingsUnload();
 		}*/
 	}
-	else if (cursorX  >= 203 && cursorX  <= 400 && cursorY >= 175 && cursorY <= 240)
+	else if (cursor(203, 400, 175, 240))
 	{
 		sf2d_draw_texture(about_highlight, 203, 183);
 		sftd_draw_textf(robotoSettingsMenu, 250, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][5]);
@@ -416,7 +352,7 @@ int settingsMenu()
 		
 		sf2d_end_frame();
 		
-		navbarControls(1); 
+		navbarControls(0); 
 		
 		if (kDown & KEY_Y)
 			powerMenu(); 
@@ -428,18 +364,6 @@ int settingsMenu()
 		{
 			settingsUnload();
 			appDrawer();
-		}
-		
-		if ((cursorX  >= 44 && cursorX  <= 119 && cursorY >= 201 && cursorY <= 240) && (kDown & KEY_A))
-		{
-			settingsUnload();
-			appDrawer();
-		}
-		
-		else if ((cursorX  >= 120 && cursorX  <= 195 && cursorY >= 201 && cursorY <= 240) && (kDown & KEY_A))
-		{
-			settingsUnload();
-			home();
 		}
 		
 		sf2d_swapbuffers();

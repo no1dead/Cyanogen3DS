@@ -10,12 +10,14 @@
 
 #include "Roboto_ttf.h"
 
+#define cursor(x1, x2, y1, y2)  (cursorX  >= (x1) && cursorX  <= (x2) && cursorY >= (y1) && cursorY <= (y2))
+
 touchPosition touch, oldTouch;
 
-u32 kDown;
-u32 kHeld;
-u32 kUp;
+u32 kDown, kHeld, kUp;
 int cursorX, cursorY;
+u16 touch_x, touch_y, touchTimer;
+touchPosition touch, oldTouch, firstTouch;
 
 sftd_font *roboto;
 sftd_font *robotoWidget1;

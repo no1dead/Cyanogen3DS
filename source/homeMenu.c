@@ -89,48 +89,55 @@ int batteryStatus(int x, int y)
 
 void appDrawerIcon() //Draws the app drawer icon. Draws a different icon of the same size once hovered with the cursor.
 {
-	if (cursorX  >= 170 && cursorX  <= 210 && cursorY >= 145 && cursorY <= 190)
-		sf2d_draw_texture(ic_allapps_pressed, 179, 158);
+	if (cursor(170, 210, 155, 200))
+		sf2d_draw_texture(ic_allapps_pressed, 179, 168);
 	
 	else
-		sf2d_draw_texture(ic_allapps, 179, 158);
+		sf2d_draw_texture(ic_allapps, 179, 168);
 }
 
 int navbarControls(int type)
 {
-	if (type == 0)
-	{
-		if (cursorX  >= 84 && cursorX  <= 159 && cursorY >= 201 && cursorY <= 240)
-			sf2d_draw_texture(backicon, 70, 201);
-		else
-			sf2d_draw_texture(navbar, 70, 201);
-
-		if (cursorX  >= 160 && cursorX  <= 235 && cursorY >= 201 && cursorY <= 240)
-			sf2d_draw_texture(homeicon, 70, 201);
-		else
-			sf2d_draw_texture(navbar, 70, 201);
+	//hidKeysHeld returns information about which buttons have are held down in this frame
+	u32 kHeld = hidKeysHeld();
 	
-		if (cursorX  >= 236 && cursorX  <= 311 && cursorY >= 201 && cursorY <= 240)
-			sf2d_draw_texture(multicon, 70, 201);
-		else
-			sf2d_draw_texture(navbar, 70, 201);
+	if(hidKeysDown()&KEY_TOUCH)
+    {
+		touchTimer = 0;
+		firstTouch = touch;
+    }
+    if(hidKeysHeld()&KEY_TOUCH)
+	{
+		touchTimer++;
+    }
+	
+	//Read the touch screen coordinates
+	if (kHeld & KEY_TOUCH) 
+	{
+		hidTouchRead(&touch);
+		touch_x = touch.px;
+		touch_y = touch.py;
 	}
 	
-	else if (type == 1)
+	if (type == 0)
 	{
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 		
-		if (cursorX  >= 44 && cursorX  <= 119 && cursorY >= 201 && cursorY <= 240)
+		if (touch.px  >= 44 && touch.px  <= 119 && touch.py >= 201 && touch.py <= 240)
 			sf2d_draw_texture(backicon, 30, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
 
-		if (cursorX  >= 120 && cursorX  <= 195 && cursorY >= 201 && cursorY <= 240)
+		if (touch.px  >= 120 && touch.px  <= 195 && touch.py >= 201 && touch.py <= 240)
+		{
 			sf2d_draw_texture(homeicon, 30, 201);
+			if (kDown & KEY_A)
+				home();
+		}
 		else
 			sf2d_draw_texture(navbar, 30, 201);
 	
-		if (cursorX  >= 196 && cursorX  <= 271 && cursorY >= 201 && cursorY <= 240)
+		if (touch.px  >= 196 && touch.px  <= 271 && touch.py >= 201 && touch.py <= 240)
 			sf2d_draw_texture(multicon, 30, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
@@ -213,7 +220,7 @@ void androidQuickSettings()
 	
 	if (notif_enabled == 1)
 	{	
-		if ((cursorX >= 386 && cursorX <= 414 && cursorY >= 12 && cursorY <= 38) && (kDown & KEY_A))
+		if ((cursor(386, 414, 12, 38)) && (kDown & KEY_A))
 		{	 
 			notif_y = notif_y-240;
 			yPos1 = yPos1-240;
@@ -223,7 +230,7 @@ void androidQuickSettings()
 			settingsMenu();
 		}
 		
-		if ((cursorX >= 198 && cursorX <= 240 && cursorY >= 204 && cursorY <= 258) && (kDown & KEY_A))
+		if ((cursor(198, 240, 204, 258)) && (kDown & KEY_A))
 		{
 			notif_y = notif_y-240;
 			yPos1 = yPos1-240;
@@ -286,13 +293,13 @@ int dayNightWidget()
 	int minutes = ts->tm_min;
 	
 	if (hours < 6)
-		sf2d_draw_texture(dayWidget, 172, 60);
+		sf2d_draw_texture(dayWidget, 172, 70);
 	else
-		sf2d_draw_texture(nightWidget, 167, 60);
+		sf2d_draw_texture(nightWidget, 167, 70);
 		
-	sftd_draw_textf(robotoWidget1, 152, 20, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
-	sftd_draw_textf(robotoWidget2, 130, 80, RGBA8(255, 255, 255, 255), 10, "Day");
-	getMonthOfYear(230, 80, 10);
+	sftd_draw_textf(robotoWidget1, 152, 30, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
+	sftd_draw_textf(robotoWidget2, 130, 90, RGBA8(255, 255, 255, 255), 10, "Day");
+	getMonthOfYear(230, 90, 10);
 	
 	return 0;
 }
@@ -330,15 +337,14 @@ int home()
 		
 		sf2d_draw_texture(background, 0, 0);
 		
-		sf2d_draw_texture(ic_launcher_browser, 49, 145);
-		sf2d_draw_texture(ic_launcher_messenger, 114, 145);
-		sf2d_draw_texture(ic_launcher_apollo, 241, 145);
-		sf2d_draw_texture(ic_launcher_settings, 306, 145);
+		sf2d_draw_texture(ic_launcher_browser, 49, 155);
+		sf2d_draw_texture(ic_launcher_messenger, 114, 155);
+		sf2d_draw_texture(ic_launcher_apollo, 241, 155);
+		sf2d_draw_texture(ic_launcher_settings, 306, 155);
 		appDrawerIcon();
 
 		dayNightWidget();
 		
-		navbarControls(0); //Displays navbar
 		digitalTime(350, 2); //Displays digital time
 		batteryStatus(300, 2); //Displays battery status
 		//androidQuickSettings();
@@ -346,14 +352,16 @@ int home()
 		
 		sf2d_end_frame();
 		
-		if ((cursorX  >= 170 && cursorX  <= 210 && cursorY >= 148 && cursorY <= 190) && (kDown & KEY_A))
+		navbarControls(0); //Displays navbar
+		
+		if ((cursor(170, 210, 158, 200)) && (kDown & KEY_A))
 		{
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
 			appDrawer(); //Opens app drawer
 		}
 		
-		if ((cursorX  >= 306 && cursorX  <= 351 && cursorY >= 145 && cursorY <= 190) && (kDown & KEY_A))
+		if ((cursor(306, 351, 155, 200)) && (kDown & KEY_A))
 		{
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
