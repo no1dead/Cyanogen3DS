@@ -7,8 +7,6 @@ int powerMenu()
 {
 	load_PNG(power, "romfs:/powerMenu.png");
 	load_PNG(power1, "romfs:/powerSelection.png");
-	
-	robotoPowerMenu = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); //Loads font
 
 	while (aptMainLoop())
 	{
@@ -28,12 +26,12 @@ int powerMenu()
 			
 		sf2d_draw_texture(power, 62, 100);
 
-		sftd_draw_textf(robotoPowerMenu, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
+		sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
 
 		if (cursor(62, 338, 80, 159))
 		{
 			sf2d_draw_texture(power1, 62, 100);
-			sftd_draw_textf(robotoPowerMenu, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
+			sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
 			if (kDown & KEY_A)
 			{
 				longjmp(exitJmp, 1);
@@ -41,7 +39,7 @@ int powerMenu()
 		}
 
 		digitalTime(343, 2);
-		batteryStatus(300, 2);
+		batteryStatus(300, 2, 0);
 		cursorController();
 
 		sf2d_end_frame();
@@ -54,7 +52,6 @@ int powerMenu()
 		sf2d_swapbuffers();
 	}
 
-	sftd_free_font(robotoPowerMenu);
 	sf2d_free_texture(power);
 	sf2d_free_texture(power1);
 	

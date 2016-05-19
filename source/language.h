@@ -14,5 +14,5 @@ const char lang_settingsStorage[11][3][100];
 const char lang_settingsBattery[11][3][60];
 const char lang_settingsAbout[11][6][100];
 const char lang_settingsUpdates[11][1][100];
-const char lang_settingsSecuirty[11][2][100];
+const char lang_settingsSecuirty[13][3][100];
 const char lang_quickSettings[11][5][100];

@@ -1,5 +1,6 @@
 #include "appDrawer.h"
 #include "clock.h"
+#include "fileManager.h"
 #include "homeMenu.h"
 #include "language.h"
 #include "lockScreen.h"
@@ -10,6 +11,7 @@
 int aboutMenu()
 {
 	load_PNG(aboutBg, "romfs:/aboutBg.png");
+	load_PNG(highlight, "romfs:/highlight.png");
 	
 	/*u32 firmware = osGetFirmVersion();
 	u32 major = GET_VERSION_MAJOR(firmware);
@@ -68,8 +70,6 @@ int aboutMenu()
 		default: 
 			modelName = "UNKNOWN";
 	}
-	
-	robotoSettingsMenu = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 
 	while (aptMainLoop())
 	{
@@ -81,32 +81,32 @@ int aboutMenu()
 
 			sf2d_draw_texture(aboutBg, 0, 0);
 
-			sftd_draw_textf(robotoSettingsMenu, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
-			sftd_draw_textf(robotoSettingsMenu, 20, 83, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][1]);
-			sftd_draw_textf(robotoSettingsMenu, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
-			//sftd_draw_textf(robotoSettingsMenu, 20, 132, RGBA8(0, 0, 0, 255), 12, "System Version: %s.%s.%s", major, minor, rev);
-			sftd_draw_textf(robotoSettingsMenu, 20, 168, RGBA8(0, 0, 0, 255), 12, "Model: %s %s", modelName, regionName);
+			sftd_draw_textf(robotoS12, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
+			sftd_draw_textf(robotoS12, 20, 83, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][1]);
+			sftd_draw_textf(robotoS12, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
+			//sftd_draw_textf(robotoS12, 20, 132, RGBA8(0, 0, 0, 255), 12, "System Version: %s.%s.%s", major, minor, rev);
+			sftd_draw_textf(robotoS12, 20, 168, RGBA8(0, 0, 0, 255), 12, "Model: %s %s", modelName, regionName);
 
 			if (cursor(0, 480, 58, 105))
 			{
 				sf2d_draw_texture(highlight, 0, 56);
-				sftd_draw_textf(robotoSettingsMenu, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
-				sftd_draw_textf(robotoSettingsMenu, 20, 83, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][1]);
+				sftd_draw_textf(robotoS12, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][0]);
+				sftd_draw_textf(robotoS12, 20, 83, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsAbout[language][1]);
 			}
 			else if (cursor(0, 480, 106, 157))
 			{
 				sf2d_draw_texture(highlight, 0, 106);
-				sftd_draw_textf(robotoSettingsMenu, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
+				sftd_draw_textf(robotoS12, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
 			}
 			else if (cursor(0, 480, 158, 209))
 			{
 				sf2d_draw_texture(highlight, 0, 159);
-				//sftd_draw_textf(robotoSettingsMenu, 20, 132, RGBA8(0, 0, 0, 255), 12, "System Version: %s.%s.%s", major, minor, rev);
-				sftd_draw_textf(robotoSettingsMenu, 20, 168, RGBA8(0, 0, 0, 255), 12, "Model: %s %s", modelName, regionName); 
+				//sftd_draw_textf(robotoS12, 20, 132, RGBA8(0, 0, 0, 255), 12, "System Version: %s.%s.%s", major, minor, rev);
+				sftd_draw_textf(robotoS12, 20, 168, RGBA8(0, 0, 0, 255), 12, "Model: %s %s", modelName, regionName); 
 			}
 
 			digitalTime(343, 2);
-			batteryStatus(300, 2);
+			batteryStatus(300, 2, 0);
 			//androidQuickSettings();
 			cursorController();
 
@@ -122,7 +122,6 @@ int aboutMenu()
 		
 		if (kDown & KEY_B)
 		{
-			sftd_free_font(robotoSettingsMenu);
 			sf2d_free_texture(aboutBg);
 			sf2d_free_texture(highlight);
 			settingsMenu();
@@ -130,8 +129,7 @@ int aboutMenu()
 		
 		sf2d_swapbuffers();
 	}
-	
-	sftd_free_font(robotoSettingsMenu);
+
 	sf2d_free_texture(aboutBg);
 	sf2d_free_texture(highlight);
 
@@ -141,9 +139,8 @@ int aboutMenu()
 int developerMenu()
 {
 	load_PNG(developerBg, "romfs:/developerBg.png");
-	
-	robotoSettingsMenu = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
-	
+	load_PNG(highlight, "romfs:/highlight.png");
+
 	while (aptMainLoop())
 	{
 		hidScanInput();
@@ -155,7 +152,7 @@ int developerMenu()
 		sf2d_draw_texture(developerBg, 0, 0);
 		
 		digitalTime(343, 2);
-		batteryStatus(300, 2); 
+		batteryStatus(300, 2, 0); 
 		//androidQuickSettings();
 		cursorController();
 		
@@ -171,7 +168,6 @@ int developerMenu()
 		
 		if (kDown & KEY_B)
 		{
-			sftd_free_font(robotoSettingsMenu);
 			sf2d_free_texture(developerBg);
 			sf2d_free_texture(highlight);
 			settingsMenu();
@@ -179,8 +175,7 @@ int developerMenu()
 		
 		sf2d_swapbuffers();
 	}
-	
-	sftd_free_font(robotoSettingsMenu);
+
 	sf2d_free_texture(developerBg);
 	sf2d_free_texture(highlight);
 
@@ -190,8 +185,7 @@ int developerMenu()
 int displayMenu()
 {
 	load_PNG(displayBg, "romfs:/displayBg.png");
-	
-	robotoSettingsMenu = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
+	load_PNG(highlight, "romfs:/highlight.png");
 	
 	while (aptMainLoop())
 	{
@@ -204,7 +198,7 @@ int displayMenu()
 		sf2d_draw_texture(displayBg, 0, 0);
 		
 		digitalTime(343, 2);
-		batteryStatus(300, 2);
+		batteryStatus(300, 2, 0);
 		//androidQuickSettings();
 		cursorController();
 		
@@ -220,7 +214,6 @@ int displayMenu()
 		
 		if (kDown & KEY_B)
 		{
-			sftd_free_font(robotoSettingsMenu);
 			sf2d_free_texture(displayBg);
 			sf2d_free_texture(highlight);
 			settingsMenu();
@@ -228,9 +221,115 @@ int displayMenu()
 		
 		sf2d_swapbuffers();
 	}
-	
-	sftd_free_font(robotoSettingsMenu);
+
 	sf2d_free_texture(displayBg);
+	sf2d_free_texture(highlight);
+
+	return 0;
+}
+
+int securityMenu()
+{
+	load_PNG(securityBg, "romfs:/securityBg.png");
+	load_PNG(highlight, "romfs:/highlight.png");
+	
+	while (aptMainLoop())
+	{
+		hidScanInput();
+        hidTouchRead(&touch);
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		
+		sf2d_draw_texture(securityBg, 0, 0);
+		
+		sftd_draw_textf(robotoS12, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsSecuirty[language][0]); 
+		sftd_draw_textf(robotoS12, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsSecuirty[language][1]); 
+		sftd_draw_textf(robotoS12, 20, 168, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsSecuirty[language][2]); 
+		
+		digitalTime(343, 2);
+		batteryStatus(300, 2, 0);
+		//androidQuickSettings();
+		
+		if (cursor(0, 480, 58, 105))
+		{	
+			sf2d_draw_texture(highlight, 0, 56);
+			sftd_draw_textf(robotoS12, 20, 68, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsSecuirty[language][0]); 
+			if (kDown & KEY_A)
+			{
+				//if (fileExists("system/settings/password.bin", &sdmcArchive))
+					//sceIoRemove("system/settings/password.bin");
+				/*else*/ if (fileExists("system/settings/pin.bin", &sdmcArchive))
+				{
+					//sceIoRemove("system/settings/pin.bin");
+				//HBKB_CallKeyboard(touch);
+				//tempMessage = HBKB_CheckKeyboardInput();
+				FILE * password = fopen("system/settings/password.bin", "w");
+				fprintf(password, "%s", tempMessage);
+				fclose(password);
+				//HBKB_Clean();
+				}
+			}
+		}
+		
+		else if (cursor(0, 480, 106, 157))
+		{	
+			sf2d_draw_texture(highlight, 0, 107);
+			sftd_draw_textf(robotoS12, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsSecuirty[language][1]); 
+			if (kDown & KEY_A)
+			{
+				//if (fileExists("system/settings/password.bin", &sdmcArchive))
+					//sceIoRemove("system/settings/password.bin");
+				/*else*/ if (fileExists("system/settings/pin.bin", &sdmcArchive))
+				{
+					//sceIoRemove("system/settings/pin.bin");
+				//HBKB_CallKeyboard(touch);
+				//tempPin = HBKB_CheckKeyboardInput();
+				FILE * pin = fopen("system/settings/pin.bin", "w");
+				fprintf(pin, "%s", tempPin);
+				fclose(pin);
+				//HBKB_Clean();
+				}
+			}
+		}
+		
+		else if (cursor(0, 480, 158, 209))
+		{	
+			sf2d_draw_texture(highlight, 0, 157);
+			sftd_draw_textf(robotoS12, 20, 168, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsSecuirty[language][2]); 
+			if (kDown & KEY_A)
+			{
+				//if (fileExists("system/settings/password.bin", &sdmcArchive))
+					//sceIoRemove("system/settings/password.bin");
+				//else if (fileExists("system/settings/pin.bin", &sdmcArchive))
+					//sceIoRemove("system/settings/pin.bin");
+			}
+		}
+		
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(securityBg);
+			sf2d_free_texture(highlight);
+			settingsMenu();
+		}
+		
+		sf2d_swapbuffers();
+	}
+
+	sf2d_free_texture(securityBg);
 	sf2d_free_texture(highlight);
 
 	return 0;
@@ -243,7 +342,7 @@ int settingsHighlight()
 	if (cursor(0, 198, 75, 133))
 	{
 		sf2d_draw_texture(wifi_highlight, 0, 87);
-		sftd_draw_textf(robotoSettingsMenu, 48, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][0]);
+		sftd_draw_textf(robotoS12, 48, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][0]);
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -252,7 +351,7 @@ int settingsHighlight()
 	else if (cursor(0, 198, 134, 174))
 	{
 		sf2d_draw_texture(display_highlight, 0, 135);
-		sftd_draw_textf(robotoSettingsMenu, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
+		sftd_draw_textf(robotoS12, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -261,7 +360,7 @@ int settingsHighlight()
 	else if (cursor(0, 198, 175, 240))
 	{
 		sf2d_draw_texture(developeroptions_highlight, 0, 183);
-		sftd_draw_textf(robotoSettingsMenu, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
+		sftd_draw_textf(robotoS12, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -270,16 +369,17 @@ int settingsHighlight()
 	else if (cursor(203, 400, 75, 133))
 	{
 		sf2d_draw_texture(security_highlight, 199, 87);
-		sftd_draw_textf(robotoSettingsMenu, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
-		/*if (kDown & KEY_A)
+		sftd_draw_textf(robotoS12, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
+		if (kDown & KEY_A)
 		{
 			settingsUnload();
-		}*/
+			securityMenu();
+		}
 	}
 	else if (cursor(203, 400, 134, 174))
 	{
 		sf2d_draw_texture(performance_highlight, 203, 135);
-		sftd_draw_textf(robotoSettingsMenu, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
+		sftd_draw_textf(robotoS12, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -288,7 +388,7 @@ int settingsHighlight()
 	else if (cursor(203, 400, 175, 240))
 	{
 		sf2d_draw_texture(about_highlight, 203, 183);
-		sftd_draw_textf(robotoSettingsMenu, 250, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][5]);
+		sftd_draw_textf(robotoS12, 250, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][5]);
 		if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -308,7 +408,6 @@ int settingsUnload()
 	sf2d_free_texture(performance_highlight);
 	sf2d_free_texture(security_highlight);
 	sf2d_free_texture(wifi_highlight);
-	sftd_free_font(robotoSettingsMenu);
 	return 0;
 }
 
@@ -321,8 +420,6 @@ int settingsMenu()
 	load_PNG(performance_highlight, "romfs:/performance_highlight.png");
 	load_PNG(security_highlight, "romfs:/security_highlight.png");
 	load_PNG(wifi_highlight, "romfs:/wifi_highlight.png");
-	
-	robotoSettingsMenu = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
@@ -336,17 +433,17 @@ int settingsMenu()
 		
 		sf2d_draw_texture(settingsBg, 0, 0);
 		
-		sftd_draw_textf(robotoSettingsMenu, 48, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][0]);
-		sftd_draw_textf(robotoSettingsMenu, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
-		sftd_draw_textf(robotoSettingsMenu, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
-		sftd_draw_textf(robotoSettingsMenu, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
-		sftd_draw_textf(robotoSettingsMenu, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
-		sftd_draw_textf(robotoSettingsMenu, 250, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][5]);
+		sftd_draw_textf(robotoS12, 48, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][0]);
+		sftd_draw_textf(robotoS12, 48, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][2]);
+		sftd_draw_textf(robotoS12, 48, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][4]);
+		sftd_draw_textf(robotoS12, 250, 106, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][1]);
+		sftd_draw_textf(robotoS12, 250, 153, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][3]);
+		sftd_draw_textf(robotoS12, 250, 202, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsMain[language][5]);
 		
 		settingsHighlight();
 		
 		digitalTime(343, 2);
-		batteryStatus(300, 2); 
+		batteryStatus(300, 2, 0); 
 		//androidQuickSettings();
 		cursorController();
 		

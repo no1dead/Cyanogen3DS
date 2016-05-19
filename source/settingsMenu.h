@@ -1,6 +1,8 @@
 #pragma once
 
 #include <3ds.h>
+#include <stdio.h>
+#include <string.h>
 
 #define YEAR ((((__DATE__ [7] - '0') * 10 + (__DATE__ [8] - '0')) * 10 \
 + (__DATE__ [9] - '0')) * 10 + (__DATE__ [10] - '0'))
@@ -42,9 +44,15 @@ sf2d_texture *performance_highlight;
 sf2d_texture *security_highlight;
 sf2d_texture *wifi_highlight;
 
+char tempMessage[20];
+char tempPin[5];
+
 int language;
 
 int aboutMenu();
+int developerMenu();
+int displayMenu();
+int securityMenu();
 int settingsHighlight();
 int settingsUnload();
 int settingsMenu();

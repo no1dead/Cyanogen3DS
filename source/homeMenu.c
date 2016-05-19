@@ -17,7 +17,6 @@ u32 wifiStatus = 0;
 
 void cursorController()
 {
-	
 	hidScanInput();
 
     kDown = hidKeysDown();
@@ -45,7 +44,7 @@ void cursorController()
 	sf2d_draw_texture(cursor, cursorX, cursorY);
 }
 
-int batteryStatus(int x, int y)
+int batteryStatus(int x, int y, int style)
 {
 	u8 batteryPercent;
 	PTMU_GetBatteryLevel(&batteryPercent);
@@ -71,17 +70,26 @@ int batteryStatus(int x, int y)
 		sf2d_draw_texture(_charge, x+1, y);
 	}
 	
-	sftd_draw_textf(roboto, x+16, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
-	
+	if (style == 0)
+		sftd_draw_textf(robotoS12, x+16, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+	else if (style == 1)
+		sftd_draw_textf(robotoS12, x-35, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+		
 	ACU_GetWifiStatus(&wifiStatus);
 	
 	if(wifiStatus)
 	{
-		sf2d_draw_texture(wifiIconFull, x-26, y-1);
+		if (style == 0)
+			sf2d_draw_texture(wifiIconFull, x-26, y-1);
+		else if (style == 1)
+			sf2d_draw_texture(wifiIconFull, 116, y+105);
 	}
 	else
 	{
-		sf2d_draw_texture(wifiIconNull, x-26, y-1);
+		if (style == 0)
+			sf2d_draw_texture(wifiIconNull, x-26, y-1);
+		else if (style == 1)
+			sf2d_draw_texture(wifiIconNull, 116, y+105);
 	}
 	
 	return 0;
@@ -131,7 +139,7 @@ int navbarControls(int type)
 		if (touch.px  >= 120 && touch.px  <= 195 && touch.py >= 201 && touch.py <= 240)
 		{
 			sf2d_draw_texture(homeicon, 30, 201);
-			if (kDown & KEY_A)
+			if (kDown & KEY_TOUCH)
 				home();
 		}
 		else
@@ -150,45 +158,42 @@ int navbarControls(int type)
 
 void androidQuickSettings()
 {
-	u32 kDown = hidKeysDown();
-	u32 kHeld = hidKeysHeld();
+	//u32 kDown = hidKeysDown();
+	//u32 kHeld = hidKeysHeld();
 
 	int notif_up;
 	int notif_down;
-	int notif_enabled;
 	
 	sf2d_draw_texture(quickSettings, 0, notif_y);
 	
-	batteryStatus(350, yPos2-4);
+	batteryStatus(305, yPos2-5, 1);
 	
-	sftd_draw_textf(roboto, 115, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][0]);
-	sftd_draw_textf(roboto, 245, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][2]);
-	sftd_draw_textf(roboto, 170, yLine2, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][4]);
-	
-	digitalTime(25, yPos1);
+	sftd_draw_textf(robotoS10, 115, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][0]);
+	sftd_draw_textf(robotoS10, 245, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][2]);
+	sftd_draw_textf(robotoS10, 170, yLine2, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][4]);
+
+	digitalTime(10, yPos1);
 	getMonthOfYear(25, yPos1+14, 10);
 
-	notif_enabled = 0;
-	
-	if ((kHeld & KEY_TOUCH) && (cursorX >= 0 && cursorX <= 400 && cursorY >= 0 && cursorY <= 20)) 
+	if ((kHeld & KEY_A) && (cursor(0, 400, 0, 20))) 
 	{
 		notif_down = 1;
 	}
 
-	else if ((kHeld & KEY_TOUCH) && (cursorX >= 0 && cursorX <= 400 && cursorY >= 220 && notif_y == 0))
+	else if ((kHeld & KEY_A) && (cursorX >= 0 && cursorX <= 480 && cursorY >= 250) && (notif_y == 0))
 	{
 		notif_up = 1;
 	}
 			
-	if (notif_down == 1) //&& cursorY <= 20)
-	{				
-		if ((kHeld & KEY_TOUCH) && (cursorY >= 0))
+	if (notif_down == 1 && cursorY <= 10)
+	{	
+		if ((kHeld & KEY_A) && (kHeld & KEY_DOWN))
 		{
-			notif_y = notif_y+6;
-			yPos1 = yPos1+6;
-			yPos2 = yPos2+6;
-			yLine1 = yLine1+6;
-			yLine2 = yLine2+6;
+			notif_y = notif_y+4;
+			yPos1 = yPos1+4;
+			yPos2 = yPos2+4;
+			yLine1 = yLine1+4;
+			yLine2 = yLine2+4;
 		}
 		
 		if (notif_y >= 0)
@@ -212,14 +217,10 @@ void androidQuickSettings()
 		{
 			yLine2 = 220;
 		}
-		if (yLine2 >= 200)
-		{
-			notif_enabled = 1;
-		}
 	}
-	
-	if (notif_enabled == 1)
-	{	
+
+	if (yLine2 >= 136)
+	{		
 		if ((cursor(386, 414, 12, 38)) && (kDown & KEY_A))
 		{	 
 			notif_y = notif_y-240;
@@ -240,6 +241,7 @@ void androidQuickSettings()
 			lockScreen();
 		}
 	}
+	
 	if ((notif_down == 1) && (kDown & KEY_B))
 	{
 		notif_y = notif_y-240;
@@ -250,16 +252,14 @@ void androidQuickSettings()
 	}
 	
 	if (notif_up == 1)
-	{		
-		notif_enabled = 0;
-		
-		if ((kHeld & KEY_TOUCH) && (230 >= cursorY))
+	{				
+		if ((kHeld & KEY_A) && (kHeld & KEY_UP))
 		{
-			notif_y = notif_y-6;
-			yPos1 = yPos1-6;
-			yPos2 = yPos2-6;
-			yLine1 = yLine1-6;
-			yLine2 = yLine2-6;
+			notif_y = notif_y-4;
+			yPos1 = yPos1-4;
+			yPos2 = yPos2-4;
+			yLine1 = yLine1-4;
+			yLine2 = yLine2-4;
 		}
 		
 		if (notif_y <= -240)
@@ -297,9 +297,9 @@ int dayNightWidget()
 	else
 		sf2d_draw_texture(nightWidget, 167, 70);
 		
-	sftd_draw_textf(robotoWidget1, 152, 30, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
-	sftd_draw_textf(robotoWidget2, 130, 90, RGBA8(255, 255, 255, 255), 10, "Day");
-	getMonthOfYear(230, 90, 10);
+	sftd_draw_textf(robotoS30, 152, 30, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
+	getDayOfWeek(155, 90, 10);
+	getMonthOfYear(235, 90, 10);
 	
 	return 0;
 }
@@ -315,10 +315,6 @@ int home()
 	load_PNG(ic_launcher_apollo, "romfs:/ic_launcher_apollo.png");
 	load_PNG(ic_launcher_settings, "romfs:/ic_launcher_settings.png");
 	
-	
-	robotoWidget1 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
-	robotoWidget2 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
-
 	// Main loop
 	while (aptMainLoop())
 	{
@@ -346,12 +342,11 @@ int home()
 		dayNightWidget();
 		
 		digitalTime(343, 2); //Displays digital time
-		batteryStatus(300, 2); //Displays battery status
+		batteryStatus(300, 2, 0); //Displays battery status
 		//androidQuickSettings();
 		cursorController();
 		
 		sf2d_end_frame();
-		
 		navbarControls(0); //Displays navbar
 		
 		if ((cursor(170, 210, 158, 200)) && (kDown & KEY_A))
@@ -377,9 +372,7 @@ int home()
 		// Flush and swap framebuffers
 		sf2d_swapbuffers();
 	}
-
-	sftd_free_font(robotoWidget1);
-	sftd_free_font(robotoWidget2);
+	
 	sf2d_free_texture(ic_allapps);
 	sf2d_free_texture(ic_allapps_pressed);
 	

@@ -19,9 +19,11 @@ int cursorX, cursorY;
 u16 touch_x, touch_y, touchTimer;
 touchPosition touch, oldTouch, firstTouch;
 
-sftd_font *roboto;
-sftd_font *robotoWidget1;
-sftd_font *robotoWidget2;
+sftd_font *robotoS10;
+sftd_font *robotoS12;
+sftd_font *robotoS18;
+sftd_font *robotoS30;
+
 
 sf2d_texture *background;
 sf2d_texture *cursor;
@@ -58,7 +60,7 @@ sf2d_texture *dayWidget;
 sf2d_texture *nightWidget;
 
 void cursorController();
-int batteryStatus(int x, int y);
+int batteryStatus(int x, int y, int style);
 void appDrawerIcon();
 int navbarControls(int type);
 void androidQuickSettings();

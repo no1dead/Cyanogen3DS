@@ -5,14 +5,23 @@
 int lockScreen()
 {
 	load_PNG(lockscreenBg, "romfs:/lockscreenBg.png");
-	//lockscreenBg = sf2d_create_texture_mem_RGBA8(lockscreen_img.pixel_data, lockscreen_img.width, lockscreen_img.height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	
-	time_t unixTime = time(NULL);
-	struct tm* timeStruct = gmtime((const time_t *)&unixTime);
 
-	int hours = timeStruct->tm_hour;
-	int minutes = timeStruct->tm_min;
-	int day = timeStruct->tm_mday;
+	u64 lastTimeInSeconds = 0;
+	
+	if(lastTimeInSeconds == 0) 
+	{
+		lastTimeInSeconds = osGetTime() / 1000; //get on boot.
+	}
+	u64 timeInSeconds = osGetTime() / 1000;
+
+	lastTimeInSeconds = timeInSeconds;
+	
+	u64 convert = ( (70*365+17) * 86400LLU );
+	time_t now = timeInSeconds- convert;
+	struct tm *ts = localtime(&now);
+
+	int hours = ts->tm_hour;
+	int minutes = ts->tm_min;
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 
@@ -26,14 +35,13 @@ int lockScreen()
 		
 		sf2d_draw_texture(background, 0, 0);
 		sf2d_draw_texture(lockscreenBg, 0, 0);
+
+		sftd_draw_textf(robotoS30, 152, 30, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
+		getDayOfWeek(170, 90, 10);
+		getMonthOfYear(200, 90, 10);
 		
-		sftd_draw_textf(roboto, 142, 20, RGBA8(255, 255, 255, 255), 34, "0%2d : %02d", hours, minutes);
-		sftd_draw_textf(roboto, 140, 80, RGBA8(255, 255, 255, 255), 10, "Monday");
-		sftd_draw_textf(roboto, 200, 80, RGBA8(255, 255, 255, 255), 10, "%d", day);
-		sftd_draw_textf(roboto, 220, 80, RGBA8(255, 255, 255, 255), 10, "October");
-		
-		digitalTime(350, 2); 
-		batteryStatus(300, 2); 
+		digitalTime(343, 2);
+		batteryStatus(300, 2, 0); 
 		cursorController();
 		
 		sf2d_end_frame();

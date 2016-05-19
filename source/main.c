@@ -1,6 +1,7 @@
 #include "main.h"
 #include "homeMenu.h"
 #include "settingsMenu.h"
+#include "sound.h"
 
 void cleanUp() 
 {
@@ -24,7 +25,16 @@ int main(int argc, char **argv)
 
 	//osSetSpeedupEnable(true); //Enable n3DS speedup
 
-	roboto = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size); // Load font
+	robotoS10 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
+	robotoS12 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
+	robotoS18 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
+	robotoS30 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
+	
+	//Load sounds
+	audio_load("system/media/audio/ui/camera_click.bin", &camera_click);
+	audio_load("system/media/audio/ui/KeypressStandard.bin", &KeypressStandard);
+	audio_load("system/media/audio/ui/Lock.bin", &Lock);
+	audio_load("system/media/audio/ui/Unlock.bin", &Unlock);
 
 	// Load textures from RomFS
 	load_PNG(background, "romfs:/background.png");
@@ -74,7 +84,10 @@ int main(int argc, char **argv)
 	sf2d_free_texture(wifiIconNull);
 	sf2d_free_texture(highlight);
 
-	sftd_free_font(roboto);
+	sftd_free_font(robotoS10);
+	sftd_free_font(robotoS12);
+	sftd_free_font(robotoS18);
+	sftd_free_font(robotoS30);
 	cleanUp();
 	
 	return 0;

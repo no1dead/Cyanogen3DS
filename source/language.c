@@ -226,19 +226,21 @@ const char lang_settingsUpdates[][1][100] =
 	{"Ricerca aggiornamenti"}
 };
 
-const char lang_settingsSecuirty[][2][100] = 
+const char lang_settingsSecuirty[][3][100] = 
 {	
-	{"Password lock", "Pin lock"},
-	{"Verrouillage par mot de passe", "Verrouillage par code PIN"},
-	{"Zabezpieczenie haslem", "Zabezpieczenie kodem PIN"},
-	{"Passwortsperre", "Pinsperre"},
-	{"Wachtwoord vergrendeling", "PIN vergrendeling"},
-	{"Bloqueo con contraseña", "Bloqueo con PIN"},
-	{"Trava por senha", "Trava por PIN"},
-	{"Trava de senha", "Trava de pino"},
-	{"Passordlås", "Pin-lås"},
-	{"Blocare cu parolă", "Blocare cu PIN"},
-	{"Blocco con password", "Blocco con PIN"}
+	{"Password lock", "Pin lock", "Swipe"},
+	{"Verrouillage par mot de passe", "Verrouillage par code PIN", "Chiper"},
+	{"Haslo", "Kod PIN", "Przesuniecie"},
+	{"Passwortsperre", "Pinsperre", "Stibitzen"},
+	{"Wachtwoord vergrendeling", "PIN vergrendeling", "Slaan"},
+	{"Bloqueo con contraseña", "Bloqueo con PIN", "Apandar"},
+	{"Trava por senha", "Trava por PIN", "Pancada forte"},
+	{"Trava de senha", "Trava de pino", "Pancada forte"},
+	{"Passordlås", "Pin-lås", "Sveip"},
+	{"Blocare cu parolă", "Blocare cu PIN", "Bețivan"},
+	{"Blocco con password", "Blocco con PIN", "Swipe"},
+	{"Защита паролем", "Защита PIN-кодом" "Жест"},
+	{"Захист паролем", "Захист PIN-кодом" "Жест"}
 };
 
 const char lang_quickSettings[][5][100] = 
