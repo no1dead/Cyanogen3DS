@@ -4,9 +4,11 @@
 #include "homeMenu.h"
 #include "language.h"
 #include "lockScreen.h"
+#include "main.h"
 #include "powerMenu.h"
 #include "settingsMenu.h"
-#include "main.h"
+#include "utils.h"
+
 
 int aboutMenu()
 {
@@ -18,12 +20,11 @@ int aboutMenu()
 	u32 minor = GET_VERSION_MINOR(firmware);
 	u32 rev = GET_VERSION_REVISION(firmware);*/
 	
-	u8 region = 0;
-	u8 model = 0;
-	char* regionName;
-	char* modelName;
-	CFGU_SecureInfoGetRegion(&region);
-	CFGU_GetSystemModel(&model);
+	u8 model = getModel();
+	u8 region = getRegion();
+	
+	char * modelName;
+	char * regionName;
 	
 	switch (region) 
 	{
@@ -34,8 +35,10 @@ int aboutMenu()
 			regionName = "NTSC"; 
 			break;
 		case 2:
+			regionName = "EUR"; 
+			break; 
 		case 3: 
-			regionName = "PAL"; // Australian region 
+			regionName = "PAL";
 			break; 
 		case 4: 
 			regionName = "CHN"; 
@@ -275,7 +278,7 @@ int securityMenu()
 		
 		else if (cursor(0, 480, 106, 157))
 		{	
-			sf2d_draw_texture(highlight, 0, 107);
+			sf2d_draw_texture(highlight, 0, 105);
 			sftd_draw_textf(robotoS12, 20, 116, RGBA8(0, 0, 0, 255), 12, "%s", lang_settingsSecuirty[language][1]); 
 			if (kDown & KEY_A)
 			{

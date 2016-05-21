@@ -36,10 +36,9 @@ typedef struct FS_MAIN
 
 FS_MAIN fileSystem;
 
-void unicodeToChar(char* dst, u16* src, int max);
+void utf2ascii(char* dst, u16* src);
 void makeDir(const char *path);
 bool fileExists(char* path, FS_Archive* archive);
-void loadFiles();
+int loadFiles();
 void updateCurrentFile();
-void drawFiles();
 int fileManager();

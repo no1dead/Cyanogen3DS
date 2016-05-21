@@ -18,12 +18,10 @@ extern bool CPU_Running;
 
 extern u8	frameSkip;
 
-void unicodeToChar(char* dst, u16* src, int max)
+void utf2ascii(char* dst, u16* src)
 {
-	if(!src || !dst)
-		return;
-	int n=0;
-	while(*src && n<max-1){*(dst++)=(*(src++))&0xFF;n++;}
+	if(!src || !dst)return;
+	while(*src)*(dst++)=(*(src++))&0xFF;
 	*dst=0x00;
 }
 
@@ -48,50 +46,40 @@ bool fileExists(char* path, FS_Archive* archive)
 	return true;
 }
 
-void loadFiles() 
+int loadFiles() 
 {
 	Handle dirHandle;
-	static char fullPath[1024];
+	FS_DirectoryEntry entry;
 	
-	static FS_DirectoryEntry dirStruct;
-	memset(&dirStruct,0,sizeof(FS_DirectoryEntry));
 	FS_Path dirPath = fsMakePath(PATH_ASCII, cwd);
-
-	// init SDMC archive
-	sdmcArchive=(FS_Archive){0x00000009, (FS_Path){PATH_EMPTY, 1, (u8*)""}};
-	FSUSER_OpenArchive(&sdmcArchive);
+	sdmcArchive = (FS_Archive){0x9, (FS_Path){PATH_EMPTY, 1, (u8*)""}};
+	FSUSER_OpenArchive( &sdmcArchive);
 	FSUSER_OpenDirectory(&dirHandle, sdmcArchive, dirPath);
-
-	// Get number of files in directory
-	fileSystem.totalFiles = 0;
-	while(1) 
-	{
-		u32 dataRead = 0;
-		FSDIR_Read(dirHandle, &dataRead, 1, &dirStruct);
-		if(dataRead == 0) 
-			break;
-		fileSystem.totalFiles++;
-	}
-
-	fileSystem.fileList = linearAlloc(MAX_FILENAME_SIZE * fileSystem.totalFiles);
-
-	FSUSER_OpenDirectory(&dirHandle, sdmcArchive, dirPath);
-
-	fileSystem.totalFiles = 0;
 	
-	strncpy(fullPath, cwd, 1024);
-	int n = strlen(fullPath);
-	while(1) 
-	{
-		u32 dataRead = 0;
-		FSDIR_Read(dirHandle, &dataRead, 1, &dirStruct);
-		if(dataRead == 0) 
-			break;
-		unicodeToChar(&fullPath[n], dirStruct.name, 1024-n);
-		fileSystem.totalFiles++;
-	}
+	int i = 1;
+	u32 entriesRead;
+	static char name[1024];
 
+	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", cwd);
+	
+	for (;;)
+	{
+		entriesRead=0;
+		FSDIR_Read(dirHandle, &entriesRead, 1, (FS_DirectoryEntry*)&entry);
+		if (entriesRead)
+		{
+			i++;
+			utf2ascii(&name[0],entry.name);
+			sftd_draw_textf(robotoS12, 36, -23 + (i * 39), RGBA8(0, 0, 0, 255), 12, "%s", name);
+		}
+		else break;
+	}
+	
 	FSDIR_Close(dirHandle);
+	svcCloseHandle(dirHandle);
+	FSUSER_CloseArchive( &sdmcArchive);
+	
+	return 1;
 }
 
 void updateCurrentFile()
@@ -175,19 +163,6 @@ void updateCurrentFile()
 
 }
 
-void drawFiles() 
-{
-	int i = 0;
-
-	for(i = 0; i < fileSystem.totalFiles; i++) 
-	{
-		sftd_draw_textf(robotoS12, (240 / 2), 55 + (i * 15), RGBA8(0, 0, 0, 255), 12, "%s", fileSystem.fileList[i * MAX_FILENAME_SIZE]);
-	}
-
-	sftd_draw_textf(robotoS12, 10, (fileSystem.cFile * 15) + 53, RGBA8(0, 0, 0, 255), 12, "->");
-
-}
-
 int fileManager()
 {
 	load_PNG(fileManagerBg, "romfs:/fileManagerBg.png");
@@ -205,7 +180,6 @@ int fileManager()
 		sf2d_draw_texture(fileManagerBg, 0, 0);
 		
 		loadFiles();
-		drawFiles();
 		updateCurrentFile();
 		
 		digitalTime(343, 2);

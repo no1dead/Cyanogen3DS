@@ -1,19 +1,20 @@
 #include "appDrawer.h"
 #include "clock.h"
+#include "fileManager.h"
 #include "homeMenu.h"
 #include "language.h"
 #include "lockScreen.h"
 #include "main.h"
 #include "powerMenu.h"
 #include "settingsMenu.h"
+#include "sound.h"
+#include "utils.h"
 
 int notif_y = -240;
 int yPos1 = -240;
 int yPos2 = -240;
 int yLine1 = -240;
 int yLine2 = -240;
-
-u32 wifiStatus = 0;
 
 void cursorController()
 {
@@ -46,6 +47,8 @@ void cursorController()
 
 int batteryStatus(int x, int y, int style)
 {
+	u32 wifiStatus = 0;
+	
 	u8 batteryPercent;
 	PTMU_GetBatteryLevel(&batteryPercent);
 	
@@ -167,6 +170,7 @@ void androidQuickSettings()
 	sf2d_draw_texture(quickSettings, 0, notif_y);
 	
 	batteryStatus(305, yPos2-5, 1);
+	//sftd_draw_textf(robotoS10, 346, yPos2-5, RGBA8(255, 255, 255, 255), 10, "%.6s", getUsername);
 	
 	sftd_draw_textf(robotoS10, 115, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][0]);
 	sftd_draw_textf(robotoS10, 245, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][2]);
@@ -343,7 +347,7 @@ int home()
 		
 		digitalTime(343, 2); //Displays digital time
 		batteryStatus(300, 2, 0); //Displays battery status
-		//androidQuickSettings();
+		androidQuickSettings();
 		cursorController();
 		
 		sf2d_end_frame();
@@ -351,6 +355,7 @@ int home()
 		
 		if ((cursor(170, 210, 158, 200)) && (kDown & KEY_A))
 		{
+			audioPlay(&KeypressStandard, false);
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
 			appDrawer(); //Opens app drawer

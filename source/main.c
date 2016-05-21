@@ -8,6 +8,7 @@ void cleanUp()
 	sftd_fini();
 	sf2d_fini();
 	romfsExit();
+	cfguExit();
 	ptmuExit();
 	acExit();
 }
@@ -18,12 +19,15 @@ int main(int argc, char **argv)
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 255));
 	sf2d_set_vblank_wait(0);
 	romfsInit();
+	cfguInit();
+	acInit();
 
 	// Font loading
 	sftd_init();
 	ptmuInit();
 
-	//osSetSpeedupEnable(true); //Enable n3DS speedup
+	if ((getModel() == 2) || (getModel() == 4))
+		osSetSpeedupEnable(true); //Enable N3DS speedup
 
 	robotoS10 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	robotoS12 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
@@ -31,10 +35,10 @@ int main(int argc, char **argv)
 	robotoS30 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	
 	//Load sounds
-	audio_load("system/media/audio/ui/camera_click.bin", &camera_click);
-	audio_load("system/media/audio/ui/KeypressStandard.bin", &KeypressStandard);
-	audio_load("system/media/audio/ui/Lock.bin", &Lock);
-	audio_load("system/media/audio/ui/Unlock.bin", &Unlock);
+	audio_load("/3ds/Cyanogen3DS/system/media/audio/ui/camera_click.bin", &camera_click);
+	audio_load("/3ds/Cyanogen3DS/system/media/audio/ui/KeypressStandard.bin", &KeypressStandard);
+	audio_load("/3ds/Cyanogen3DS/system/media/audio/ui/Lock.bin", &Lock);
+	audio_load("/3ds/Cyanogen3DS/system/media/audio/ui/Unlock.bin", &Unlock);
 
 	// Load textures from RomFS
 	load_PNG(background, "romfs:/background.png");

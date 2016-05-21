@@ -23,9 +23,9 @@ void digitalTime(int x, int y)
 	sftd_draw_textf(robotoS12, x+10, y, RGBA8(255, 255, 255, 255), 12, "%2d:%02d", hours, minutes);
 
     if (hours > 12)
-		sftd_draw_textf(robotoS10, x+38, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
+		sftd_draw_textf(robotoS10, x+39, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
 	else 
-		sftd_draw_textf(robotoS10, x+38, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
+		sftd_draw_textf(robotoS10, x+39, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
     if (hours > 12) 
 		hours -= 12;
 }

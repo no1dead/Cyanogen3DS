@@ -24,7 +24,6 @@ sftd_font *robotoS12;
 sftd_font *robotoS18;
 sftd_font *robotoS30;
 
-
 sf2d_texture *background;
 sf2d_texture *cursor;
 sf2d_texture *quickSettings;
