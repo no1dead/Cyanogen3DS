@@ -15,6 +15,7 @@ before_install:
   - export CTRULIB=${DEVKITPRO}/libctru
   - export PICASSO=${DEVKITARM}/bin
   - export PORTLIBS=${DEVKITPRO}/portlibs/armv6k
+  - sh .travis-deps.sh
 
 script:
   - make build-all
