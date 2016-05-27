@@ -34,9 +34,9 @@ include $(DEVKITARM)/3ds_rules
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 RESOURCES   :=	resources
-SOURCES		:=	source source/res
+SOURCES		:=	source
 DATA		:=	data
-INCLUDES	:=	source source/libs/sf2dlib/include source/libs/sftdlib/include
+INCLUDES	:=	source source/libs/sf2dlib/include source/libs/sftdlib/include source/libs/sfillib/include
 ROMFS		:=	romfs
 
 APP_TITLE	:= Cyanogen3DS
@@ -70,7 +70,7 @@ LIBS	:= -lsftd -lsfil -lfreetype -lpng -lz -lsf2d -lctru -lm
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(CTRULIB) $(PORTLIBS) $(CURDIR)/source/libs/libsf2d $(CURDIR)/source/libs/libsftd 
+LIBDIRS	:= $(CTRULIB) $(PORTLIBS) $(CURDIR)/source/libs/libsf2d $(CURDIR)/source/libs/libsfil $(CURDIR)/source/libs/libsftd
 
 
 #---------------------------------------------------------------------------------
@@ -146,10 +146,47 @@ $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
+build-sf2dlib:
+	@make -C source/libs/libsf2d build
+
+build-sftdlib:
+	@make -C source/libs/libsftd build
+
+build-sfillib:
+	@make -C source/libs/libsfil build
+
+build-all:
+	@echo Building sf2dlib...
+	@make build-sf2dlib
+	@echo Building sftdlib...
+	@make build-sftdlib
+	@echo Building sfillib...
+	@make build-sfillib
+	@echo Building Cyanogen3DS...
+	@make build
+
 #---------------------------------------------------------------------------------
 clean:
-	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(TARGET)-strip.elf $(TARGET).cia $(TARGET).3ds
+	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(OUTPUT).elf $(OUTPUT)-stripped.elf $(OUTPUT).bin $(OUTPUT).3ds $(OUTPUT).cia icon.bin banner.bin
+
+clean-sf2dlib:
+	@make -C source/libs/libsf2d clean
+
+clean-sftdlib:
+	@make -C source/libs/libsftd clean
+
+clean-sfillib:
+	@make -C source/libs/libsfil clean
+
+clean-all:
+	@echo Cleaning sf2dlib...
+	@make clean-sf2dlib
+	@echo Cleaning sftdlib...
+	@make clean-sftdlib
+	@echo Cleaning sfillib...
+	@make clean-sfillib
+	@echo Cleaning Cyanogen3DS...
+	@make clean
 #---------------------------------------------------------------------------------
 $(TARGET)-strip.elf: $(BUILD)
 	@$(STRIP) --strip-all $(TARGET).elf -o $(TARGET)-strip.elf
