@@ -2,6 +2,7 @@
 #include "homeMenu.h"
 #include "settingsMenu.h"
 #include "sound.h"
+#include "utils.h"
 
 void cleanUp() 
 {
@@ -11,6 +12,7 @@ void cleanUp()
 	cfguExit();
 	ptmuExit();
 	acExit();
+	csndExit();
 }
 
 int main(int argc, char **argv)
@@ -21,6 +23,7 @@ int main(int argc, char **argv)
 	romfsInit();
 	cfguInit();
 	acInit();
+	csndInit();
 
 	// Font loading
 	sftd_init();
@@ -33,12 +36,6 @@ int main(int argc, char **argv)
 	robotoS12 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	robotoS18 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	robotoS30 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
-	
-	//Load sounds
-	audio_load("/3ds/Cyanogen3DS/system/media/audio/ui/camera_click.bin", &camera_click);
-	audio_load("/3ds/Cyanogen3DS/system/media/audio/ui/KeypressStandard.bin", &KeypressStandard);
-	audio_load("/3ds/Cyanogen3DS/system/media/audio/ui/Lock.bin", &Lock);
-	audio_load("/3ds/Cyanogen3DS/system/media/audio/ui/Unlock.bin", &Unlock);
 
 	// Load textures from RomFS
 	load_PNG(background, "romfs:/background.png");
