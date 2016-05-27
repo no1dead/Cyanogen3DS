@@ -12,7 +12,7 @@ cd ctrulib/libctru && make ; cd -
 cp -rf ctrulib/libctru/ ${DEVKITPRO}
 
 # Get picasso
-mv tools/picasso ${PICASSO}
+mv tools/picasso.exe ${PICASSO}
 
 # Build and install portlibs
 mkdir ${DEVKITPRO}/portlibs && mkdir ${PORTLIBS}
