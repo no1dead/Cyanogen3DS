@@ -16,7 +16,7 @@ mv tools/picasso ${PICASSO}
 
 # Build and install portlibs
 mkdir ${DEVKITPRO}/portlibs && mkdir ${PORTLIBS}
-git clone https://github.com/cpp3ds/3ds_portlibs.git
+git clone https://github.com/devkitPro/3ds_portlibs.git
 cd 3ds_portlibs
 
 wget http://download.savannah.gnu.org/releases/freetype/freetype-2.5.4.tar.bz2
