@@ -36,7 +36,7 @@ BUILD		:=	build
 RESOURCES   :=	resources
 SOURCES		:=	source source/res
 DATA		:=	data
-INCLUDES	:=	include
+INCLUDES	:=	source source/libs/sf2dlib/include source/libs/sftdlib/include
 ROMFS		:=	romfs
 
 APP_TITLE	:= Cyanogen3DS
@@ -45,7 +45,7 @@ APP_AUTHOR	:= Joel16
 ICON := $(RESOURCES)/icon.png
 
 DATE := '"$(shell date +"%D")"'
-VERSION := '"alpha-0.1"'
+VERSION := '"Alpha-1.0"'
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -70,7 +70,7 @@ LIBS	:= -lsftd -lsfil -lfreetype -lpng -lz -lsf2d -lctru -lm
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(CTRULIB) $(PORTLIBS)
+LIBDIRS	:= $(CTRULIB) $(PORTLIBS) $(CURDIR)/source/libs/libsf2d $(CURDIR)/source/libs/libsftd 
 
 
 #---------------------------------------------------------------------------------

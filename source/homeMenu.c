@@ -355,7 +355,7 @@ int home()
 		
 		if ((cursor(170, 210, 158, 200)) && (kDown & KEY_A))
 		{
-			audioPlay(&KeypressStandard, false);
+			//audioPlay(&KeypressStandard, false);
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
 			appDrawer(); //Opens app drawer
