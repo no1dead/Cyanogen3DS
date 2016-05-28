@@ -1,5 +1,6 @@
 #include "clock.h"
 #include "homeMenu.h"
+#include "settingsMenu.h"
 
 void digitalTime(int x, int y)
 {
@@ -19,15 +20,19 @@ void digitalTime(int x, int y)
 
 	int hours = ts->tm_hour;
 	int minutes = ts->tm_min;
-	
-	sftd_draw_textf(robotoS12, x+10, y, RGBA8(255, 255, 255, 255), 12, "%2d:%02d", hours, minutes);
 
+		sftd_draw_textf(robotoS12, x+10, y, RGBA8(255, 255, 255, 255), 12, "%2d:%02d", hours, minutes);
+		
     if (hours > 12)
 		sftd_draw_textf(robotoS10, x+39, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
 	else 
 		sftd_draw_textf(robotoS10, x+39, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
-    if (hours > 12) 
-		hours -= 12;
+	
+	if (hrTime == 1)
+	{
+		if (hours > 12) 
+			hours -= 12;
+	}
 }
 
 

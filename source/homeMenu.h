@@ -11,6 +11,7 @@
 #include "Roboto_ttf.h"
 
 #define cursor(x1, x2, y1, y2)  (cursorX  >= (x1) && cursorX  <= (x2) && cursorY >= (y1) && cursorY <= (y2))
+#define touch(x1, x2, y1, y2)  (touch.px  >= (x1) && touch.px  <= (x2) && touch.px >= (y1) && touch.px <= (y2))
 
 touchPosition touch, oldTouch;
 

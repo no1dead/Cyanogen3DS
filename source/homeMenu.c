@@ -134,12 +134,12 @@ int navbarControls(int type)
 	{
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 		
-		if (touch.px  >= 44 && touch.px  <= 119 && touch.py >= 201 && touch.py <= 240)
+		if touch(44, 119, 201, 240)
 			sf2d_draw_texture(backicon, 30, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
 
-		if (touch.px  >= 120 && touch.px  <= 195 && touch.py >= 201 && touch.py <= 240)
+		if touch(120, 195, 201, 240)
 		{
 			sf2d_draw_texture(homeicon, 30, 201);
 			if (kDown & KEY_TOUCH)
@@ -148,7 +148,7 @@ int navbarControls(int type)
 		else
 			sf2d_draw_texture(navbar, 30, 201);
 	
-		if (touch.px  >= 196 && touch.px  <= 271 && touch.py >= 201 && touch.py <= 240)
+		if touch(196, 271, 201, 240)
 			sf2d_draw_texture(multicon, 30, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
@@ -355,7 +355,7 @@ int home()
 		
 		if ((cursor(170, 210, 158, 200)) && (kDown & KEY_A))
 		{
-			//audioPlay(&KeypressStandard, false);
+			audio_load("system/media/audio/ui/KeypressStandard.bin");
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
 			appDrawer(); //Opens app drawer
@@ -363,6 +363,7 @@ int home()
 		
 		if ((cursor(306, 351, 155, 200)) && (kDown & KEY_A))
 		{
+			audio_load("system/media/audio/ui/KeypressStandard.bin");
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
 			settingsMenu(); //Opens settings menu
@@ -372,7 +373,10 @@ int home()
 			powerMenu(); //Opens power menu
 		
 		if (kDown & KEY_L)
+		{
+			audio_load("system/media/audio/ui/lock.bin");
 			lockScreen(); //Takes you to lock screen
+		}
 
 		// Flush and swap framebuffers
 		sf2d_swapbuffers();

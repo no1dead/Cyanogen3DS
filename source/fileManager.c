@@ -165,6 +165,7 @@ void updateCurrentFile()
 
 int fileManager()
 {
+	sf2d_texture *fileManagerBg;
 	load_PNG(fileManagerBg, "romfs:/fileManagerBg.png");
 	fsInit();
 	sdmcInit();

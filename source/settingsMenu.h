@@ -23,6 +23,10 @@
 
 #define DATE_AS_INT (((YEAR - 2000) * 12 + MONTH) * 31 + DAY
 
+#define WHITE RGBA8(255, 255, 255, 255)
+#define LITEGRAY RGBA8(191, 191, 191, 255)
+#define BLACK RGBA8(0, 0, 0, 255)
+
 sftd_font *robotoSettingsMenu;
 
 sf2d_texture *highlight;
@@ -44,14 +48,16 @@ sf2d_texture *performance_highlight;
 sf2d_texture *security_highlight;
 sf2d_texture *wifi_highlight;
 
-char tempMessage[20];
-char tempPin[5];
+sf2d_texture *onSwitch;
+sf2d_texture *offSwitch;
 
-int language;
+int language, hrTime, DARK, experimentalF;
+unsigned int fontColor;
 
 int aboutMenu();
 int developerMenu();
 int displayMenu();
+int displayTime();
 int securityMenu();
 int settingsHighlight();
 int settingsUnload();

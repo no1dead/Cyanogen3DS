@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "fileManager.h"
 
 u16 OLD_3DS_CLOCK = 268;
 u16 NEW_3DS_CLOCK = 804;
@@ -85,4 +86,58 @@ int getBirthday()
 	//b2 = birthday[0x00];
 	
 	return 0;
+}
+
+int setFileDefaultsInt(char *path, int value, int var)
+{
+	FILE *temp;
+	 
+	if (!(fileExists(path, &sdmcArchive)))
+	{
+		temp = fopen(path, "w");
+		fprintf(temp, "%d", value);
+		fclose(temp);
+	} 
+	
+	temp = fopen(path, "r");
+	fscanf(temp, "%d", &var);
+	fclose(temp);
+	
+	return var;
+}
+
+float setFileDefaultsFloat(char *path, float value, float var)
+{
+	FILE *temp;
+	 
+	if (!(fileExists(path, &sdmcArchive)))
+	{
+		temp = fopen(path, "w");
+		fprintf(temp, "%f", value);
+		fclose(temp);
+	} 
+	
+	temp = fopen(path, "r");
+	fscanf(temp, "%f", &var);
+	fclose(temp);
+	
+	return var;
+}
+
+char * setFileDefaultsChar(char path[], char data[], char var[])
+{
+	FILE * temp;
+	
+	if (!(fileExists(path, &sdmcArchive)))
+	{
+		temp = fopen(path, "w");
+		fprintf(temp, "%s", data);
+		fclose(temp);
+	}
+	
+	temp = fopen(path, "r");
+	fscanf(temp, "%s", var);
+	fclose(temp);
+	
+	return var;
 }

@@ -5,8 +5,6 @@
 
 #define MAX_FILENAME_SIZE 0xA0
 
-sf2d_texture *fileManagerBg;
-
 FS_Archive sdmcArchive;
 
 typedef struct FS_MAIN 

@@ -31,6 +31,9 @@ int main(int argc, char **argv)
 
 	if ((getModel() == 2) || (getModel() == 4))
 		osSetSpeedupEnable(true); //Enable N3DS speedup
+	
+	hrTime = setFileDefaultsInt("/3ds/Cyanogen3DS/system/app/clock/timeSet.bin", 0, hrTime);
+	DARK = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/darkTheme.bin", 0, DARK);
 
 	robotoS10 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	robotoS12 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
