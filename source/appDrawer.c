@@ -20,7 +20,7 @@ int appDrawer()
 {	
 	if (DARK == 1)
 	{
-		load_PNG(backdrop, "romfs:/backdrop.png");
+		load_PNG(backdrop, "romfs:/Dark/backdrop.png");
 		load_PNG(ic_launcher_clock, "romfs:/ic_launcher_clock.png");
 		load_PNG(ic_launcher_filemanager, "romfs:/ic_launcher_filemanager.png");
 		load_PNG(ic_launcher_gallery, "romfs:/ic_launcher_gallery.png");
@@ -36,6 +36,7 @@ int appDrawer()
 		load_PNG(ic_launcher_game, "romfs:/ic_launcher_game.png");
 		fontColor = BLACK;
 	}
+	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
 	while (aptMainLoop())

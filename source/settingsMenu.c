@@ -461,7 +461,7 @@ int displayTime()
 			sf2d_free_texture(highlight);
 			sf2d_free_texture(offSwitch);
 			sf2d_free_texture(onSwitch);
-			settingsMenu();
+			displayMenu();
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
