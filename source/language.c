@@ -234,7 +234,7 @@ const char lang_settingsAbout[][6][100] =
 	{"Atualizações do Cyanogen3DS", "Clique para, ver ou instalar atualizações disponíveis", "Versão do Cyanogen3DS:", "OFICIAL", "Endereço Mac:", "Versão do Kernel:"},
 	{"Cyanogen3DS oppdateringer", "Trykk for, vis eller installer tilgjengelige oppdateringer", "Cyanogen3DS versjon:", "OFFISIELL", "Mac Adresse:", "Kernel versjon:"},
 	{"Actualizări Cyanogen3DS", "Apasă pentru a vedea și instala actualizări disponibile", "Versiune Cyanogen3DS:", "OFICIAL", "Adresă Mac:", "Versiune de kernel:"},
-	{"Aggiornamenti Cyanogen3DS", "Clicca per, vedere o installare gli aggiornamenti disponibili", "Versione Cyanogen3DS:", "UFFICIALE", "Indirizzo MAC:", "Versione kernel:"}
+	{"Aggiornamenti Cyanogen3DS", "Clicca per, vedere o installare gli aggiornamenti disponibili", "Versione Cyanogen3DS:", "UFFICIALE", "Indirizzo MAC:", "Versione kernel:"},
 	{"Cyanogen3DS 更新", "点击以查看或安装可用更新", "Cyanogen3DS 版本:", "正式版", "MAC地址:", "内核版本:"},
 	{"Cyanogen3DS 更新", "點擊以查看或安裝可用更新", "Cyanogen3DS 版本:", "正式版"," MAC地址:", "内核版本:"}
 };
