@@ -6,6 +6,7 @@
 #include "lockScreen.h"
 #include "powerMenu.h"
 #include "settingsMenu.h"
+#include "utils.h"
 
 void appDrawerUnload()
 {

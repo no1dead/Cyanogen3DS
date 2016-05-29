@@ -140,7 +140,11 @@ int aboutMenu()
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(aboutBg);
+			sf2d_free_texture(highlight);
 			settingsMenu();
+		}
 		
 		sf2d_swapbuffers();
 	}
@@ -272,7 +276,13 @@ int developerMenu()
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(developerBg);
+			sf2d_free_texture(highlight);
+			sf2d_free_texture(offSwitch);
+			sf2d_free_texture(onSwitch);
 			settingsMenu();
+		}
 		
 		sf2d_swapbuffers();
 	}
@@ -326,7 +336,6 @@ int displayMenu()
 			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsDisplay[language][1]);
 			if (kDown & KEY_A)
 				displayTime();
-				
 		}
 		else if (cursor(0, 480, 156, 205))
 		{
@@ -362,7 +371,11 @@ int displayMenu()
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
 			settingsMenu();
+		}
 		
 		sf2d_swapbuffers();
 	}
@@ -465,7 +478,13 @@ int displayTime()
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			sf2d_free_texture(offSwitch);
+			sf2d_free_texture(onSwitch);
 			displayMenu();
+		}
 		
 		sf2d_swapbuffers();
 	}
@@ -474,6 +493,172 @@ int displayTime()
 	sf2d_free_texture(highlight);
 	sf2d_free_texture(offSwitch);
 	sf2d_free_texture(onSwitch);
+
+	return 0;
+}
+
+int performanceMenu()
+{
+	if (DARK == 1)
+	{
+		load_PNG(performanceBg, "romfs:/Dark/performanceBg.png");
+		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		fontColor = LITEGRAY;
+	}
+	else
+	{
+		load_PNG(performanceBg, "romfs:/performanceBg.png");
+		load_PNG(highlight, "romfs:/highlight.png");
+		fontColor = BLACK;
+	}
+	
+	while (aptMainLoop())
+	{
+		hidScanInput();
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		
+		sf2d_draw_texture(performanceBg, 0, 0);
+		
+		sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsPerformance[language][0]);
+		sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsPerformance[language][1]);
+		sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsPerformance[language][2]);
+		sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsPerformance[language][3]);
+		
+		if (cursor(0, 480, 55, 105))
+		{
+			sf2d_draw_texture(highlight, 0, 55);
+			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsPerformance[language][0]);
+		}
+		else if (cursor(0, 480, 105, 155))
+		{
+			sf2d_draw_texture(highlight, 0, 105);
+			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsPerformance[language][1]);
+		}
+		else if (cursor(0, 480, 156, 205))
+		{
+			sf2d_draw_texture(highlight, 0, 154);
+			sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsPerformance[language][2]);
+			if (kDown & KEY_A)
+				storageMenu();
+		}
+		else if (cursor(0, 480, 206, 240))
+		{
+			sf2d_draw_texture(highlight, 0, 202);
+			sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsPerformance[language][3]);
+		}
+		
+		digitalTime(343, 2);
+		batteryStatus(300, 2, 0);
+		//androidQuickSettings();
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(performanceBg);
+			sf2d_free_texture(highlight);
+			settingsMenu();
+		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(performanceBg);
+			sf2d_free_texture(highlight);
+			settingsMenu();
+		}
+		
+		sf2d_swapbuffers();
+	}
+
+	sf2d_free_texture(performanceBg);
+	sf2d_free_texture(highlight);
+
+	return 0;
+}
+
+int storageMenu()
+{
+	if (DARK == 1)
+	{
+		load_PNG(performanceBg2, "romfs:/Dark/performanceBg2.png");
+		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		fontColor = LITEGRAY;
+	}
+	else
+	{
+		load_PNG(performanceBg2, "romfs:/performanceBg2.png");
+		load_PNG(highlight, "romfs:/highlight.png");
+		fontColor = BLACK;
+	}
+	
+	FS_ArchiveResource resource = {0};
+	
+	while (aptMainLoop())
+	{
+		hidScanInput();
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		
+		sf2d_draw_texture(performanceBg2, 0, 0);
+		
+		FSUSER_GetArchiveResource(&resource, SYSTEM_MEDIATYPE_SD);
+		sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "SD: %.1f MB", ((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0);
+		sf2d_draw_rectangle(20, 86, 360, 10, RGBA8(206, 215, 219, 255));
+		sf2d_draw_rectangle(20, 86, ((((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) / (((u64) resource.totalClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) * 360) - 20, 10, TEAL);
+		
+		FSUSER_GetArchiveResource(&resource, SYSTEM_MEDIATYPE_CTR_NAND);
+		sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "CTR NAND: %.1f MB", ((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0);
+		sf2d_draw_rectangle(20, 134, 360, 10, RGBA8(206, 215, 219, 255));
+		sf2d_draw_rectangle(20, 134, ((((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) / (((u64) resource.totalClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) * 360) - 20, 10, TEAL);
+		
+		digitalTime(343, 2);
+		batteryStatus(300, 2, 0);
+		//androidQuickSettings();
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(performanceBg2);
+			sf2d_free_texture(highlight);
+			performanceMenu();
+		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(performanceBg2);
+			sf2d_free_texture(highlight);
+			performanceMenu();
+		}
+		
+		sf2d_swapbuffers();
+	}
+
+	sf2d_free_texture(performanceBg2);
+	sf2d_free_texture(highlight);
 
 	return 0;
 }
@@ -587,7 +772,11 @@ int securityMenu()
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(securityBg);
+			sf2d_free_texture(highlight);
 			settingsMenu();
+		}
 		
 		sf2d_swapbuffers();
 	}
@@ -645,10 +834,11 @@ int settingsHighlight()
 	{
 		sf2d_draw_texture(performance_highlight, 203, 135);
 		sftd_draw_textf(robotoS12, 250, 153, fontColor, 12, "%s", lang_settingsMain[language][3]);
-		/*if (kDown & KEY_A)
+		if (kDown & KEY_A)
 		{
 			settingsUnload();
-		}*/
+			performanceMenu();
+		}
 	}
 	else if (cursor(203, 400, 175, 240))
 	{

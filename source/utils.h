@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define WHITE RGBA8(255, 255, 255, 255)
+#define LITEGRAY RGBA8(191, 191, 191, 255)
+#define BLACK RGBA8(0, 0, 0, 255)
+#define TEAL RGBA8(0, 149, 135, 255)
+
 char tempMessage[20];
 char tempPin[5];
 char tempData[250];

@@ -186,7 +186,7 @@ int fileManager()
 		digitalTime(343, 2);
 		batteryStatus(300, 2, 0); 
 		//androidQuickSettings();
-		cursorController();
+		//cursorController();
 		
 		sf2d_end_frame();
 		
