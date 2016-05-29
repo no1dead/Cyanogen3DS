@@ -50,10 +50,10 @@ int loadFiles()
 {
 	Handle dirHandle;
 	FS_DirectoryEntry entry;
-	
+
 	FS_Path dirPath = fsMakePath(PATH_ASCII, cwd);
-	sdmcArchive = (FS_Archive){0x9, (FS_Path){PATH_EMPTY, 1, (u8*)""}};
-	FSUSER_OpenArchive( &sdmcArchive);
+	sdmcArchive = 0;
+	FSUSER_OpenArchive(&sdmcArchive, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""));
 	FSUSER_OpenDirectory(&dirHandle, sdmcArchive, dirPath);
 	
 	int i = 1;
@@ -70,14 +70,14 @@ int loadFiles()
 		{
 			i++;
 			utf2ascii(&name[0],entry.name);
-			sftd_draw_textf(robotoS12, 36, -23 + (i * 39), RGBA8(0, 0, 0, 255), 12, "%s", name);
+			sftd_draw_textf(robotoS12, 36, -21 + (i * 39), RGBA8(0, 0, 0, 255), 12, "%s", name);
 		}
 		else break;
 	}
 	
 	FSDIR_Close(dirHandle);
 	svcCloseHandle(dirHandle);
-	FSUSER_CloseArchive( &sdmcArchive);
+	FSUSER_CloseArchive(sdmcArchive);
 	
 	return 1;
 }
