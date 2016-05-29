@@ -13,6 +13,8 @@
 	8. Norwegian
 	9. Romanian 
 	10. Italian
+	11.Simplified Chinese
+	12.Traditional Chinese
 */
 
 const char lang_welcome[][4][100] = 
@@ -27,7 +29,9 @@ const char lang_welcome[][4][100] =
 	{"Bem-vindo(a)", "Use a manete analógica para mover o cursor e", "aperte X para abrir a aplicação.", "ENTENDIDO"},
 	{"Velkommen", "Bruk den analoge spaken for å flytte på pekeren og", "trykk X (kryss) for å åpne applikasjonen.", "SKJØNNER"},
 	{"Bine ai venit", "Folosește joystickul pentru a naviga și", "apasă X pentru a deschide o aplicație", "AM ÎNȚELES"},
-	{"Benvenuto", "Usa lo stick analogico per muovere il cursore e", "premi X (croce) per aprire l'applicazione.", "HO CAPITO"}
+	{"Benvenuto", "Usa lo stick analogico per muovere il cursore e", "premi X (croce) per aprire l'applicazione.", "HO CAPITO"},
+	{"欢迎", "使用摇杆以移动光标", "按X打开应用程序。", "知道了"},
+	{"歡迎", "使用搖杆以移動光標", "按X打開應用程式。", "知道了"},
 };
 
 
@@ -43,7 +47,9 @@ const char lang_appDrawer[][8][100] =
 	{"Navegador", "Relógio", "Gerenciador", "Galeria", "Jogo", "Mensagens", "Música", "Definições"},
 	{"Nettleser", "Klokke", "Filbehandler", "Galleri", "Spill", "Meldinger", "Musikk", "Instillinger"},
 	{"Internet", "Ceas", "Fișiere", "Galerie", "Joc", "Mesaje", "Muzică", "Setări"},
-	{"Browser", "Orologio", "Manager", "Galleria", "Giochi", "Messaggi", "Musica", "Impostazioni"}
+	{"Browser", "Orologio", "Manager", "Galleria", "Giochi", "Messaggi", "Musica", "Impostazioni"},
+	{"浏览器", "时间", "文件", "图库", "游戏", "消息", "音乐", "设置"},
+	{"瀏覽器", "時間", "文件", "圖庫", "遊戲", "消息", "音樂", "設置"}
 };
 
 const char lang_settingsMain[][6][100] = 
@@ -58,7 +64,9 @@ const char lang_settingsMain[][6][100] =
 	{"Wi-Fi", "Segurança", "Exibição", "Desempenho", "Opções de Desenvolvedor", "Sobre"},
 	{"Wi-Fi", "Sikkerhet", "Skjerm", "Ytelse", "Utviklervalg", "Om"},
 	{"Wi-Fi", "Securitate", "Ecran", "Performanță", "Opțiuni dezvoltator", "Despre consolă"},
-	{"Wi-Fi", "Sicurezza", "Display", "Performance", "Opzione sviluppatore", "Informazioni"}
+	{"Wi-Fi", "Sicurezza", "Display", "Performance", "Opzione sviluppatore", "Informazioni"},
+	{"Wi-Fi", "安全", "显示", "性能", "开发者选项", "关于"},
+	{"Wi-Fi", "安全", "顯示", "性能", "開發者選項", "關於"}
 };
 
 const char lang_settingsDisplay[][4][100] = 
@@ -73,7 +81,9 @@ const char lang_settingsDisplay[][4][100] =
 	{"Temas", "Horário", "Idioma", "Miscelâneas"},
 	{"Temaer", "Tid", "språk", "Diverse"},
 	{"Teme", "Ceas", "Limbă", "Diverse"},
-	{"Temi", "Ora", "lingua", "Varie"}
+	{"Temi", "Ora", "lingua", "Varie"},
+	{"主题", "时间", "语言", "其他"},
+	{"主題", "時間", "語言", "其他"}
 };
 
 const char lang_settingsThemes[][4][100] = 
@@ -88,7 +98,9 @@ const char lang_settingsThemes[][4][100] =
 	{"Estilo", "Papel de Parede", "Fontes", "Pacotes de Ícones"},
 	{"Stil", "Bakgrunnsbilde", "Skrifter", "Ikon-pakker"},
 	{"Stil", "Fundal", "Fonturi", "Pachete de pictograme"},
-	{"Stile", "Sfondo", "Fonts", "Pacchetti di icone"}
+	{"Stile", "Sfondo", "Fonts", "Pacchetti di icone"},
+	{"风格", "壁纸", "字体", "图标"},
+	{"風格", "壁紙", "字體", "圖標"}
 };
 
 const char lang_settingsTime[][1][100] = 
@@ -103,7 +115,9 @@ const char lang_settingsTime[][1][100] =
 	{"Usar formato 24 horas"},
 	{"Bruk 24-timers format"},
 	{"Folosește formatul de 24 de ore"},
-	{"Usa il formato 24 ore"}
+	{"Usa il formato 24 ore"},
+	{"使用24小时制"},
+	{"使用24小時制"}
 };
 
 const char lang_settingsMiscellaneous[][4][100] =
@@ -118,7 +132,9 @@ const char lang_settingsMiscellaneous[][4][100] =
 	{"Alternar widget de dia/noite", "Alternar área de trabalho expandida", "Alternar animação de boot", "Alternar boot de jogo"},
 	{"Veksle dag/natt modul", "Veksle utvidet skrivebord", "Veklse oppstarts-animasjon", "Veksle spill-oppstart"},
 	{"Activează widgetul de zi/noapte", "Activează desktop extins", "Activează animația de pornire", "Activează pornirea în joc"},
-	{"Attiva il widget giorno/notte", "Attiva il desktop espanso", "Attiva animazione di avvio", "Attiva il boot del gioco"}
+	{"Attiva il widget giorno/notte", "Attiva il desktop espanso", "Attiva animazione di avvio", "Attiva il boot del gioco"},
+	{"亮度调整", "切换桌面扩展", "切换开机动画", "切换游戏引导"},
+	{"亮度調整", "切換桌面擴展", "切換開機動畫", "切換遊戲引導"}
 };
 
 const char lang_settingsPerformance[][4][100] = 
@@ -133,7 +149,9 @@ const char lang_settingsPerformance[][4][100] =
 	{"Processador", "Memória", "Gestão de Armazenamento", "Gestão de Bateria"},
 	{"Prosessor", "Minne", "Administrer lagring", "Administrer batteri"},
 	{"Procesor", "Memorie", "Gestionarea memoriei", "Gestionarea bateriei"},
-	{"Processore", "Memoria", "Gestione dello spazio", "Gestione della batteria"}
+	{"Processore", "Memoria", "Gestione dello spazio", "Gestione della batteria"},
+	{"处理器", "储存", "存储管理", "电池管理"},
+	{"處理器", "儲存", "存儲管理", "電池管理"}
 };
 
 const char lang_settingsProcessor[][5][100] = 
@@ -148,7 +166,9 @@ const char lang_settingsProcessor[][5][100] =
 	{"Atual frequência da CPU", "Overclock da CPU", "Aperte R para aumentar a frequência e L para diminuí-la.", "Atual frequência do BUS"},
 	{"Nåværende CPU-frekvens", "CPU over-klokking", "Trykk R for å øke frekvensen og L for å senke frekvensen.", "Nåværende bussfrekvens"},
 	{"Frecvența actuală a CPU", "Creșterea frecvenței CPU", "Apasă R pentru a crește frecvența și L pentru a descrește frecvența.", "Frecvența actuală a BUS"},
-	{"Frequenza CPU attuale", "Over-clock CPU", "Premi R per incrementare la frequenza e L per diminuire la frequenza.", "Frequenza attuale BUS"}
+	{"Frequenza CPU attuale", "Over-clock CPU", "Premi R per incrementare la frequenza e L per diminuire la frequenza.", "Frequenza attuale BUS"},
+	{"目前的CPU频率", "CPU超频", "按R键以提高频率，按L以降低频率", "CPU总线频率"},
+	{"目前的CPU頻率", "CPU超頻", "按R鍵以提高頻率，按L以降低頻率", "CPU總線頻率"}
 };
 
 const char lang_settingsRAM[][3][100] = 
@@ -163,7 +183,9 @@ const char lang_settingsRAM[][3][100] =
 	{"RAM disponível:", "disponíveis", "de RAM usada"},
 	{"Tilgjengelig RAM:", "tilgjengelig", "av RAM brukt"},
 	{"RAM disponibil:", "disponibil", "de RAM utilizat"},
-	{"RAM disponibile:", "disponibile", "di RAM usata"}
+	{"RAM disponibile:", "disponibile", "di RAM usata"},
+	{"可用内存：", "可用的", "正使用"},
+	{"可用記憶體：", "可用的", "正使用"}
 };
 
 const char lang_settingsStorage[][3][100] = 
@@ -178,7 +200,9 @@ const char lang_settingsStorage[][3][100] =
 	{"Aperte select para alternar o dispositivo de armazenmanento USB", "Capacidade total de armazenamento:", "Capacidade de armazenamento disponível:"},
 	{"Trykk select for å veksle USB masselagring", "Total lagringskapasitet:", "Tilgjengelig lagringskapasitet:"},
 	{"Apasă SELECT pentru a activa stocarea USB", "Capacitate de stocare totală:", "Capacitate de stocare disponibilă:"},
-	{"Premi select per attivare memoria di massa USB", "Capacità totale della memoria:", "Capacità di archiviazione disponibile"}
+	{"Premi select per attivare memoria di massa USB", "Capacità totale della memoria:", "Capacità di archiviazione disponibile"},
+	{"按Select切换USB大容量存储", "总容量：", "可用的存储容量："},
+	{"按Select切換USB大容量存儲", "總容量：", "可用的存儲容量："}
 };
 
 const char lang_settingsBattery[][3][60] = 
@@ -193,7 +217,9 @@ const char lang_settingsBattery[][3][60] =
 	{"Econômico", "Equilibrado", "Desempenhado"},
 	{"Strømsparing", "Balansert", "Ytelse"},
 	{"Economisire", "Echilibrat", "Performanță"},
-	{"Risparmio energetico", "Bilanciato", "Prestazioni"}
+	{"Risparmio energetico", "Bilanciato", "Prestazioni"},
+	{"节电", "平衡", "性能"},
+	{"節電", "平衡", "性能"}
 };
 
 const char lang_settingsAbout[][6][100] = 
@@ -209,6 +235,8 @@ const char lang_settingsAbout[][6][100] =
 	{"Cyanogen3DS oppdateringer", "Trykk for, vis eller installer tilgjengelige oppdateringer", "Cyanogen3DS versjon:", "OFFISIELL", "Mac Adresse:", "Kernel versjon:"},
 	{"Actualizări Cyanogen3DS", "Apasă pentru a vedea și instala actualizări disponibile", "Versiune Cyanogen3DS:", "OFICIAL", "Adresă Mac:", "Versiune de kernel:"},
 	{"Aggiornamenti Cyanogen3DS", "Clicca per, vedere o installare gli aggiornamenti disponibili", "Versione Cyanogen3DS:", "UFFICIALE", "Indirizzo MAC:", "Versione kernel:"}
+	{"Cyanogen3DS 更新", "点击以查看或安装可用更新", "Cyanogen3DS 版本:", "正式版", "MAC地址:", "内核版本:"},
+	{"Cyanogen3DS 更新", "點擊以查看或安裝可用更新", "Cyanogen3DS 版本:", "正式版"," MAC地址:", "内核版本:"}
 };
 
 const char lang_settingsUpdates[][1][100] = 
@@ -226,6 +254,8 @@ const char lang_settingsUpdates[][1][100] =
 	{"Ricerca aggiornamenti"},
 	{"Проверить обновления"},
 	{"Перевірити оновлення"}
+	{"检查更新"},
+	{"檢查更新"},
 };
 
 const char lang_settingsSecuirty[][3][100] = 
@@ -242,7 +272,9 @@ const char lang_settingsSecuirty[][3][100] =
 	{"Blocare cu parolă", "Blocare cu PIN", "Bețivan"},
 	{"Blocco con password", "Blocco con PIN", "Swipe"},
 	{"Защита паролем", "Защита PIN-кодом" "Жест"},
-	{"Захист паролем", "Захист PIN-кодом" "Жест"}
+	{"Захист паролем", "Захист PIN-кодом" "Жест"},
+	{"密码锁", "PIN锁", "滑动解锁"},
+	{"密碼鎖", "PIN鎖", "滑動解鎖"}
 };
 
 const char lang_settingsDeveloperOptions[][4][150] = 
@@ -260,6 +292,8 @@ const char lang_settingsDeveloperOptions[][4][150] =
 	{"Attiva Remote Joy Lite", "Visualizza la tua schermata 3DS sul tuo computer tramite USB", "Attiva funzioni sperimentali", "Tema scuro"},
 	{"Вкл. Remote Joy Lite", "Отображение изображения с 3DS на компьютер через USB", "Вкл. специальные функции", "Ночной режим"},
 	{"Увм. Remote Joy Lite", "Відображення зображення з 3DS на комп'ютер через USB", "Увм. спеціальні функції", "Нічний режим"}
+	{"Toggle Remote Joy Lite", "通过USB接口显示你的3DS屏幕", "切换到试验性功能", "暗色主题"},
+	{"Toggle Remote Joy Lite", "透過USB介面顯示你的3DS屏幕", "切換到試驗性功能", "暗色主題"}
 };
 
 const char lang_quickSettings[][5][100] = 
@@ -276,5 +310,7 @@ const char lang_quickSettings[][5][100] =
 	{"Wi-Fi", "Economisire", "Echilibrat", "Performanță", "Ecran de pornire"},
 	{"Wi-Fi", "Risparmio energetico", "Bilanciato", "Prestazioni", "Blocca schermo"},
 	{"Wi-Fi", "Энергосберегающий", "Сбалансированный", "Производительность", "Блокировка экрана"},
-	{"Wi-Fi", "Енергозберігаючий", "Збалансований", "Продуктивність", "Блокування екрану"}
+	{"Wi-Fi", "Енергозберігаючий", "Збалансований", "Продуктивність", "Блокування екрану"},
+	{"Wi-Fi", "节能", "平衡", "性能", "锁屏"},
+	{"Wi-Fi", "節能", "平衡", "性能", "鎖屏"}
 };
