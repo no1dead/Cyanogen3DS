@@ -253,9 +253,9 @@ const char lang_settingsUpdates[][1][100] =
 	{"Caută actualizări"},
 	{"Ricerca aggiornamenti"},
 	{"Проверить обновления"},
-	{"Перевірити оновлення"}
+	{"Перевірити оновлення"},
 	{"检查更新"},
-	{"檢查更新"},
+	{"檢查更新"}
 };
 
 const char lang_settingsSecuirty[][3][100] = 
@@ -291,7 +291,7 @@ const char lang_settingsDeveloperOptions[][4][150] =
 	{"Activează Remote Joy Lite", "Afișează ecranul 3DSului pe calculator prin USB", "Activează caracteristici experimentale", "Temă întuneric"},
 	{"Attiva Remote Joy Lite", "Visualizza la tua schermata 3DS sul tuo computer tramite USB", "Attiva funzioni sperimentali", "Tema scuro"},
 	{"Вкл. Remote Joy Lite", "Отображение изображения с 3DS на компьютер через USB", "Вкл. специальные функции", "Ночной режим"},
-	{"Увм. Remote Joy Lite", "Відображення зображення з 3DS на комп'ютер через USB", "Увм. спеціальні функції", "Нічний режим"}
+	{"Увм. Remote Joy Lite", "Відображення зображення з 3DS на комп'ютер через USB", "Увм. спеціальні функції", "Нічний режим"},
 	{"Toggle Remote Joy Lite", "通过USB接口显示你的3DS屏幕", "切换到试验性功能", "暗色主题"},
 	{"Toggle Remote Joy Lite", "透過USB介面顯示你的3DS屏幕", "切換到試驗性功能", "暗色主題"}
 };
