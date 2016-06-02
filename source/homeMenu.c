@@ -79,19 +79,32 @@ int batteryStatus(int x, int y, int style)
 		sftd_draw_textf(robotoS12, x-35, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
 		
 	ACU_GetWifiStatus(&wifiStatus);
-	
-	if(wifiStatus)
+	int wifiStat = wifiStatus + osGetWifiStrength();
+		
+	if (style == 0)
 	{
-		if (style == 0)
-			sf2d_draw_texture(wifiIconFull, x-26, y-1);
-		else if (style == 1)
-			sf2d_draw_texture(wifiIconFull, 116, y+105);
-	}
-	else
-	{
-		if (style == 0)
+		if (wifiStat == 0)
+			sf2d_draw_texture(wifiIcon0, x-26, y-1);
+		else if (wifiStat == 1)
+			sf2d_draw_texture(wifiIcon1, x-26, y-1);
+		else if (wifiStat == 2)
+			sf2d_draw_texture(wifiIcon2, x-26, y-1);
+		else if (wifiStat == 3)
+			sf2d_draw_texture(wifiIcon3, x-26, y-1);
+		else 
 			sf2d_draw_texture(wifiIconNull, x-26, y-1);
-		else if (style == 1)
+	}
+	else if (style == 1)
+	{
+		if (wifiStat == 0)
+			sf2d_draw_texture(wifiIcon0, 116, y+105);
+		else if (wifiStat == 1)
+			sf2d_draw_texture(wifiIcon1, 116, y+105);
+		else if (wifiStat == 2)
+			sf2d_draw_texture(wifiIcon2, 116, y+105);
+		else if (wifiStat == 3)
+			sf2d_draw_texture(wifiIcon3, 116, y+105);
+		else 
 			sf2d_draw_texture(wifiIconNull, 116, y+105);
 	}
 	
@@ -132,7 +145,8 @@ int navbarControls(int type)
 	
 	if (type == 0)
 	{
-		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
+		if (screenDisplay == 0)
+			sf2d_start_frame(switchDisplay(screenDisplay - 1), GFX_LEFT);
 		
 		if touch(44, 119, 201, 240)
 			sf2d_draw_texture(backicon, 30, 201);
@@ -152,8 +166,9 @@ int navbarControls(int type)
 			sf2d_draw_texture(multicon, 30, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
-			
-		sf2d_end_frame();
+		
+		if (screenDisplay == 0)		
+			sf2d_end_frame();
 	}
 	
 	return 0;
@@ -161,11 +176,16 @@ int navbarControls(int type)
 
 void androidQuickSettings()
 {
-	//u32 kDown = hidKeysDown();
-	//u32 kHeld = hidKeysHeld();
+	if (kHeld & KEY_TOUCH) 
+	{
+		hidTouchRead(&touch);
+		touch_x = touch.px;
+		touch_y = touch.py;
+	}
 
 	int notif_up;
 	int notif_down;
+	int notif_enabled = 0;
 	
 	sf2d_draw_texture(quickSettings, 0, notif_y);
 	
@@ -175,23 +195,24 @@ void androidQuickSettings()
 	sftd_draw_textf(robotoS10, 115, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][0]);
 	sftd_draw_textf(robotoS10, 245, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][2]);
 	sftd_draw_textf(robotoS10, 170, yLine2, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][4]);
+	sftd_draw_textf(robotoS10, 20, yPos1+14, RGBA8(255, 255, 255, 255), 10, "%s", getDayOfWeek(0));
+	sftd_draw_textf(robotoS10, 85, yPos1+14, RGBA8(255, 255, 255, 255), 10, "%s", getMonthOfYear(0));
 
 	digitalTime(10, yPos1);
-	getMonthOfYear(25, yPos1+14, 10);
 
-	if ((kHeld & KEY_A) && (cursor(0, 400, 0, 20))) 
+	if ((kHeld & KEY_TOUCH) && (touch(0, 320, 0, 20))) 
 	{
 		notif_down = 1;
 	}
 
-	else if ((kHeld & KEY_A) && (cursorX >= 0 && cursorX <= 480 && cursorY >= 250) && (notif_y == 0))
+	else if ((kHeld & KEY_TOUCH) && (touch.px >= 0 && touch.px <= 320 && touch.py >= 170) && (notif_y == 0))
 	{
 		notif_up = 1;
 	}
 			
-	if (notif_down == 1 && cursorY <= 10)
+	if (notif_down == 1 /*&& touch.py <= 10*/)
 	{	
-		if ((kHeld & KEY_A) && (kHeld & KEY_DOWN))
+		if ((kHeld & KEY_TOUCH) && (touch_y >= 50))
 		{
 			notif_y = notif_y+4;
 			yPos1 = yPos1+4;
@@ -220,10 +241,11 @@ void androidQuickSettings()
 		if (yLine2 >= 220)
 		{
 			yLine2 = 220;
+			notif_enabled = 1;
 		}
 	}
 
-	if (yLine2 >= 136)
+	if (yLine2 >= 136 || notif_enabled == 1)
 	{		
 		if ((cursor(386, 414, 12, 38)) && (kDown & KEY_A))
 		{	 
@@ -257,7 +279,9 @@ void androidQuickSettings()
 	
 	if (notif_up == 1)
 	{				
-		if ((kHeld & KEY_A) && (kHeld & KEY_UP))
+		notif_enabled = 0;
+		
+		if ((kHeld & KEY_TOUCH) && (touch_y <= 50))
 		{
 			notif_y = notif_y-4;
 			yPos1 = yPos1-4;
@@ -302,8 +326,9 @@ int dayNightWidget()
 		sf2d_draw_texture(nightWidget, 167, 70);
 		
 	sftd_draw_textf(robotoS30, 152, 30, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
-	getDayOfWeek(155, 90, 10);
-	getMonthOfYear(235, 90, 10);
+	
+	sftd_draw_textf(robotoS10, 145, 90, RGBA8(255, 255, 255, 255), 10, "%s", getDayOfWeek(1));
+	sftd_draw_textf(robotoS10, 235, 90, RGBA8(255, 255, 255, 255), 10, "%s", getMonthOfYear(0));
 	
 	return 0;
 }
@@ -333,21 +358,34 @@ int home()
 		//hidKeysUp returns information about which buttons have been just released
 		//u32 kUp = hidKeysUp();
 
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(background, 0, 0);
 		
-		sf2d_draw_texture(ic_launcher_browser, 49, 155);
-		sf2d_draw_texture(ic_launcher_messenger, 114, 155);
-		sf2d_draw_texture(ic_launcher_apollo, 241, 155);
-		sf2d_draw_texture(ic_launcher_settings, 306, 155);
+		if (cursor(44, 89, 155, 200))
+			sf2d_draw_texture_scale(ic_launcher_browser, 44, 150, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_browser, 49, 155);
+		if (cursor(109, 154, 155, 200))
+			sf2d_draw_texture_scale(ic_launcher_messenger, 109, 150, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_messenger, 114, 155);
+		if (cursor(236, 281, 155, 200))
+			sf2d_draw_texture_scale(ic_launcher_apollo, 236, 150, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_apollo, 241, 155);
+		if (cursor(301, 346, 155, 200))
+			sf2d_draw_texture_scale(ic_launcher_settings, 301, 150, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_settings, 306, 155);
+	
 		appDrawerIcon();
 
 		dayNightWidget();
 		
 		digitalTime(343, 2); //Displays digital time
 		batteryStatus(300, 2, 0); //Displays battery status
-		androidQuickSettings();
+		//androidQuickSettings();
 		cursorController();
 		
 		sf2d_end_frame();
@@ -355,7 +393,6 @@ int home()
 		
 		if ((cursor(170, 210, 158, 200)) && (kDown & KEY_A))
 		{
-			audio_load("system/media/audio/ui/KeypressStandard.bin");
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
 			appDrawer(); //Opens app drawer
@@ -363,7 +400,6 @@ int home()
 		
 		if ((cursor(306, 351, 155, 200)) && (kDown & KEY_A))
 		{
-			audio_load("system/media/audio/ui/KeypressStandard.bin");
 			sf2d_free_texture(ic_allapps);
 			sf2d_free_texture(ic_allapps_pressed);
 			settingsMenu(); //Opens settings menu

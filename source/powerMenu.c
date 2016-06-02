@@ -1,7 +1,9 @@
 #include "clock.h"
 #include "homeMenu.h"
-#include "powerMenu.h"
 #include "main.h"
+#include "powerMenu.h"
+#include "settingsMenu.h"
+#include "utils.h"
 
 int powerMenu()
 {
@@ -14,7 +16,7 @@ int powerMenu()
 
 		u32 kDown = hidKeysDown();
 
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		sf2d_draw_texture(background, 0, 0);
 		sf2d_draw_texture(ic_launcher_browser, 49, 155);
 		sf2d_draw_texture(ic_launcher_messenger, 114, 155);

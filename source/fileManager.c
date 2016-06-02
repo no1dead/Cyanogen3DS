@@ -5,6 +5,8 @@
 #include "lockScreen.h"
 #include "main.h"
 #include "powerMenu.h"
+#include "settingsMenu.h"
+#include "utils.h"
 
 #define DEFAULT_DIRECTORY "/3ds"
 
@@ -25,25 +27,27 @@ void utf2ascii(char* dst, u16* src)
 	*dst=0x00;
 }
 
+const char *get_filename_ext(const char *filename) 
+{
+    const char *dot = strrchr(filename, '.');
+    if (!dot || dot == filename) return "";
+    return dot + 1;
+}
+
 void makeDir(const char *path)
 {
     FSUSER_CreateDirectory(sdmcArchive, fsMakePath(PATH_ASCII, path), 0);
 }
 
-bool fileExists(char* path, FS_Archive* archive)
+bool fileExists(char *path) 
 {
-	if(!path || !archive)return false;
+    FILE * temp = fopen(path, "r");
+    if(temp == NULL)
+        return false;
 
-	Result ret;
-	Handle fileHandle;
+    fclose(temp);
 
-	ret=FSUSER_OpenFile(&fileHandle, *archive, fsMakePath(PATH_ASCII, path), FS_OPEN_READ, 0);
-	if(ret!=0)return false;
-
-	ret=FSFILE_Close(fileHandle);
-	if(ret!=0)return false;
-
-	return true;
+    return true;
 }
 
 int loadFiles() 
@@ -82,87 +86,6 @@ int loadFiles()
 	return 1;
 }
 
-void updateCurrentFile()
-{
-	u32 kDown = hidKeysDown();
-	
-	if(fileSystem.inMenu == 0) 
-	{
-		if(kDown & KEY_DUP)
-		{
-			if(!fileSystem.UKEY_UP)
-			{
-				if(fileSystem.sFile > 0) 
-					fileSystem.sFile--;
-				else 
-				{
-					if(fileSystem.cFile > 0)
-					   fileSystem.cFile--;
-				}
-
-				if(fileSystem.currFile > 0)
-					fileSystem.currFile--;
-				
-				fileSystem.UKEY_UP = 1;
-			}
-		}
-		else 
-		{
-			fileSystem.UKEY_UP = 0;
-		}
-
-		if(kDown & KEY_DDOWN)
-		{
-			if(!fileSystem.UKEY_DOWN) 
-			{
-				if(fileSystem.cFile < fileSystem.totalFiles)
-					fileSystem.cFile++;
-				 else 
-					fileSystem.sFile++;
-				
-				fileSystem.currFile++;
-				
-				fileSystem.UKEY_DOWN = 1;
-			}
-		} 
-		else 
-		{
-			fileSystem.UKEY_DOWN = 0;
-		}
-
-
-		if(kDown & KEY_DLEFT) 
-		{
-			if(!fileSystem.UKEY_LEFT) 
-			{
-				fileSystem.inMenu = 1;
-
-				fileSystem.UKEY_LEFT = 1;
-			}
-		} 
-		else
-		{
-			fileSystem.UKEY_LEFT = 0;
-		}
-	
-
-	}
-
-
-	if(kDown & KEY_B) 
-	{
-		if(!fileSystem.UKEY_B) 
-		{
-			fileSystem.UKEY_B = 1;
-		} 
-			else 
-		{
-			fileSystem.UKEY_B = 0;
-		}
-	}
-
-}
-
 int fileManager()
 {
 	sf2d_texture *fileManagerBg;
@@ -176,12 +99,11 @@ int fileManager()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(fileManagerBg, 0, 0);
 		
 		loadFiles();
-		updateCurrentFile();
 		
 		digitalTime(343, 2);
 		batteryStatus(300, 2, 0); 
@@ -203,6 +125,9 @@ int fileManager()
 			sf2d_free_texture(fileManagerBg);
 			appDrawer();
 		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+			appDrawer();
 		
 		sf2d_swapbuffers();
 	}

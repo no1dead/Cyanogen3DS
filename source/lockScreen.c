@@ -1,6 +1,8 @@
 #include "clock.h"
 #include "homeMenu.h"
 #include "lockScreen.h"
+#include "settingsMenu.h"
+#include "utils.h"
 
 int lockScreen()
 {
@@ -31,14 +33,14 @@ int lockScreen()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(background, 0, 0);
 		sf2d_draw_texture(lockscreenBg, 0, 0);
 
 		sftd_draw_textf(robotoS30, 152, 30, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
-		getDayOfWeek(170, 90, 10);
-		getMonthOfYear(200, 90, 10);
+		sftd_draw_textf(robotoS10, 150, 90, RGBA8(255, 255, 255, 255), 10, "%s", getDayOfWeek(0));
+		sftd_draw_textf(robotoS10, 215, 90, RGBA8(255, 255, 255, 255), 10, "%s", getMonthOfYear(0));
 		
 		digitalTime(343, 2);
 		batteryStatus(300, 2, 0); 

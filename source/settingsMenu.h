@@ -47,7 +47,7 @@ sf2d_texture *wifi_highlight;
 sf2d_texture *onSwitch;
 sf2d_texture *offSwitch;
 
-int language, hrTime, DARK, experimentalF;
+int language, hrTime, DARK, experimentalF, screenDisplay;
 unsigned int fontColor;
 
 int aboutMenu();

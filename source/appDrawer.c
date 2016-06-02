@@ -1,6 +1,7 @@
 #include "appDrawer.h"
 #include "clock.h"
 #include "fileManager.h"
+#include "game.h"
 #include "homeMenu.h"
 #include "language.h"
 #include "lockScreen.h"
@@ -21,7 +22,7 @@ int appDrawer()
 {	
 	if (DARK == 1)
 	{
-		load_PNG(backdrop, "romfs:/Dark/backdrop.png");
+		load_PNG(backdrop, "romfs:/Dark/backdropDark.png");
 		load_PNG(ic_launcher_clock, "romfs:/ic_launcher_clock.png");
 		load_PNG(ic_launcher_filemanager, "romfs:/ic_launcher_filemanager.png");
 		load_PNG(ic_launcher_gallery, "romfs:/ic_launcher_gallery.png");
@@ -46,27 +47,58 @@ int appDrawer()
 		
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(background, 0, 0);
 		sf2d_draw_texture(backdrop, 0, 24);
 
-		sf2d_draw_texture(ic_launcher_browser, 20, 45);
-		sftd_draw_textf(robotoS12, 18, 100, fontColor, 12, "%s", lang_appDrawer[language][0]);
-		sf2d_draw_texture(ic_launcher_clock, 95, 45);
-		sftd_draw_textf(robotoS12, 98, 100, fontColor, 12, "%s", lang_appDrawer[language][1]);
-		sf2d_draw_texture(ic_launcher_filemanager, 170, 45);
-		sftd_draw_textf(robotoS12, 167, 100, fontColor, 12, "%s", lang_appDrawer[language][2]);
-		sf2d_draw_texture(ic_launcher_gallery, 245, 45);
-		sftd_draw_textf(robotoS12, 247, 100, fontColor, 12, "%s", lang_appDrawer[language][3]);
-		sf2d_draw_texture(ic_launcher_game, 320, 45);
-		sftd_draw_textf(robotoS12, 325, 100, fontColor, 12, "%s", lang_appDrawer[language][4]);
-		sf2d_draw_texture(ic_launcher_messenger, 20, 125);
-		sftd_draw_textf(robotoS12, 16, 180, fontColor, 12, "%s", lang_appDrawer[language][5]);
-		sf2d_draw_texture(ic_launcher_apollo, 95, 125);
-		sftd_draw_textf(robotoS12, 98, 180, fontColor, 12, "%s", lang_appDrawer[language][6]);
-		sf2d_draw_texture(ic_launcher_settings, 170, 125);
-		sftd_draw_textf(robotoS12, 167, 180, fontColor, 12, "%s", lang_appDrawer[language][7]);
+		if (cursor(20, 65, 45, 90))
+			sf2d_draw_texture_scale(ic_launcher_browser, 20, 40, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_browser, 25, 45);
+		sftd_draw_textf(robotoS12, 23, 100, fontColor, 12, "%s", lang_appDrawer[language][0]);
+		
+		if (cursor(95, 140, 45, 90))
+			sf2d_draw_texture_scale(ic_launcher_clock, 95, 40, 1.1, 1.1);
+		else 
+			sf2d_draw_texture(ic_launcher_clock, 100, 45);
+		sftd_draw_textf(robotoS12, 103, 100, fontColor, 12, "%s", lang_appDrawer[language][1]);
+		
+		if (cursor(170, 215, 45, 90))
+			sf2d_draw_texture_scale(ic_launcher_filemanager, 170, 40, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_filemanager, 175, 45);
+		sftd_draw_textf(robotoS12, 172, 100, fontColor, 12, "%s", lang_appDrawer[language][2]);
+		
+		if (cursor(245, 290, 45, 90))
+			sf2d_draw_texture_scale(ic_launcher_gallery, 245, 40, 1.1, 1.1);
+		else 
+			sf2d_draw_texture(ic_launcher_gallery, 250, 45);
+		sftd_draw_textf(robotoS12, 252, 100, fontColor, 12, "%s", lang_appDrawer[language][3]);
+		
+		if (cursor(320, 365, 45, 90))
+			sf2d_draw_texture_scale(ic_launcher_game, 320, 40, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_game, 325, 45);
+		sftd_draw_textf(robotoS12, 330, 100, fontColor, 12, "%s", lang_appDrawer[language][4]);
+		//
+		if (cursor(20, 65, 125, 170))
+			sf2d_draw_texture_scale(ic_launcher_messenger, 20, 120, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_messenger, 25, 125);
+		sftd_draw_textf(robotoS12, 21, 180, fontColor, 12, "%s", lang_appDrawer[language][5]);
+		
+		if (cursor(95, 140, 125, 170))
+			sf2d_draw_texture_scale(ic_launcher_apollo, 95, 120, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_apollo, 100, 125);
+		sftd_draw_textf(robotoS12, 103, 180, fontColor, 12, "%s", lang_appDrawer[language][6]);
+		
+		if (cursor(170, 215, 125, 170))
+			sf2d_draw_texture_scale(ic_launcher_settings, 170, 120, 1.1, 1.1);
+		else
+			sf2d_draw_texture(ic_launcher_settings, 175, 125);
+		sftd_draw_textf(robotoS12, 172, 180, fontColor, 12, "%s", lang_appDrawer[language][7]);
 		
 		digitalTime(343, 2);
 		batteryStatus(300, 2, 0);
@@ -83,23 +115,40 @@ int appDrawer()
 		if (kDown & KEY_L)
 			lockScreen();
 		
-		if ((cursor(170, 215, 125, 170)) && (kDown & KEY_A))
+		if ((cursor(170, 215, 45, 90)) && (kDown & KEY_A))
+		{
+			if (experimentalF == 1)
+			{
+				appDrawerUnload();
+				fileManager();
+			}		
+		}
+		
+		else if ((cursor(320, 365, 45, 90)) && (kDown & KEY_A))
+		{
+			if (experimentalF == 1)
+			{
+				appDrawerUnload();
+				startCard();
+			}		
+		}
+		
+		else if ((cursor(170, 215, 125, 170)) && (kDown & KEY_A))
 		{
 			appDrawerUnload();
 			settingsMenu();
 		}
 		
-		else if ((cursor(170, 215, 45, 90)) && (kDown & KEY_A))
-		{
-			appDrawerUnload();
-			fileManager();
-		}
+	
 		
 		if (kDown & KEY_B)
 		{
 			appDrawerUnload();
 			home(); //Returns to home screen
 		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+			home();
 		
 		sf2d_swapbuffers();	
 	}

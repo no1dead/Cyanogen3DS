@@ -54,7 +54,7 @@ int getcpu()
 	return currentClock;
 }
 
-bool detectsd()
+bool detectSD()
 {
 	bool isSD;
 	FSUSER_IsSdmcDetected(&isSD);
@@ -88,11 +88,73 @@ int getBirthday()
 	return 0;
 }
 
+bool touchPressed(touchPosition p)
+{
+    //I don't think either of these are ever 0
+    //unless the screen isn't touched.
+    if(p.px>0 || p.py>0)
+        return true;
+
+    return false;
+}
+
+gfxScreen_t switchDisplay(int display)
+{
+	if (display == 0)
+		return GFX_TOP;
+	else
+		return GFX_BOTTOM;
+}
+
+char * getMacAddress()
+{
+	u8* macByte = (u8*)0x1FF81060; 
+	static char macAddress[18];
+	sprintf(macAddress,"%02X:%02X:%02X:%02X:%02X:%02X",*macByte,*(macByte+1),*(macByte+2),*(macByte+3),*(macByte+4),*(macByte+5));
+	macAddress[17] = 0;
+	
+	return macAddress;
+}
+
+static u32 *SOC_buffer = 0;
+
+u32 soc_init(void) 
+{
+	Result ret;
+	u32 result = 0;
+	
+	SOC_buffer = (u32*)memalign(SOC_ALIGN, SOC_BUFFERSIZE);
+	if (SOC_buffer != 0) 
+	{
+		ret = socInit(SOC_buffer, SOC_BUFFERSIZE);
+		if (ret == 0) 
+		{
+			result = 1;
+		} 
+		else 
+		{
+			free(SOC_buffer);
+		}
+	}
+	return result;
+}
+
+u32 soc_exit(void) 
+{
+	if (SOC_buffer) 
+	{
+		socExit();
+		free(SOC_buffer);
+		SOC_buffer = 0;
+	}
+	return 0;
+}
+
 int setFileDefaultsInt(char *path, int value, int var)
 {
 	FILE *temp;
 	 
-	if (!(fileExists(path, &sdmcArchive)))
+	if (!(fileExists(path)))
 	{
 		temp = fopen(path, "w");
 		fprintf(temp, "%d", value);
@@ -110,7 +172,7 @@ float setFileDefaultsFloat(char *path, float value, float var)
 {
 	FILE *temp;
 	 
-	if (!(fileExists(path, &sdmcArchive)))
+	if (!(fileExists(path)))
 	{
 		temp = fopen(path, "w");
 		fprintf(temp, "%f", value);
@@ -128,7 +190,7 @@ char * setFileDefaultsChar(char path[], char data[], char var[])
 {
 	FILE * temp;
 	
-	if (!(fileExists(path, &sdmcArchive)))
+	if (!(fileExists(path)))
 	{
 		temp = fopen(path, "w");
 		fprintf(temp, "%s", data);

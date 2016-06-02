@@ -34,6 +34,8 @@ int main(int argc, char **argv)
 	
 	hrTime = setFileDefaultsInt("/3ds/Cyanogen3DS/system/app/clock/timeSet.bin", 0, hrTime);
 	DARK = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/darkTheme.bin", 0, DARK);
+	experimentalF = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/experimentalFeatures.bin", 0, experimentalF);
+	screenDisplay = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/switchDisplay.bin", 0, screenDisplay);
 
 	robotoS10 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	robotoS12 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
@@ -56,7 +58,10 @@ int main(int argc, char **argv)
 	load_PNG(_40, "romfs:/40.png");
 	load_PNG(_20, "romfs:/20.png");
 	load_PNG(_charge, "romfs:/charge.png");
-	load_PNG(wifiIconFull, "romfs:/stat_sys_wifi_signal_4_fully.png");
+	load_PNG(wifiIcon3, "romfs:/stat_sys_wifi_signal_3.png");
+	load_PNG(wifiIcon2, "romfs:/stat_sys_wifi_signal_2.png");
+	load_PNG(wifiIcon1, "romfs:/stat_sys_wifi_signal_1.png");
+	load_PNG(wifiIcon0, "romfs:/stat_sys_wifi_signal_0.png");
 	load_PNG(wifiIconNull, "romfs:/stat_sys_wifi_signal_null.png");
 	load_PNG(highlight, "romfs:/highlight.png");
 	
@@ -84,7 +89,10 @@ int main(int argc, char **argv)
 	sf2d_free_texture(_40);
 	sf2d_free_texture(_20);
 	sf2d_free_texture(_charge);
-	sf2d_free_texture(wifiIconFull);
+	sf2d_free_texture(wifiIcon3);
+	sf2d_free_texture(wifiIcon2);
+	sf2d_free_texture(wifiIcon1);
+	sf2d_free_texture(wifiIcon0);
 	sf2d_free_texture(wifiIconNull);
 	sf2d_free_texture(highlight);
 

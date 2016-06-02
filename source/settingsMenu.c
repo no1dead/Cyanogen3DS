@@ -89,7 +89,7 @@ int aboutMenu()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 
 			sf2d_draw_texture(aboutBg, 0, 0);
 
@@ -98,23 +98,25 @@ int aboutMenu()
 			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
 			//sftd_draw_textf(robotoS12, 20, 132, fontColor, 12, "System Version: %s.%s.%s", major, minor, rev);
 			sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "Model: %s %s", modelName, regionName);
+			sftd_draw_textf(robotoS12, 20, 184, fontColor, 12, "MAC Address: %s", getMacAddress());
 
 			if (cursor(0, 480, 58, 105))
 			{
-				sf2d_draw_texture(highlight, 0, 54);
+				sf2d_draw_texture(highlight, 0, 55);
 				sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsAbout[language][0]);
 				sftd_draw_textf(robotoS12, 20, 83, fontColor, 12, "%s", lang_settingsAbout[language][1]);
 			}
 			else if (cursor(0, 480, 106, 157))
 			{
-				sf2d_draw_texture(highlight, 0, 106);
+				sf2d_draw_texture(highlight, 0, 107);
 				sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
+				//sftd_draw_textf(robotoS12, 20, 132, fontColor, 12, "System Version: %s.%s.%s", major, minor, rev);
 			}
 			else if (cursor(0, 480, 158, 209))
 			{
-				sf2d_draw_texture(highlight, 0, 159);
-				//sftd_draw_textf(robotoS12, 20, 132, fontColor, 12, "System Version: %s.%s.%s", major, minor, rev);
+				sf2d_draw_texture(highlight, 0, 158);
 				sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "Model: %s %s", modelName, regionName); 
+				sftd_draw_textf(robotoS12, 20, 184, fontColor, 12, "MAC Address: %s", getMacAddress());
 			}
 
 			digitalTime(343, 2);
@@ -180,25 +182,74 @@ int developerMenu()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(developerBg, 0, 0);
 		
-		sftd_draw_textf(robotoS12, 20, 66, fontColor, 12, "%s", lang_settingsDeveloperOptions[language][0]);
-		sftd_draw_textf(robotoS12, 20, 82, fontColor, 12, "%s", lang_settingsDeveloperOptions[language][1]);
+		sftd_draw_textf(robotoS12, 20, 76, fontColor, 12, "Switch display");
 		sftd_draw_textf(robotoS12, 20, 122, fontColor, 12, "%s", lang_settingsDeveloperOptions[language][2]);
 		sftd_draw_textf(robotoS12, 20, 173, fontColor, 12, "%s", lang_settingsDeveloperOptions[language][3]);
 		
 		if (cursor(0, 480, 55, 105))
 		{
 			sf2d_draw_texture(highlight, 0, 54);
-			sftd_draw_textf(robotoS12, 20, 66, fontColor, 12, "%s", lang_settingsDeveloperOptions[language][0]);
-			sftd_draw_textf(robotoS12, 20, 82, fontColor, 12, "%s", lang_settingsDeveloperOptions[language][1]);
+			sftd_draw_textf(robotoS12, 20, 76, fontColor, 12, "Switch display");
+			if (experimentalF == 1)
+			{
+				if (screenDisplay == 0)
+				{
+					sf2d_draw_texture(offSwitch, 355, 70);
+				
+					if (kDown & KEY_A)
+					{
+						screenDisplay = 1;
+						FILE * switchDisplay = fopen("/3ds/Cyanogen3DS/system/settings/switchDisplay.bin", "w");
+						fprintf(switchDisplay, "%d", screenDisplay);
+						fclose(switchDisplay);
+					}
+				}
+				else if (screenDisplay == 1)
+				{
+					sf2d_draw_texture(onSwitch, 355, 70);
+			
+					if (kDown & KEY_A)
+					{
+						screenDisplay = 0;
+						FILE * switchDisplay = fopen("/3ds/Cyanogen3DS/system/settings/switchDisplay.bin", "w");
+						fprintf(switchDisplay, "%d", screenDisplay);
+						fclose(switchDisplay);
+					}
+				}
+			}
 		}
 		else if (cursor(0, 480, 105, 155))
 		{
 			sf2d_draw_texture(highlight, 0, 104);
 			sftd_draw_textf(robotoS12, 20, 122, fontColor, 12, "%s", lang_settingsDeveloperOptions[language][2]);
+			if (experimentalF == 0)
+			{
+				sf2d_draw_texture(offSwitch, 355, 119);
+				
+				if (kDown & KEY_A)
+				{
+					experimentalF = 1;
+					FILE * experimentalFeatures = fopen("/3ds/Cyanogen3DS/system/settings/experimentalFeatures.bin", "w");
+					fprintf(experimentalFeatures, "%d", experimentalF);
+					fclose(experimentalFeatures);
+				}
+			}
+			else if (experimentalF == 1)
+			{
+				sf2d_draw_texture(onSwitch, 355, 119);
+			
+				if (kDown & KEY_A)
+				{
+					experimentalF = 0;
+					FILE * experimentalFeatures = fopen("/3ds/Cyanogen3DS/system/settings/experimentalFeatures.bin", "w");
+					fprintf(experimentalFeatures, "%d", experimentalF);
+					fclose(experimentalFeatures);
+				}
+			}
 		}
 		else if (cursor(0, 480, 156, 205))
 		{
@@ -250,6 +301,11 @@ int developerMenu()
 			sf2d_draw_texture(offSwitch, 355, 166);
 		else
 			sf2d_draw_texture(onSwitch, 355, 166);
+		
+		if (screenDisplay == 0)
+			sf2d_draw_texture(offSwitch, 355, 70);
+		else
+			sf2d_draw_texture(onSwitch, 355, 70);
 		
 		digitalTime(343, 2);
 		batteryStatus(300, 2, 0); 
@@ -316,7 +372,7 @@ int displayMenu()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(displayBg, 0, 0);
 		
@@ -413,7 +469,7 @@ int displayTime()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(displayBg, 0, 0);
 		if (hrTime == 0)
@@ -518,7 +574,7 @@ int performanceMenu()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(performanceBg, 0, 0);
 		
@@ -611,7 +667,7 @@ int storageMenu()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(performanceBg2, 0, 0);
 		
@@ -685,7 +741,7 @@ int securityMenu()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(securityBg, 0, 0);
 		
@@ -705,7 +761,7 @@ int securityMenu()
 			{
 				//if (fileExists("system/settings/password.bin", &sdmcArchive))
 					//sceIoRemove("system/settings/password.bin");
-				/*else*/ if (fileExists("system/settings/pin.bin", &sdmcArchive))
+				/*else*/ if (fileExists("system/settings/pin.bin"))
 				{
 					//sceIoRemove("system/settings/pin.bin");
 				//HBKB_CallKeyboard(touch);
@@ -726,7 +782,7 @@ int securityMenu()
 			{
 				//if (fileExists("system/settings/password.bin", &sdmcArchive))
 					//sceIoRemove("system/settings/password.bin");
-				/*else*/ if (fileExists("system/settings/pin.bin", &sdmcArchive))
+				/*else*/ if (fileExists("system/settings/pin.bin"))
 				{
 					//sceIoRemove("system/settings/pin.bin");
 				//HBKB_CallKeyboard(touch);
@@ -806,8 +862,11 @@ int settingsHighlight()
 		sftd_draw_textf(robotoS12, 48, 153, fontColor, 12, "%s", lang_settingsMain[language][2]);
 		if (kDown & KEY_A)
 		{
-			settingsUnload();
-			displayMenu();
+			if (experimentalF == 1)
+			{
+				settingsUnload();
+				displayMenu();
+			}
 		}
 	}
 	else if (cursor(0, 198, 175, 240))
@@ -826,8 +885,11 @@ int settingsHighlight()
 		sftd_draw_textf(robotoS12, 250, 106, fontColor, 12, "%s", lang_settingsMain[language][1]);
 		if (kDown & KEY_A)
 		{
-			settingsUnload();
-			securityMenu();
+			if (experimentalF == 1)
+			{
+				settingsUnload();
+				securityMenu();
+			}
 		}
 	}
 	else if (cursor(203, 400, 134, 174))
@@ -899,7 +961,7 @@ int settingsMenu()
 
 		u32 kDown = hidKeysDown();
 		
-		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(settingsBg, 0, 0);
 		
