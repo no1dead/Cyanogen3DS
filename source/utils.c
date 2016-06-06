@@ -1,5 +1,7 @@
-#include "utils.h"
 #include "fileManager.h"
+#include "libs/libsf2d/include/sf2d.h"
+#include "utils.h"
+
 
 u16 OLD_3DS_CLOCK = 268;
 u16 NEW_3DS_CLOCK = 804;
@@ -148,6 +150,15 @@ u32 soc_exit(void)
 		SOC_buffer = 0;
 	}
 	return 0;
+}
+
+void Cyanogen3DSSetBilinearFilter(int enabled, sf2d_texture *texture)
+{
+	bilinearFilterEnabled = enabled;
+	if (enabled == 1)
+	{
+		sf2d_texture_set_params(texture, GPU_TEXTURE_MAG_FILTER(GPU_LINEAR) | GPU_TEXTURE_MIN_FILTER(GPU_NEAREST));
+	}
 }
 
 int setFileDefaultsInt(char *path, int value, int var)

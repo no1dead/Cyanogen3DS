@@ -18,6 +18,8 @@ char tempMessage[20];
 char tempPin[5];
 char tempData[250];
 
+int bilinearFilterEnabled;
+
 u8 getModel();
 u8 getRegion();
 u8 getLang();
@@ -31,6 +33,7 @@ char * getMacAddress();
 gfxScreen_t switchDisplay(int display);
 u32 soc_init(void);
 u32 soc_exit(void);
+void Cyanogen3DSSetBilinearFilter(int enabled, sf2d_texture *texture);
 int setFileDefaultsInt(char *path, int value, int var);
 float setFileDefaultsFloat(char *path, float value, float var);
 char * setFileDefaultsChar(char path[], char data[], char var[]);
