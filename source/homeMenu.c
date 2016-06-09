@@ -6,6 +6,7 @@
 #include "lockScreen.h"
 #include "main.h"
 #include "powerMenu.h"
+#include "screenshot.h"
 #include "settingsMenu.h"
 #include "sound.h"
 #include "utils.h"
@@ -337,12 +338,11 @@ int home()
 {
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
-	load_PNG(ic_allapps, "romfs:/ic_allapps.png");
-	load_PNG(ic_allapps_pressed, "romfs:/ic_allapps_pressed.png");
-	load_PNG(ic_launcher_browser, "romfs:/ic_launcher_browser.png");
-	load_PNG(ic_launcher_messenger, "romfs:/ic_launcher_messenger.png");
-	load_PNG(ic_launcher_apollo, "romfs:/ic_launcher_apollo.png");
-	load_PNG(ic_launcher_settings, "romfs:/ic_launcher_settings.png");
+	load_PNG(ic_allapps, allappsPath);
+	load_PNG(ic_allapps_pressed, allapps_pressedPath);
+	
+	setBilinearFilter(1, ic_allapps);
+	setBilinearFilter(1, ic_allapps_pressed);
 	
 	// Main loop
 	while (aptMainLoop())
@@ -413,6 +413,8 @@ int home()
 			audio_load("system/media/audio/ui/lock.bin");
 			lockScreen(); //Takes you to lock screen
 		}
+		
+		captureScreenshot();
 
 		// Flush and swap framebuffers
 		sf2d_swapbuffers();

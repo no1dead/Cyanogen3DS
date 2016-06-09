@@ -1,3 +1,5 @@
+#include "appDrawer.h"
+#include "homeMenu.h"
 #include "main.h"
 #include "homeMenu.h"
 #include "settingsMenu.h"
@@ -32,6 +34,8 @@ int main(int argc, char **argv)
 	if ((getModel() == 2) || (getModel() == 4))
 		osSetSpeedupEnable(true); //Enable N3DS speedup
 	
+	createDirs(); //create necessary dirs
+	
 	hrTime = setFileDefaultsInt("/3ds/Cyanogen3DS/system/app/clock/timeSet.bin", 0, hrTime);
 	DARK = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/darkTheme.bin", 0, DARK);
 	experimentalF = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/experimentalFeatures.bin", 0, experimentalF);
@@ -41,6 +45,8 @@ int main(int argc, char **argv)
 	robotoS12 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	robotoS18 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	robotoS30 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
+	
+	iconPackLoad();
 
 	// Load textures from RomFS
 	load_PNG(background, "romfs:/background.png");
@@ -63,7 +69,35 @@ int main(int argc, char **argv)
 	load_PNG(wifiIcon1, "romfs:/stat_sys_wifi_signal_1.png");
 	load_PNG(wifiIcon0, "romfs:/stat_sys_wifi_signal_0.png");
 	load_PNG(wifiIconNull, "romfs:/stat_sys_wifi_signal_null.png");
-	load_PNG(highlight, "romfs:/highlight.png");
+	load_PNG(ic_launcher_browser, browserPath);
+	load_PNG(ic_launcher_messenger, messagesPath);
+	load_PNG(ic_launcher_apollo, apolloPath);
+	load_PNG(ic_launcher_settings, settingsPath);
+	
+	setBilinearFilter(1, background);
+	setBilinearFilter(1, cursor);
+	setBilinearFilter(1, quickSettings);
+	setBilinearFilter(1, navbar);
+	setBilinearFilter(1,backicon);
+	setBilinearFilter(1, homeicon);
+	setBilinearFilter(1, multicon);
+	setBilinearFilter(1, dayWidget);
+	setBilinearFilter(1, nightWidget);
+	setBilinearFilter(1, _100);
+	setBilinearFilter(1, _80);
+	setBilinearFilter(1, _60);
+	setBilinearFilter(1, _40);
+	setBilinearFilter(1, _20);
+	setBilinearFilter(1, _charge);
+	setBilinearFilter(1, wifiIcon3);
+	setBilinearFilter(1, wifiIcon2);
+	setBilinearFilter(1, wifiIcon1);
+	setBilinearFilter(1, wifiIcon0);
+	setBilinearFilter(1, wifiIconNull);
+	setBilinearFilter(1, ic_launcher_browser);
+	setBilinearFilter(1, ic_launcher_messenger);
+	setBilinearFilter(1, ic_launcher_apollo);
+	setBilinearFilter(1, ic_launcher_settings);
 	
 	if(setjmp(exitJmp)) 
 	{

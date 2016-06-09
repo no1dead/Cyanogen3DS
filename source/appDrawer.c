@@ -6,6 +6,7 @@
 #include "language.h"
 #include "lockScreen.h"
 #include "powerMenu.h"
+#include "screenshot.h"
 #include "settingsMenu.h"
 #include "utils.h"
 
@@ -23,21 +24,23 @@ int appDrawer()
 	if (DARK == 1)
 	{
 		load_PNG(backdrop, "romfs:/Dark/backdropDark.png");
-		load_PNG(ic_launcher_clock, "romfs:/ic_launcher_clock.png");
-		load_PNG(ic_launcher_filemanager, "romfs:/ic_launcher_filemanager.png");
-		load_PNG(ic_launcher_gallery, "romfs:/ic_launcher_gallery.png");
-		load_PNG(ic_launcher_game, "romfs:/ic_launcher_game.png");
 		fontColor = WHITE;
 	}
 	else
 	{
 		load_PNG(backdrop, "romfs:/backdrop.png");
-		load_PNG(ic_launcher_clock, "romfs:/ic_launcher_clock.png");
-		load_PNG(ic_launcher_filemanager, "romfs:/ic_launcher_filemanager.png");
-		load_PNG(ic_launcher_gallery, "romfs:/ic_launcher_gallery.png");
-		load_PNG(ic_launcher_game, "romfs:/ic_launcher_game.png");
 		fontColor = BLACK;
 	}
+	
+	load_PNG(ic_launcher_clock, clockPath);
+	load_PNG(ic_launcher_filemanager, fmPath);
+	load_PNG(ic_launcher_gallery, galleryPath);
+	load_PNG(ic_launcher_game, gamePath);
+	
+	setBilinearFilter(1, ic_launcher_clock);
+	setBilinearFilter(1,ic_launcher_filemanager);
+	setBilinearFilter(1, ic_launcher_gallery);
+	setBilinearFilter(1, ic_launcher_game);
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
@@ -139,8 +142,6 @@ int appDrawer()
 			settingsMenu();
 		}
 		
-	
-		
 		if (kDown & KEY_B)
 		{
 			appDrawerUnload();
@@ -149,6 +150,8 @@ int appDrawer()
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 			home();
+		
+		captureScreenshot();
 		
 		sf2d_swapbuffers();	
 	}

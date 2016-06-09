@@ -6,6 +6,7 @@
 #include "lockScreen.h"
 #include "main.h"
 #include "powerMenu.h"
+#include "screenshot.h"
 #include "settingsMenu.h"
 #include "utils.h"
 
@@ -23,6 +24,9 @@ int aboutMenu()
 		load_PNG(highlight, "romfs:/highlight.png");
 		fontColor = BLACK;
 	}
+	
+	setBilinearFilter(1, aboutBg);
+	setBilinearFilter(1, highlight);
 	
 	/*u32 firmware = osGetFirmVersion();
 	u32 major = GET_VERSION_MAJOR(firmware);
@@ -148,7 +152,9 @@ int aboutMenu()
 			settingsMenu();
 		}
 		
-		sf2d_swapbuffers();
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
 	}
 
 	sf2d_free_texture(aboutBg);
@@ -175,6 +181,11 @@ int developerMenu()
 		load_PNG(offSwitch, "romfs:/offSwitch.png");
 		fontColor = BLACK;
 	}
+	
+	setBilinearFilter(1, developerBg);
+	setBilinearFilter(1, highlight);
+	setBilinearFilter(1, onSwitch);
+	setBilinearFilter(1, offSwitch);
 	
 	while (aptMainLoop())
 	{
@@ -340,7 +351,9 @@ int developerMenu()
 			settingsMenu();
 		}
 		
-		sf2d_swapbuffers();
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
 	}
 
 	sf2d_free_texture(developerBg);
@@ -366,6 +379,9 @@ int displayMenu()
 		fontColor = BLACK;
 	}
 	
+	setBilinearFilter(1, displayBg);
+	setBilinearFilter(1, highlight);
+	
 	while (aptMainLoop())
 	{
 		hidScanInput();
@@ -385,13 +401,23 @@ int displayMenu()
 		{
 			sf2d_draw_texture(highlight, 0, 55);
 			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsDisplay[language][0]);
+			if (kDown & KEY_A)
+			{
+				sf2d_free_texture(displayBg);
+				sf2d_free_texture(highlight);
+				displayThemes();
+			}
 		}
 		else if (cursor(0, 480, 105, 155))
 		{
 			sf2d_draw_texture(highlight, 0, 105);
 			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsDisplay[language][1]);
 			if (kDown & KEY_A)
+			{	
+				sf2d_free_texture(displayBg);
+				sf2d_free_texture(highlight);
 				displayTime();
+			}
 		}
 		else if (cursor(0, 480, 156, 205))
 		{
@@ -433,13 +459,258 @@ int displayMenu()
 			settingsMenu();
 		}
 		
-		sf2d_swapbuffers();
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
 	}
 
 	sf2d_free_texture(displayBg);
 	sf2d_free_texture(highlight);
 
 	return 0;
+}
+
+int displayThemes()
+{
+	if (DARK == 1)
+	{
+		load_PNG(displayBg, "romfs:/Dark/displayBg.png");
+		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		fontColor = LITEGRAY;
+	}
+	else
+	{
+		load_PNG(displayBg, "romfs:/displayBg.png");
+		load_PNG(highlight, "romfs:/highlight.png");
+		fontColor = BLACK;
+	}
+	
+	setBilinearFilter(1, displayBg);
+	setBilinearFilter(1, highlight);
+	
+	while (aptMainLoop())
+	{
+		hidScanInput();
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
+		
+		sf2d_draw_texture(displayBg, 0, 0);
+		
+		sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsThemes[language][0]);
+		sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsThemes[language][1]);
+		sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsThemes[language][2]);
+		sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsThemes[language][3]);
+		
+		if (cursor(0, 480, 55, 105))
+		{
+			sf2d_draw_texture(highlight, 0, 55);
+			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsThemes[language][0]);
+		}
+		else if (cursor(0, 480, 105, 155))
+		{
+			sf2d_draw_texture(highlight, 0, 105);
+			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsThemes[language][1]);
+		}
+		else if (cursor(0, 480, 156, 205))
+		{
+			sf2d_draw_texture(highlight, 0, 154);
+			sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsThemes[language][2]);
+		}
+		else if (cursor(0, 480, 206, 240))
+		{
+			sf2d_draw_texture(highlight, 0, 202);
+			sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsThemes[language][3]);
+			if (kDown & KEY_A)
+				displayIconPack();
+		}
+		
+		digitalTime(343, 2);
+		batteryStatus(300, 2, 0);
+		//androidQuickSettings();
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			settingsMenu();
+		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			settingsMenu();
+		}
+		
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
+	}
+
+	sf2d_free_texture(displayBg);
+	sf2d_free_texture(highlight);
+
+	return 0;
+}
+
+int displayIconPack()
+{
+	if (DARK == 1)
+	{
+		load_PNG(displayBg, "romfs:/Dark/displayBg.png");
+		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		fontColor = LITEGRAY;
+	}
+	else
+	{
+		load_PNG(displayBg, "romfs:/displayBg.png");
+		load_PNG(highlight, "romfs:/highlight.png");
+		fontColor = BLACK;
+	}
+	
+	setBilinearFilter(1, displayBg);
+	setBilinearFilter(1, highlight);
+
+	while (aptMainLoop())
+	{
+		hidScanInput();
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
+		
+		sf2d_draw_texture(displayBg, 0, 0);
+		
+		sftd_draw_textf(robotoS12, 20, 73, fontColor, 12, "Serie54");
+		
+		sftd_draw_textf(robotoS12, 20, 89, fontColor, 12, "Press 'x' to switch back to default");
+		
+		if (cursor(0, 480, 55, 105))
+		{
+			sf2d_draw_texture(highlight, 0, 55);
+			sftd_draw_textf(robotoS12, 20, 73, fontColor, 12, "Serie54");
+				
+			if (kDown & KEY_A)
+			{
+				strcpy(appDirPath, "/3ds/Cyanogen3DS/system/icons/Serie54");
+				FILE * iconPackTxt = fopen("/3ds/Cyanogen3DS/system/settings/iconpack.bin", "w");
+				fprintf(iconPackTxt,"%s", appDirPath);
+				fclose(iconPackTxt);
+				iconPackLoad();
+				iconPackReload();
+			}
+		}
+		
+		digitalTime(343, 2);
+		batteryStatus(300, 2, 0);
+		//androidQuickSettings();
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		if (kDown & KEY_X)
+		{
+			strcpy(appDirPath, "/3ds/Cyanogen3DS/system/icons/Default");
+			FILE * iconPackTxt = fopen("/3ds/Cyanogen3DS/system/settings/iconpack.bin", "w");
+			fprintf(iconPackTxt, "%s", appDirPath);
+			fclose(iconPackTxt);
+			iconPackLoad();
+			iconPackReload();
+		}
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			displayMenu();
+		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			displayMenu();
+		}
+		
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
+	}
+
+	sf2d_free_texture(displayBg);
+	sf2d_free_texture(highlight);
+
+	return 0;
+}
+
+void replaceAsset(char tempData[], char path[], char imgPath[], char redirectPath[])
+{
+	strcpy(tempData, path);
+	strcat(tempData, imgPath); 
+	strcpy(redirectPath, tempData);
+}
+
+void iconPackLoad()
+{
+	strcpy(appDirPath, setFileDefaultsChar("/3ds/Cyanogen3DS/system/settings/iconpack.bin", "/3ds/Cyanogen3DS/system/icons/Default", appDirPath));
+	
+	char allappsImg[50] = "/allapps/ic_allapps.png";
+	char allapps_pressedImg[50] = "/allapps/ic_allapps_pressed.png";
+	char apolloImg[50] = "/music/ic_launcher_apollo.png";
+	char browserImg[50] = "/browser/ic_launcher_browser.png";
+	char clockImg[50] = "/clock/ic_launcher_clock.png";
+	char fmImg[50] = "/filemanager/ic_launcher_filemanager.png";
+	char galleryImg[50] = "/gallery/ic_launcher_gallery.png";
+	char gameImg[50] = "/game/ic_launcher_game.png";
+	char messagesImg[50] = "/messenger/ic_launcher_messenger.png";
+	char settingsImg[50] = "/settings/ic_launcher_settings.png";
+	
+	replaceAsset(tempData, appDirPath, allappsImg, allappsPath);
+	replaceAsset(tempData, appDirPath, allapps_pressedImg, allapps_pressedPath);
+	replaceAsset(tempData, appDirPath, apolloImg, apolloPath);
+	replaceAsset(tempData, appDirPath, browserImg, browserPath);
+	replaceAsset(tempData, appDirPath, clockImg, clockPath);
+	replaceAsset(tempData, appDirPath, fmImg, fmPath);
+	replaceAsset(tempData, appDirPath, galleryImg, galleryPath);
+	replaceAsset(tempData, appDirPath, gameImg, gamePath);
+	replaceAsset(tempData, appDirPath, messagesImg, messagesPath);
+	replaceAsset(tempData, appDirPath, settingsImg, settingsPath);
+}
+
+void iconPackReload()
+{
+	sf2d_free_texture(ic_launcher_apollo);
+	sf2d_free_texture(ic_launcher_browser);
+	sf2d_free_texture(ic_launcher_messenger);
+	sf2d_free_texture(ic_launcher_settings);
+
+	load_PNG(ic_launcher_apollo, apolloPath);
+	load_PNG(ic_launcher_browser, browserPath);
+	load_PNG(ic_launcher_messenger, messagesPath);
+	load_PNG(ic_launcher_settings, settingsPath);
+	
+	displayIconPack();
 }
 
 int displayTime()
@@ -460,6 +731,11 @@ int displayTime()
 		load_PNG(offSwitch, "romfs:/offSwitch.png");
 		fontColor = BLACK;
 	}
+	
+	setBilinearFilter(1, displayBg);
+	setBilinearFilter(1, highlight);
+	setBilinearFilter(1, onSwitch);
+	setBilinearFilter(1, offSwitch);
 	
 	FILE * timeSetTxt;
 	
@@ -542,7 +818,9 @@ int displayTime()
 			displayMenu();
 		}
 		
-		sf2d_swapbuffers();
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
 	}
 
 	sf2d_free_texture(displayBg);
@@ -567,6 +845,9 @@ int performanceMenu()
 		load_PNG(highlight, "romfs:/highlight.png");
 		fontColor = BLACK;
 	}
+	
+	setBilinearFilter(1, performanceBg);
+	setBilinearFilter(1, highlight);
 	
 	while (aptMainLoop())
 	{
@@ -635,7 +916,9 @@ int performanceMenu()
 			settingsMenu();
 		}
 		
-		sf2d_swapbuffers();
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
 	}
 
 	sf2d_free_texture(performanceBg);
@@ -658,6 +941,9 @@ int storageMenu()
 		load_PNG(highlight, "romfs:/highlight.png");
 		fontColor = BLACK;
 	}
+	
+	setBilinearFilter(1, performanceBg2);
+	setBilinearFilter(1, highlight);
 	
 	FS_ArchiveResource resource = {0};
 	
@@ -710,7 +996,9 @@ int storageMenu()
 			performanceMenu();
 		}
 		
-		sf2d_swapbuffers();
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
 	}
 
 	sf2d_free_texture(performanceBg2);
@@ -733,6 +1021,9 @@ int securityMenu()
 		load_PNG(highlight, "romfs:/highlight.png");
 		fontColor = BLACK;
 	}
+	
+	setBilinearFilter(1, securityBg);
+	setBilinearFilter(1, highlight);
 	
 	while (aptMainLoop())
 	{
@@ -834,7 +1125,9 @@ int securityMenu()
 			settingsMenu();
 		}
 		
-		sf2d_swapbuffers();
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
 	}
 
 	sf2d_free_texture(securityBg);
@@ -953,6 +1246,14 @@ int settingsMenu()
 		fontColor = BLACK;
 	}
 	
+	setBilinearFilter(1, settingsBg);
+	setBilinearFilter(1, about_highlight);
+	setBilinearFilter(1, display_highlight);
+	setBilinearFilter(1, developeroptions_highlight);
+	setBilinearFilter(1, performance_highlight);
+	setBilinearFilter(1, security_highlight);
+	setBilinearFilter(1, wifi_highlight);
+	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
 	while (aptMainLoop())
@@ -998,7 +1299,9 @@ int settingsMenu()
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 			appDrawer();
 		
-		sf2d_swapbuffers();
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
 	}
 	
 	settingsUnload();

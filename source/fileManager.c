@@ -34,9 +34,12 @@ const char *get_filename_ext(const char *filename)
     return dot + 1;
 }
 
-void makeDir(const char *path)
+int makeDir(const char *path)
 {
-    FSUSER_CreateDirectory(sdmcArchive, fsMakePath(PATH_ASCII, path), 0);
+	if (!path) 
+		return -1;
+	
+	return mkdir(path, 0777);
 }
 
 bool fileExists(char *path) 
@@ -48,6 +51,18 @@ bool fileExists(char *path)
     fclose(temp);
 
     return true;
+}
+
+bool dirExists(const char *path)
+{
+    struct stat info;
+
+    if(stat( path, &info ) != 0)
+        return false;
+    else if(info.st_mode & S_IFDIR)
+        return true;
+    else
+        return false;
 }
 
 int loadFiles() 
@@ -89,7 +104,10 @@ int loadFiles()
 int fileManager()
 {
 	sf2d_texture *fileManagerBg;
+	
 	load_PNG(fileManagerBg, "romfs:/fileManagerBg.png");
+	setBilinearFilter(1, fileManagerBg);
+	
 	fsInit();
 	sdmcInit();
 	

@@ -152,13 +152,23 @@ u32 soc_exit(void)
 	return 0;
 }
 
-void Cyanogen3DSSetBilinearFilter(int enabled, sf2d_texture *texture)
+void setBilinearFilter(int enabled, sf2d_texture *texture)
 {
 	bilinearFilterEnabled = enabled;
 	if (enabled == 1)
 	{
 		sf2d_texture_set_params(texture, GPU_TEXTURE_MAG_FILTER(GPU_LINEAR) | GPU_TEXTURE_MIN_FILTER(GPU_NEAREST));
 	}
+}
+
+void createDirs()
+{
+	if (!dirExists("/3ds/Cyanogen3DS/screenshots"))
+		makeDir("/3ds/Cyanogen3DS/screenshots");
+	if (!dirExists("3ds/Cyanogen3DS/system/settings"))
+		makeDir("/3ds/Cyanogen3DS/system/settings");
+	if (!dirExists("3ds/Cyanogen3DS/system/app"))
+		makeDir("/3ds/Cyanogen3DS/system/app");
 }
 
 int setFileDefaultsInt(char *path, int value, int var)

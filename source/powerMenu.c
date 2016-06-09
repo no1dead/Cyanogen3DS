@@ -9,6 +9,9 @@ int powerMenu()
 {
 	load_PNG(power, "romfs:/powerMenu.png");
 	load_PNG(power1, "romfs:/powerSelection.png");
+	
+	setBilinearFilter(1, power);
+	setBilinearFilter(1, power1);
 
 	while (aptMainLoop())
 	{

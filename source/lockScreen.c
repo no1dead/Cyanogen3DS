@@ -7,6 +7,7 @@
 int lockScreen()
 {
 	load_PNG(lockscreenBg, "romfs:/lockscreenBg.png");
+	setBilinearFilter(1, lockscreenBg);
 
 	u64 lastTimeInSeconds = 0;
 	
