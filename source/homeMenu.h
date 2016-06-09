@@ -62,6 +62,10 @@ sf2d_texture *wifiIconNull;
 sf2d_texture *dayWidget;
 sf2d_texture *nightWidget;
 
+// File manager textures
+sf2d_texture *fileManagerBg;
+sf2d_texture *bar;
+
 void cursorController();
 int batteryStatus(int x, int y, int style);
 void appDrawerIcon();

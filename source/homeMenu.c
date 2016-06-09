@@ -338,9 +338,6 @@ int home()
 {
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
-	load_PNG(ic_allapps, allappsPath);
-	load_PNG(ic_allapps_pressed, allapps_pressedPath);
-	
 	setBilinearFilter(1, ic_allapps);
 	setBilinearFilter(1, ic_allapps_pressed);
 	
@@ -393,15 +390,11 @@ int home()
 		
 		if ((cursor(170, 210, 158, 200)) && (kDown & KEY_A))
 		{
-			sf2d_free_texture(ic_allapps);
-			sf2d_free_texture(ic_allapps_pressed);
 			appDrawer(); //Opens app drawer
 		}
 		
 		if ((cursor(306, 351, 155, 200)) && (kDown & KEY_A))
 		{
-			sf2d_free_texture(ic_allapps);
-			sf2d_free_texture(ic_allapps_pressed);
 			settingsMenu(); //Opens settings menu
 		}
 		
@@ -419,9 +412,6 @@ int home()
 		// Flush and swap framebuffers
 		sf2d_swapbuffers();
 	}
-	
-	sf2d_free_texture(ic_allapps);
-	sf2d_free_texture(ic_allapps_pressed);
 	
 	return 0;
 }

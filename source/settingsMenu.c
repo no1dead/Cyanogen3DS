@@ -603,6 +603,7 @@ int displayIconPack()
 			sf2d_draw_texture(highlight, 0, 55);
 			sftd_draw_textf(robotoS12, 20, 73, fontColor, 12, "Serie54");
 				
+			/* Just for testing purposes - confirmed working.
 			if (kDown & KEY_A)
 			{
 				strcpy(appDirPath, "/3ds/Cyanogen3DS/system/icons/Serie54");
@@ -611,7 +612,7 @@ int displayIconPack()
 				fclose(iconPackTxt);
 				iconPackLoad();
 				iconPackReload();
-			}
+			}*/
 		}
 		
 		digitalTime(343, 2);
@@ -623,6 +624,7 @@ int displayIconPack()
 		
 		navbarControls(0);
 		
+		/* Just for testing purposes - confirmed working.
 		if (kDown & KEY_X)
 		{
 			strcpy(appDirPath, "/3ds/Cyanogen3DS/system/icons/Default");
@@ -631,7 +633,7 @@ int displayIconPack()
 			fclose(iconPackTxt);
 			iconPackLoad();
 			iconPackReload();
-		}
+		}*/ 
 		
 		if (kDown & KEY_Y)
 			powerMenu(); 
@@ -700,11 +702,15 @@ void iconPackLoad()
 
 void iconPackReload()
 {
+	sf2d_free_texture(ic_allapps);
+	sf2d_free_texture(ic_allapps_pressed);
 	sf2d_free_texture(ic_launcher_apollo);
 	sf2d_free_texture(ic_launcher_browser);
 	sf2d_free_texture(ic_launcher_messenger);
 	sf2d_free_texture(ic_launcher_settings);
-
+		
+	load_PNG(ic_allapps, allappsPath);
+	load_PNG(ic_allapps_pressed, allapps_pressedPath);
 	load_PNG(ic_launcher_apollo, apolloPath);
 	load_PNG(ic_launcher_browser, browserPath);
 	load_PNG(ic_launcher_messenger, messagesPath);
