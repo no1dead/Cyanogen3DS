@@ -4,7 +4,13 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
+#define MAX_FILES 256
+#define DEFAULT_DIRECTORY "/3ds"
 #define MAX_FILENAME_SIZE 0xA0
+#define MAX_DISPLAY 5
+#define DISPLAY_Y 39 
+
+int current, curScroll;
 
 FS_Archive sdmcArchive;
 

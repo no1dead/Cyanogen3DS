@@ -8,9 +8,8 @@
 #include "settingsMenu.h"
 #include "utils.h"
 
-#define DEFAULT_DIRECTORY "/3ds"
-
 static char cwd[1024] = DEFAULT_DIRECTORY;
+char fileNames[MAX_DISPLAY][512];
 
 u8 *SRAM_Name;
 
@@ -65,6 +64,44 @@ bool dirExists(const char *path)
         return false;
 }
 
+void dirUp()
+{
+	current--; // Subtract a value from current so the ">" goes up
+	if ((current <= curScroll-1) && (curScroll > 1)) 
+	{
+		curScroll--; // To do with how it scrolls
+	}
+}
+
+void dirDown()
+{
+	if (fileNames[current+1]) 
+		current++; // Add a value onto current so the ">" goes down
+	if (current >= (MAX_DISPLAY + curScroll)) 
+	{
+		curScroll++; // To do with how it scrolls
+	}
+}
+
+void dirUpx5()
+{
+	current -= 5;  // Subtract a value from current so the ">" goes up
+	if ((current <= curScroll-1) && (curScroll > 1)) 
+	{
+		curScroll -= 5;  // To do with how it scrolls
+	}
+}
+
+void dirDownx5()
+{
+	if (fileNames[current+1]) 
+		current += 5; // Add a value onto current so the ">" goes down
+	if (current >= (MAX_DISPLAY + curScroll)) 
+	{
+		curScroll += 5; // To do with how it scrolls
+	}
+}
+
 int loadFiles() 
 {
 	Handle dirHandle;
@@ -75,24 +112,50 @@ int loadFiles()
 	FSUSER_OpenArchive(&sdmcArchive, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""));
 	FSUSER_OpenDirectory(&dirHandle, sdmcArchive, dirPath);
 	
-	int i = 1;
 	u32 entriesRead;
-	static char name[1024];
+	//static char name[1024];
+	//int current = 0;
 
 	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", cwd);
 	
-	for (;;)
+	sf2d_draw_texture(bar , 0, 6 + (current - curScroll) * 39);
+	
+	for (int i = 0; i < MAX_FILES; i++)
 	{
-		entriesRead=0;
+		if (current <= curScroll - 1) 
+		{
+			current = curScroll;
+			break;
+		}
+		
+		entriesRead = 0;
 		FSDIR_Read(dirHandle, &entriesRead, 1, (FS_DirectoryEntry*)&entry);
+		
 		if (entriesRead)
 		{
 			i++;
-			utf2ascii(&name[0],entry.name);
-			sftd_draw_textf(robotoS12, 36, -21 + (i * 39), RGBA8(0, 0, 0, 255), 12, "%s", name);
+			utf2ascii(fileNames[i], entry.name);
+			sftd_draw_textf(robotoS12, 36, (i - curScroll) * 19 + DISPLAY_Y, RGBA8(0, 0, 0, 255), 12, "%s", fileNames[i]);
 		}
-		else break;
+		else
+			break;
 	}
+	
+	kDown = hidKeysDown();
+	
+	if (kDown & KEY_DOWN) 
+	{
+		dirDown();
+	}
+	else if (kDown & KEY_UP) 
+	{
+		dirUp();
+	}	
+	
+	if (current < 1) 
+		current = 1;
+	if (current > MAX_FILES) 
+		current = MAX_FILES;
 	
 	FSDIR_Close(dirHandle);
 	svcCloseHandle(dirHandle);
@@ -102,10 +165,11 @@ int loadFiles()
 }
 
 int fileManager()
-{
-	sf2d_texture *fileManagerBg;
-	
+{	
 	load_PNG(fileManagerBg, "romfs:/fileManagerBg.png");
+	load_PNG(bar, "romfs:/bar.png");
+	
+	setBilinearFilter(1, fileManagerBg);
 	setBilinearFilter(1, fileManagerBg);
 	
 	fsInit();

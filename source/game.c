@@ -4,25 +4,26 @@
 /*These are mostly based off of rinnegatamte's lua player plus src code. 
 I will alter these to my needs later.*/
 
-int startCard() 
+int launchApp(u64 titleId) 
 {
 	amInit();
 	char product_id[16];
 	AM_GetTitleProductCode(MEDIATYPE_GAME_CARD, 0, product_id);
 	amExit();
 	
-	if (product_id[0] == 'C' && product_id[1] == 'T' && product_id[2] == 'R')
-	{
+	//if (product_id[0] == 'C' && product_id[1] == 'T' && product_id[2] == 'R')
+	//{
 		u8 buf0[0x300];
 		u8 buf1[0x20];
-		memset(buf0, 0, 0x300);
-		memset(buf1, 0, 0x20);
+		//memset(buf0, 0, 0x300);
+		//memset(buf1, 0, 0x20);
 		aptOpenSession();
-		APT_PrepareToDoAppJump(0, 0, MEDIATYPE_GAME_CARD);
+		APT_PrepareToDoAppJump(0, titleId, MEDIATYPE_GAME_CARD);
 		APT_DoAppJump(0x300, 0x20, buf0, buf1);
 		aptCloseSession();
-	}
-	else
+	//}
+	//else
+	if (!(product_id[0] == 'C' && product_id[1] == 'T' && product_id[2] == 'R'))
 	{
 		nsInit();
 		NS_RebootToTitle(MEDIATYPE_GAME_CARD,0);
