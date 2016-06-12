@@ -127,14 +127,14 @@ int appDrawer()
 			}		
 		}
 		
-		else if ((cursor(320, 365, 45, 90)) && (kDown & KEY_A))
+		/*else if ((cursor(320, 365, 45, 90)) && (kDown & KEY_A))
 		{
 			if (experimentalF == 1)
 			{
 				appDrawerUnload();
 				startCard();
 			}		
-		}
+		}*/
 		
 		else if ((cursor(170, 215, 125, 170)) && (kDown & KEY_A))
 		{
