@@ -11,7 +11,7 @@ int launchApp(u64 titleId)
 	AM_GetTitleProductCode(MEDIATYPE_GAME_CARD, 0, product_id);
 	amExit();
 	
-	//if (product_id[0] == 'C' && product_id[1] == 'T' && product_id[2] == 'R')
+	/*//if (product_id[0] == 'C' && product_id[1] == 'T' && product_id[2] == 'R')
 	//{
 		u8 buf0[0x300];
 		u8 buf1[0x20];
@@ -28,7 +28,7 @@ int launchApp(u64 titleId)
 		nsInit();
 		NS_RebootToTitle(MEDIATYPE_GAME_CARD,0);
 		nsExit();
-	}
+	}*/
 	
 	return 0;
 }
@@ -108,16 +108,16 @@ int installCIA(const char *path)
 
 int launchCia(/*FS_MediaType mediaType, u64 titleID*/)
 {
-	u32 unique_id = 0;
-	u32 mediatype = 0;
+	//u32 unique_id = 0;
+	//u32 mediatype = 0;
 	u8 buf0[0x300];
 	u8 buf1[0x20];
-	u64 id = unique_id | ((u64)0x00040000 << 32);
+	//u64 id = unique_id | ((u64)0x00040000 << 32);
 	memset(buf0, 0, 0x300);
 	memset(buf1, 0, 0x20);
-	aptOpenSession();
+	/*aptOpenSession();
 	APT_PrepareToDoAppJump(0, id, mediatype);
 	APT_DoAppJump(0x300, 0x20, buf0, buf1);
-	aptCloseSession();
+	aptCloseSession();*/
 	return 0;
 }
