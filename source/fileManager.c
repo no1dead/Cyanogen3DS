@@ -66,7 +66,8 @@ bool dirExists(const char *path)
 
 void dirUp()
 {
-	current--; // Subtract a value from current so the ">" goes up
+	if (fileNames[current+1]) 
+		current--; // Subtract a value from current so the ">" goes up
 	if ((current <= curScroll-1) && (curScroll > 1)) 
 	{
 		curScroll--; // To do with how it scrolls
@@ -118,10 +119,10 @@ int loadFiles()
 
 	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", cwd);
 	
-	sf2d_draw_texture(bar , 0, 6 + (current - curScroll) * 39);
+	sf2d_draw_texture(bar, 0, 6 + (current - curScroll) * 39);
 	
 	for (int i = 0; i < MAX_FILES; i++)
-	{
+	{	
 		if (current <= curScroll - 1) 
 		{
 			current = curScroll;
@@ -135,10 +136,21 @@ int loadFiles()
 		{
 			i++;
 			utf2ascii(fileNames[i], entry.name);
-			sftd_draw_textf(robotoS12, 36, (i - curScroll) * 19 + DISPLAY_Y, RGBA8(0, 0, 0, 255), 12, "%s", fileNames[i]);
+			sftd_draw_textf(robotoS12, 76, (i - curScroll) * 19 + DISPLAY_Y, RGBA8(0, 0, 0, 255), 12, "%s", fileNames[i]);
 		}
 		else
 			break;
+		
+		const char * ext = get_filename_ext(fileNames[i]);
+		
+		if((ext) == NULL)
+			sf2d_draw_texture(dirIcon, 31, (i - curScroll) * 19 + ICON_DISPLAY_Y);
+		
+		else if(((ext) != NULL) && (((strcmp(ext ,"smdh") == 0)) || ((strcmp(ext ,"SMDH") == 0))))
+			sf2d_draw_texture(fileIcon, 31, (i - curScroll) * 19 + ICON_DISPLAY_Y);
+		
+		else if(((ext) != NULL) && (((strcmp(ext ,"3dsx") == 0)) || ((strcmp(ext ,"3DSX") == 0))))
+			sf2d_draw_texture(appIcon, 31, (i - curScroll) * 19 + ICON_DISPLAY_Y);
 	}
 	
 	kDown = hidKeysDown();
@@ -168,9 +180,15 @@ int fileManager()
 {	
 	load_PNG(fileManagerBg, "romfs:/fileManagerBg.png");
 	load_PNG(bar, "romfs:/bar.png");
+	load_PNG(dirIcon, "romfs:/ic_fso_folder.png");
+	load_PNG(appIcon, "romfs:/ic_fso_type_app.png");
+	load_PNG(fileIcon, "romfs:/ic_fso_default.png");
 	
 	setBilinearFilter(1, fileManagerBg);
-	setBilinearFilter(1, fileManagerBg);
+	setBilinearFilter(1, bar);
+	setBilinearFilter(1, dirIcon);
+	setBilinearFilter(1, appIcon);
+	setBilinearFilter(1, fileIcon);
 	
 	fsInit();
 	sdmcInit();
@@ -187,9 +205,13 @@ int fileManager()
 		
 		loadFiles();
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0); 
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		//cursorController();
 		
 		sf2d_end_frame();

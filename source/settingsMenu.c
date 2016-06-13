@@ -95,38 +95,42 @@ int aboutMenu()
 		
 		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 
-			sf2d_draw_texture(aboutBg, 0, 0);
+		sf2d_draw_texture(aboutBg, 0, 0);
 
+		sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsAbout[language][0]);
+		sftd_draw_textf(robotoS12, 20, 83, fontColor, 12, "%s", lang_settingsAbout[language][1]);
+		sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
+		//sftd_draw_textf(robotoS12, 20, 132, fontColor, 12, "System Version: %s.%s.%s", major, minor, rev);
+		sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "Model: %s %s", modelName, regionName);
+		sftd_draw_textf(robotoS12, 20, 184, fontColor, 12, "MAC Address: %s", getMacAddress());
+
+		if (cursor(0, 480, 58, 105))
+		{
+			sf2d_draw_texture(highlight, 0, 55);
 			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsAbout[language][0]);
 			sftd_draw_textf(robotoS12, 20, 83, fontColor, 12, "%s", lang_settingsAbout[language][1]);
+		}
+		else if (cursor(0, 480, 106, 157))
+		{
+			sf2d_draw_texture(highlight, 0, 107);
 			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
 			//sftd_draw_textf(robotoS12, 20, 132, fontColor, 12, "System Version: %s.%s.%s", major, minor, rev);
-			sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "Model: %s %s", modelName, regionName);
+		}
+		else if (cursor(0, 480, 158, 209))
+		{
+			sf2d_draw_texture(highlight, 0, 158);
+			sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "Model: %s %s", modelName, regionName); 
 			sftd_draw_textf(robotoS12, 20, 184, fontColor, 12, "MAC Address: %s", getMacAddress());
+		}
 
-			if (cursor(0, 480, 58, 105))
-			{
-				sf2d_draw_texture(highlight, 0, 55);
-				sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsAbout[language][0]);
-				sftd_draw_textf(robotoS12, 20, 83, fontColor, 12, "%s", lang_settingsAbout[language][1]);
-			}
-			else if (cursor(0, 480, 106, 157))
-			{
-				sf2d_draw_texture(highlight, 0, 107);
-				sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s %s -%d%02d%02d- %s", lang_settingsAbout[language][2], VERSION, YEAR, MONTH + 1, DAY, lang_settingsAbout[language][3]);
-				//sftd_draw_textf(robotoS12, 20, 132, fontColor, 12, "System Version: %s.%s.%s", major, minor, rev);
-			}
-			else if (cursor(0, 480, 158, 209))
-			{
-				sf2d_draw_texture(highlight, 0, 158);
-				sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "Model: %s %s", modelName, regionName); 
-				sftd_draw_textf(robotoS12, 20, 184, fontColor, 12, "MAC Address: %s", getMacAddress());
-			}
-
+		if (screenDisplay == 0)
+		{
 			digitalTime(343, 2);
-			batteryStatus(300, 2, 0);
+			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
-			cursorController();
+		}
+		
+		cursorController();
 
 		sf2d_end_frame();
 		
@@ -318,12 +322,18 @@ int developerMenu()
 		else
 			sf2d_draw_texture(onSwitch, 355, 70);
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0); 
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
+		
+		switchDisplayModeOn(2);
 		
 		navbarControls(0);
 		
@@ -430,9 +440,13 @@ int displayMenu()
 			sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsDisplay[language][3]);
 		}
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
@@ -526,9 +540,13 @@ int displayThemes()
 				displayIconPack();
 		}
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
@@ -615,9 +633,13 @@ int displayIconPack()
 			}*/
 		}
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
@@ -791,9 +813,13 @@ int displayTime()
 			}
 		}
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
@@ -893,9 +919,13 @@ int performanceMenu()
 			sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsPerformance[language][3]);
 		}
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
@@ -973,9 +1003,13 @@ int storageMenu()
 		sf2d_draw_rectangle(20, 134, 360, 10, RGBA8(206, 215, 219, 255));
 		sf2d_draw_rectangle(20, 134, ((((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) / (((u64) resource.totalClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) * 360) - 20, 10, TEAL);
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
@@ -1046,9 +1080,12 @@ int securityMenu()
 		sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsSecuirty[language][1]); 
 		sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsSecuirty[language][2]); 
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
 		
 		if (cursor(0, 480, 58, 105))
 		{	
@@ -1281,12 +1318,18 @@ int settingsMenu()
 		
 		settingsHighlight();
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0); 
-		//androidQuickSettings();
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
+		
+		switchDisplayModeOn(2);
 		
 		navbarControls(0); 
 		

@@ -21,30 +21,60 @@ int powerMenu()
 
 		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		sf2d_draw_texture(background, 0, 0);
-		sf2d_draw_texture(ic_launcher_browser, 49, 155);
-		sf2d_draw_texture(ic_launcher_messenger, 114, 155);
-		sf2d_draw_texture(ic_launcher_apollo, 241, 155);
-		sf2d_draw_texture(ic_launcher_settings, 306, 155);
+		
+		if (screenDisplay == 0)
+		{
+			sf2d_draw_texture(ic_launcher_browser, 49, 155);
+			sf2d_draw_texture(ic_launcher_messenger, 114, 155);
+			sf2d_draw_texture(ic_launcher_apollo, 241, 155);
+			sf2d_draw_texture(ic_launcher_settings, 306, 155);
+	
+			appDrawerIcon(screenDisplay);
 			
-		appDrawerIcon();
-		dayNightWidget();
-			
-		sf2d_draw_texture(power, 62, 100);
+			sf2d_draw_texture(power, 62, 100);
 
-		sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
+			sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
+		}
+		
+		else if (screenDisplay == 1)
+		{
+			sf2d_draw_texture(ic_launcher_browser, 9, 140);
+			sf2d_draw_texture(ic_launcher_messenger, 74, 140);
+			sf2d_draw_texture(ic_launcher_apollo, 201, 140);
+			sf2d_draw_texture(ic_launcher_settings, 266, 140);
+	
+			appDrawerIcon(screenDisplay);
+			
+			sf2d_draw_texture_scale(power, 62, 100, 0.8, 0.9);
+
+			sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 16, "Power Off");
+		}
 
 		if (cursor(62, 338, 80, 159))
 		{
-			sf2d_draw_texture(power1, 62, 100);
-			sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
+			if (screenDisplay == 1)
+			{
+				sf2d_draw_texture_scale(power1, 62, 100, 0.8, 0.9);
+				sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 16, "Power Off");
+			}
+			else
+			{
+				sf2d_draw_texture(power1, 62, 100);
+				sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
+			}
 			if (kDown & KEY_A)
 			{
 				longjmp(exitJmp, 1);
 			}
 		}
 
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
 		cursorController();
 
 		sf2d_end_frame();

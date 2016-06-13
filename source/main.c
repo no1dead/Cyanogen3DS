@@ -69,6 +69,8 @@ int main(int argc, char **argv)
 	load_PNG(wifiIcon1, "romfs:/stat_sys_wifi_signal_1.png");
 	load_PNG(wifiIcon0, "romfs:/stat_sys_wifi_signal_0.png");
 	load_PNG(wifiIconNull, "romfs:/stat_sys_wifi_signal_null.png");
+	load_PNG(ic_allapps, allappsPath);
+	load_PNG(ic_allapps_pressed, allapps_pressedPath);
 	load_PNG(ic_launcher_browser, browserPath);
 	load_PNG(ic_launcher_messenger, messagesPath);
 	load_PNG(ic_launcher_apollo, apolloPath);

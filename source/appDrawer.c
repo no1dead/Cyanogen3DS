@@ -53,8 +53,12 @@ int appDrawer()
 		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(background, 0, 0);
-		sf2d_draw_texture(backdrop, 0, 24);
-
+		
+		if (screenDisplay == 1)
+			sf2d_draw_texture_scale(backdrop, 0, 24, 0.8, 1.0);
+		else 
+			sf2d_draw_texture(backdrop, 0, 24);
+		
 		if (cursor(20, 65, 45, 90))
 			sf2d_draw_texture_scale(ic_launcher_browser, 20, 40, 1.1, 1.1);
 		else
@@ -79,36 +83,69 @@ int appDrawer()
 			sf2d_draw_texture(ic_launcher_gallery, 250, 45);
 		sftd_draw_textf(robotoS12, 252, 100, fontColor, 12, "%s", lang_appDrawer[language][3]);
 		
-		if (cursor(320, 365, 45, 90))
-			sf2d_draw_texture_scale(ic_launcher_game, 320, 40, 1.1, 1.1);
-		else
-			sf2d_draw_texture(ic_launcher_game, 325, 45);
-		sftd_draw_textf(robotoS12, 330, 100, fontColor, 12, "%s", lang_appDrawer[language][4]);
-		//
-		if (cursor(20, 65, 125, 170))
-			sf2d_draw_texture_scale(ic_launcher_messenger, 20, 120, 1.1, 1.1);
-		else
-			sf2d_draw_texture(ic_launcher_messenger, 25, 125);
-		sftd_draw_textf(robotoS12, 21, 180, fontColor, 12, "%s", lang_appDrawer[language][5]);
+		if (screenDisplay == 0)
+		{
+			if (cursor(320, 365, 45, 90))
+				sf2d_draw_texture_scale(ic_launcher_game, 320, 40, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_game, 325, 45);
+			sftd_draw_textf(robotoS12, 330, 100, fontColor, 12, "%s", lang_appDrawer[language][4]);
+			
+			if (cursor(20, 65, 125, 170))
+				sf2d_draw_texture_scale(ic_launcher_messenger, 20, 120, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_messenger, 25, 125);
+			sftd_draw_textf(robotoS12, 21, 180, fontColor, 12, "%s", lang_appDrawer[language][5]);
 		
-		if (cursor(95, 140, 125, 170))
-			sf2d_draw_texture_scale(ic_launcher_apollo, 95, 120, 1.1, 1.1);
-		else
-			sf2d_draw_texture(ic_launcher_apollo, 100, 125);
-		sftd_draw_textf(robotoS12, 103, 180, fontColor, 12, "%s", lang_appDrawer[language][6]);
+			if (cursor(95, 140, 125, 170))
+				sf2d_draw_texture_scale(ic_launcher_apollo, 95, 120, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_apollo, 100, 125);
+			sftd_draw_textf(robotoS12, 103, 180, fontColor, 12, "%s", lang_appDrawer[language][6]);
 		
-		if (cursor(170, 215, 125, 170))
-			sf2d_draw_texture_scale(ic_launcher_settings, 170, 120, 1.1, 1.1);
-		else
-			sf2d_draw_texture(ic_launcher_settings, 175, 125);
-		sftd_draw_textf(robotoS12, 172, 180, fontColor, 12, "%s", lang_appDrawer[language][7]);
+			if (cursor(170, 215, 125, 170))
+				sf2d_draw_texture_scale(ic_launcher_settings, 170, 120, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_settings, 175, 125);
+			sftd_draw_textf(robotoS12, 172, 180, fontColor, 12, "%s", lang_appDrawer[language][7]);
+			
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
 		
-		digitalTime(343, 2);
-		batteryStatus(300, 2, 0);
-		//androidQuickSettings();		
+		else if (screenDisplay == 1)
+		{
+			if (cursor(20, 65, 125, 170))
+				sf2d_draw_texture_scale(ic_launcher_game, 20, 120, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_game, 25, 125);
+			sftd_draw_textf(robotoS12, 23, 180, fontColor, 12, "%s", lang_appDrawer[language][4]);
+			
+			if (cursor(95, 140, 125, 170))
+				sf2d_draw_texture_scale(ic_launcher_messenger, 95, 120, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_messenger, 100, 125);
+			sftd_draw_textf(robotoS12, 90, 180, fontColor, 12, "%s", lang_appDrawer[language][5]);
+		
+			if (cursor(170, 215, 125, 170))
+				sf2d_draw_texture_scale(ic_launcher_apollo, 170, 120, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_apollo, 175, 125);
+			sftd_draw_textf(robotoS12, 180, 180, fontColor, 12, "%s", lang_appDrawer[language][6]);
+		
+			if (cursor(245, 290, 125, 170))
+				sf2d_draw_texture_scale(ic_launcher_settings, 245, 120, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_settings, 250, 125);
+			sftd_draw_textf(robotoS12, 250, 180, fontColor, 12, "%s", lang_appDrawer[language][7]);
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
+		
+		switchDisplayModeOn(1);
 		
 		navbarControls(0);
 		

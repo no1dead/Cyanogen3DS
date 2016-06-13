@@ -112,13 +112,23 @@ int batteryStatus(int x, int y, int style)
 	return 0;
 }
 
-void appDrawerIcon() //Draws the app drawer icon. Draws a different icon of the same size once hovered with the cursor.
+void appDrawerIcon(int type) //Draws the app drawer icon. Draws a different icon of the same size once hovered with the cursor.
 {
-	if (cursor(170, 210, 155, 200))
-		sf2d_draw_texture(ic_allapps_pressed, 179, 168);
+	if (type == 0)
+	{
+		if (cursor(170, 210, 155, 200))
+			sf2d_draw_texture(ic_allapps_pressed, 179, 168);
+		else
+			sf2d_draw_texture(ic_allapps, 179, 168);
+	}
+	else if (type == 1)
+	{
+		if (cursor(130, 170, 140, 200))
+			sf2d_draw_texture(ic_allapps_pressed, 139, 158);
+		else
+			sf2d_draw_texture(ic_allapps, 139, 158);
+	}
 	
-	else
-		sf2d_draw_texture(ic_allapps, 179, 168);
 }
 
 int navbarControls(int type)
@@ -334,6 +344,28 @@ int dayNightWidget()
 	return 0;
 }
 
+int switchDisplayModeOn(int app)
+{
+	if (screenDisplay == 1)
+	{
+		sf2d_start_frame(switchDisplay(0), GFX_LEFT);
+		sf2d_draw_texture(background, 0, 0);
+		
+		if (app == 0 || app == 1)
+			dayNightWidget();
+			
+		else if (app == 2)
+			sf2d_draw_texture_scale(ic_launcher_settings, 170, 90, 1.4, 1.4);
+		
+		digitalTime(343, 2); //Displays digital time
+		batteryStatus(300, 2, 0); //Displays battery status
+		//androidQuickSettings();
+		sf2d_end_frame();
+	}
+	
+	return 0;
+}
+
 int home()
 {
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
@@ -359,33 +391,61 @@ int home()
 		
 		sf2d_draw_texture(background, 0, 0);
 		
-		if (cursor(44, 89, 155, 200))
-			sf2d_draw_texture_scale(ic_launcher_browser, 44, 150, 1.1, 1.1);
-		else
-			sf2d_draw_texture(ic_launcher_browser, 49, 155);
-		if (cursor(109, 154, 155, 200))
-			sf2d_draw_texture_scale(ic_launcher_messenger, 109, 150, 1.1, 1.1);
-		else
-			sf2d_draw_texture(ic_launcher_messenger, 114, 155);
-		if (cursor(236, 281, 155, 200))
-			sf2d_draw_texture_scale(ic_launcher_apollo, 236, 150, 1.1, 1.1);
-		else
-			sf2d_draw_texture(ic_launcher_apollo, 241, 155);
-		if (cursor(301, 346, 155, 200))
-			sf2d_draw_texture_scale(ic_launcher_settings, 301, 150, 1.1, 1.1);
-		else
-			sf2d_draw_texture(ic_launcher_settings, 306, 155);
+		if (screenDisplay == 0)
+		{
+			if (cursor(44, 89, 155, 200))
+				sf2d_draw_texture_scale(ic_launcher_browser, 44, 150, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_browser, 49, 155);
+			if (cursor(109, 154, 155, 200))
+				sf2d_draw_texture_scale(ic_launcher_messenger, 109, 150, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_messenger, 114, 155);
+			if (cursor(236, 281, 155, 200))
+				sf2d_draw_texture_scale(ic_launcher_apollo, 236, 150, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_apollo, 241, 155);
+			if (cursor(301, 346, 155, 200))
+				sf2d_draw_texture_scale(ic_launcher_settings, 301, 150, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_settings, 306, 155);
 	
-		appDrawerIcon();
-
-		dayNightWidget();
+			appDrawerIcon(screenDisplay);
+			
+			dayNightWidget();
+			digitalTime(343, 2); //Displays digital time
+			batteryStatus(300, 2, 0); //Displays battery status
+			//androidQuickSettings();
+		}
 		
-		digitalTime(343, 2); //Displays digital time
-		batteryStatus(300, 2, 0); //Displays battery status
-		//androidQuickSettings();
+		else if (screenDisplay == 1)
+		{
+			if (cursor(4, 49, 140, 200))
+				sf2d_draw_texture_scale(ic_launcher_browser, 4, 140, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_browser, 9, 140);
+			if (cursor(69, 114, 140, 200))
+				sf2d_draw_texture_scale(ic_launcher_messenger, 69, 140, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_messenger, 74, 140);
+			if (cursor(196, 241, 140, 200))
+				sf2d_draw_texture_scale(ic_launcher_apollo, 196, 140, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_apollo, 201, 140);
+			if (cursor(261, 306, 140, 200))
+				sf2d_draw_texture_scale(ic_launcher_settings, 261, 140, 1.1, 1.1);
+			else
+				sf2d_draw_texture(ic_launcher_settings, 266, 140);
+	
+			appDrawerIcon(screenDisplay);
+		}
+		
 		cursorController();
 		
 		sf2d_end_frame();
+		
+		switchDisplayModeOn(0);
+		
 		navbarControls(0); //Displays navbar
 		
 		if ((cursor(170, 210, 158, 200)) && (kDown & KEY_A))
@@ -403,7 +463,7 @@ int home()
 		
 		if (kDown & KEY_L)
 		{
-			audio_load("system/media/audio/ui/lock.bin");
+			//audio_load("system/media/audio/ui/lock.bin");
 			lockScreen(); //Takes you to lock screen
 		}
 		

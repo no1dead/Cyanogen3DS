@@ -8,7 +8,8 @@
 #define DEFAULT_DIRECTORY "/3ds"
 #define MAX_FILENAME_SIZE 0xA0
 #define MAX_DISPLAY 5
-#define DISPLAY_Y 39 
+#define DISPLAY_Y 61
+#define ICON_DISPLAY_Y 29 
 
 int current, curScroll;
 

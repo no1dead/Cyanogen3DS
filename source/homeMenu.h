@@ -15,7 +15,7 @@
 
 touchPosition touch, oldTouch;
 
-u32 kDown, kHeld, kUp;
+u32 kDown, oldkDown, kHeld, kUp;
 int cursorX, cursorY;
 u16 touch_x, touch_y, touchTimer;
 touchPosition touch, oldTouch, firstTouch;
@@ -65,11 +65,15 @@ sf2d_texture *nightWidget;
 // File manager textures
 sf2d_texture *fileManagerBg;
 sf2d_texture *bar;
+sf2d_texture *dirIcon;
+sf2d_texture *fileIcon;
+sf2d_texture *appIcon;
 
 void cursorController();
 int batteryStatus(int x, int y, int style);
-void appDrawerIcon();
+void appDrawerIcon(int type);
 int navbarControls(int type);
 void androidQuickSettings();
 int dayNightWidget();
+int switchDisplayModeOn(int app);
 int home();
