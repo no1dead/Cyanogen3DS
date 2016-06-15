@@ -31,31 +31,6 @@ u8 getLang()
 	return language;
 }
 
-int setCPU(int cpu)
-{
-	u16 cpuClock = cpu;
-	bool isNew;
-	APT_CheckNew3DS((u8*)&isNew);
-	
-	if (cpuClock >= NEW_3DS_CLOCK && isNew)
-	{
-		osSetSpeedupEnable(1);
-		currentClock = NEW_3DS_CLOCK;
-	}
-	else 
-	{
-		osSetSpeedupEnable(0);
-		currentClock = OLD_3DS_CLOCK;
-	}
-	
-	return 0;
-}
-
-int getcpu()
-{
-	return currentClock;
-}
-
 bool detectSD()
 {
 	bool isSD;

@@ -23,8 +23,6 @@ int bilinearFilterEnabled;
 u8 getModel();
 u8 getRegion();
 u8 getLang();
-int setCPU();
-int getCPU();
 bool detectSD();
 const char * getUsername();
 int getBirthday();

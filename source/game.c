@@ -18,8 +18,8 @@ int launchApp(u64 titleId)
 		//memset(buf0, 0, 0x300);
 		//memset(buf1, 0, 0x20);
 		aptOpenSession();
-		APT_PrepareToDoAppJump(0, titleId, MEDIATYPE_GAME_CARD);
-		APT_DoAppJump(0x300, 0x20, buf0, buf1);
+		APT_PrepareToDoApplicationJump(0, titleId, MEDIATYPE_GAME_CARD);
+		APT_DoApplicationJump(0x300, 0x20, buf0, buf1);
 		aptCloseSession();
 	//}
 	//else
@@ -116,8 +116,8 @@ int launchCia(/*FS_MediaType mediaType, u64 titleID*/)
 	memset(buf0, 0, 0x300);
 	memset(buf1, 0, 0x20);
 	/*aptOpenSession();
-	APT_PrepareToDoAppJump(0, id, mediatype);
-	APT_DoAppJump(0x300, 0x20, buf0, buf1);
+	APT_PrepareToDoApplicationJump(0, id, mediatype);
+	APT_DoApplicationJump(0x300, 0x20, buf0, buf1);
 	aptCloseSession();*/
 	return 0;
 }
