@@ -120,7 +120,7 @@ int appDrawer()
 				sf2d_draw_texture_scale(ic_launcher_game, 20, 120, 1.1, 1.1);
 			else
 				sf2d_draw_texture(ic_launcher_game, 25, 125);
-			sftd_draw_textf(robotoS12, 23, 180, fontColor, 12, "%s", lang_appDrawer[language][4]);
+			sftd_draw_textf(robotoS12, 26, 180, fontColor, 12, "%s", lang_appDrawer[language][4]);
 			
 			if (cursor(95, 140, 125, 170))
 				sf2d_draw_texture_scale(ic_launcher_messenger, 95, 120, 1.1, 1.1);

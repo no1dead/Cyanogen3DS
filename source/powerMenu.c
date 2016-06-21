@@ -45,17 +45,17 @@ int powerMenu()
 	
 			appDrawerIcon(screenDisplay);
 			
-			sf2d_draw_texture_scale(power, 62, 100, 0.8, 0.9);
+			sf2d_draw_texture_scale(power, 42, 100, 0.9, 0.9);
 
-			sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 16, "Power Off");
+			sftd_draw_textf(robotoS18, 120, 118, RGBA8(0, 0, 0, 255), 16, "Power Off");
 		}
 
 		if (cursor(62, 338, 80, 159))
 		{
 			if (screenDisplay == 1)
 			{
-				sf2d_draw_texture_scale(power1, 62, 100, 0.8, 0.9);
-				sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 16, "Power Off");
+				sf2d_draw_texture_scale(power1, 42, 100, 0.9, 0.9);
+				sftd_draw_textf(robotoS18, 120, 118, RGBA8(0, 0, 0, 255), 16, "Power Off");
 			}
 			else
 			{

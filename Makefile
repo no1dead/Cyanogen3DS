@@ -44,8 +44,14 @@ APP_DESCRIPTION	:= An alternative Custom GUI Menu for 3DS.
 APP_AUTHOR	:= Joel16
 ICON := $(RESOURCES)/icon.png
 
-DATE := '"$(shell date +"%D")"'
-VERSION := '"Alpha-1.0"'
+# CIA Stuff
+
+APP_PRODUCT_CODE := C3DS-GUI
+APP_UNIQUE_ID := 0x16001
+APP_SYSTEM_MODE := 64MB
+APP_SYSTEM_MODE_EXT := Legacy
+
+VERSION := '"Alpha-2.0"'
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -53,7 +59,6 @@ VERSION := '"Alpha-1.0"'
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
 CFLAGS	:=	-g -Wall -O2 -mword-relocations -Werror -DVERSION=$(VERSION)\
-			-DCOMPILE_DATE=$(DATE)\
 			-fomit-frame-pointer -ffast-math \
 			$(ARCH)
 

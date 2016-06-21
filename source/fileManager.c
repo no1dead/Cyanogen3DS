@@ -6,6 +6,7 @@
 #include "main.h"
 #include "powerMenu.h"
 #include "settingsMenu.h"
+#include "screenshot.h"
 #include "utils.h"
 
 static char cwd[1024] = DEFAULT_DIRECTORY;
@@ -66,21 +67,20 @@ bool dirExists(const char *path)
 
 void dirUp()
 {
-	if (fileNames[current+1]) 
-		current--; // Subtract a value from current so the ">" goes up
+	current-=1; // Subtract a value from current so the ">" goes up
 	if ((current <= curScroll-1) && (curScroll > 1)) 
 	{
-		curScroll--; // To do with how it scrolls
+		curScroll-=1; // To do with how it scrolls
 	}
 }
 
 void dirDown()
 {
 	if (fileNames[current+1]) 
-		current++; // Add a value onto current so the ">" goes down
+		current+=1; // Add a value onto current so the ">" goes down
 	if (current >= (MAX_DISPLAY + curScroll)) 
 	{
-		curScroll++; // To do with how it scrolls
+		curScroll+=1; // To do with how it scrolls
 	}
 }
 
@@ -103,12 +103,12 @@ void dirDownx5()
 	}
 }
 
-int loadFiles() 
+int loadFiles(const char * path)
 {
 	Handle dirHandle;
 	FS_DirectoryEntry entry;
 
-	FS_Path dirPath = fsMakePath(PATH_ASCII, cwd);
+	FS_Path dirPath = fsMakePath(PATH_ASCII, path);
 	sdmcArchive = 0;
 	FSUSER_OpenArchive(&sdmcArchive, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""));
 	FSUSER_OpenDirectory(&dirHandle, sdmcArchive, dirPath);
@@ -117,7 +117,7 @@ int loadFiles()
 	//static char name[1024];
 	//int current = 0;
 
-	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", cwd);
+	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", path);
 	
 	sf2d_draw_texture(bar, 0, 6 + (current - curScroll) * 39);
 	
@@ -143,15 +143,17 @@ int loadFiles()
 		
 		const char * ext = get_filename_ext(fileNames[i]);
 		
-		if((ext) == NULL)
+		if(entry.attributes & FS_ATTRIBUTE_DIRECTORY)
 			sf2d_draw_texture(dirIcon, 31, (i - curScroll) * 19 + ICON_DISPLAY_Y);
-		
 		else if(((ext) != NULL) && (((strcmp(ext ,"smdh") == 0)) || ((strcmp(ext ,"SMDH") == 0))))
 			sf2d_draw_texture(fileIcon, 31, (i - curScroll) * 19 + ICON_DISPLAY_Y);
-		
 		else if(((ext) != NULL) && (((strcmp(ext ,"3dsx") == 0)) || ((strcmp(ext ,"3DSX") == 0))))
 			sf2d_draw_texture(appIcon, 31, (i - curScroll) * 19 + ICON_DISPLAY_Y);
+		else
+			sf2d_draw_texture(fileIcon, 31, (i - curScroll) * 19 + ICON_DISPLAY_Y);
 	}
+	
+	sf2d_draw_texture_part(fileManagerBg, 0, 0, 0, 0, 400, 46);
 	
 	kDown = hidKeysDown();
 	
@@ -203,7 +205,7 @@ int fileManager()
 		
 		sf2d_draw_texture(fileManagerBg, 0, 0);
 		
-		loadFiles();
+		loadFiles(cwd);
 		
 		if (screenDisplay == 0)
 		{
@@ -232,6 +234,8 @@ int fileManager()
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 			appDrawer();
+	
+		captureScreenshot();
 		
 		sf2d_swapbuffers();
 	}

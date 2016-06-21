@@ -1179,14 +1179,22 @@ int securityMenu()
 	return 0;
 }
 
-int settingsHighlight()
+int settingsHighlight(int style)
 {
 	u32 kDown = hidKeysDown();
 
 	if (cursor(0, 198, 75, 133))
 	{
-		sf2d_draw_texture(wifi_highlight, 0, 87);
-		sftd_draw_textf(robotoS12, 48, 106, fontColor, 12, "%s", lang_settingsMain[language][0]);
+		if (style == 1)
+		{
+			sf2d_draw_texture_scale(wifi_highlight, 0, 75, 0.9, 0.9);
+			sftd_draw_textf(robotoS12, 43, 96, fontColor, 12, "%s", lang_settingsMain[language][0]);
+		}	
+		else
+		{
+			sf2d_draw_texture(wifi_highlight, 0, 87);
+			sftd_draw_textf(robotoS12, 48, 106, fontColor, 12, "%s", lang_settingsMain[language][0]);
+		}
 		/*if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -1194,8 +1202,16 @@ int settingsHighlight()
 	}
 	else if (cursor(0, 198, 134, 174))
 	{
-		sf2d_draw_texture(display_highlight, 0, 135);
-		sftd_draw_textf(robotoS12, 48, 153, fontColor, 12, "%s", lang_settingsMain[language][2]);
+		if (style == 1)
+		{
+			sf2d_draw_texture_scale(display_highlight, 0, 115, 0.9, 0.9);
+			sftd_draw_textf(robotoS12, 43, 143, fontColor, 12, "%s", lang_settingsMain[language][2]);
+		}
+		else
+		{
+			sf2d_draw_texture(display_highlight, 0, 135);
+			sftd_draw_textf(robotoS12, 48, 153, fontColor, 12, "%s", lang_settingsMain[language][2]);
+		}
 		if (kDown & KEY_A)
 		{
 			if (experimentalF == 1)
@@ -1207,8 +1223,16 @@ int settingsHighlight()
 	}
 	else if (cursor(0, 198, 175, 240))
 	{
-		sf2d_draw_texture(developeroptions_highlight, 0, 183);
-		sftd_draw_textf(robotoS12, 48, 202, fontColor, 12, "%s", lang_settingsMain[language][4]);
+		if (style == 1)
+		{
+			sf2d_draw_texture_scale(developeroptions_highlight, 0, 163, 0.9, 0.9);
+			sftd_draw_textf(robotoS12, 43, 192, fontColor, 12, "%s", lang_settingsMain[language][4]);
+		}
+		else
+		{
+			sf2d_draw_texture(developeroptions_highlight, 0, 183);
+			sftd_draw_textf(robotoS12, 48, 202, fontColor, 12, "%s", lang_settingsMain[language][4]);
+		}
 		if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -1217,8 +1241,16 @@ int settingsHighlight()
 	}
 	else if (cursor(203, 400, 75, 133))
 	{
-		sf2d_draw_texture(security_highlight, 199, 87);
-		sftd_draw_textf(robotoS12, 250, 106, fontColor, 12, "%s", lang_settingsMain[language][1]);
+		if (style == 1)
+		{
+			sf2d_draw_texture_scale(security_highlight, 179, 75, 0.9, 0.9);
+			sftd_draw_textf(robotoS12, 230, 96, fontColor, 12, "%s", lang_settingsMain[language][1]);
+		}
+		else
+		{
+			sf2d_draw_texture(security_highlight, 199, 87);
+			sftd_draw_textf(robotoS12, 250, 106, fontColor, 12, "%s", lang_settingsMain[language][1]);
+		}
 		if (kDown & KEY_A)
 		{
 			if (experimentalF == 1)
@@ -1230,8 +1262,16 @@ int settingsHighlight()
 	}
 	else if (cursor(203, 400, 134, 174))
 	{
-		sf2d_draw_texture(performance_highlight, 203, 135);
-		sftd_draw_textf(robotoS12, 250, 153, fontColor, 12, "%s", lang_settingsMain[language][3]);
+		if (style == 1)
+		{
+			sf2d_draw_texture_scale(performance_highlight, 183, 115, 0.9, 0.9);
+			sftd_draw_textf(robotoS12, 230, 143, fontColor, 12, "%s", lang_settingsMain[language][3]);
+		}
+		else
+		{
+			sf2d_draw_texture(performance_highlight, 203, 135);
+			sftd_draw_textf(robotoS12, 250, 153, fontColor, 12, "%s", lang_settingsMain[language][3]);
+		}
 		if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -1240,8 +1280,16 @@ int settingsHighlight()
 	}
 	else if (cursor(203, 400, 175, 240))
 	{
-		sf2d_draw_texture(about_highlight, 203, 183);
-		sftd_draw_textf(robotoS12, 250, 202, fontColor, 12, "%s", lang_settingsMain[language][5]);
+		if (style == 1)
+		{
+			sf2d_draw_texture_scale(about_highlight, 183, 163, 0.9, 0.9);
+			sftd_draw_textf(robotoS12, 230, 192, fontColor, 12, "%s", lang_settingsMain[language][5]);
+		}
+		else
+		{	
+			sf2d_draw_texture(about_highlight, 203, 183);
+			sftd_draw_textf(robotoS12, 250, 202, fontColor, 12, "%s", lang_settingsMain[language][5]);
+		}
 		if (kDown & KEY_A)
 		{
 			settingsUnload();
@@ -1307,23 +1355,37 @@ int settingsMenu()
 		
 		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
-		sf2d_draw_texture(settingsBg, 0, 0);
-		
-		sftd_draw_textf(robotoS12, 48, 106, fontColor, 12, "%s", lang_settingsMain[language][0]);
-		sftd_draw_textf(robotoS12, 48, 153, fontColor, 12, "%s", lang_settingsMain[language][2]);
-		sftd_draw_textf(robotoS12, 48, 202, fontColor, 12, "%s", lang_settingsMain[language][4]);
-		sftd_draw_textf(robotoS12, 250, 106, fontColor, 12, "%s", lang_settingsMain[language][1]);
-		sftd_draw_textf(robotoS12, 250, 153, fontColor, 12, "%s", lang_settingsMain[language][3]);
-		sftd_draw_textf(robotoS12, 250, 202, fontColor, 12, "%s", lang_settingsMain[language][5]);
-		
-		settingsHighlight();
-		
 		if (screenDisplay == 0)
 		{
+			sf2d_draw_texture(settingsBg, 0, 0);
+		
+			sftd_draw_textf(robotoS12, 48, 106, fontColor, 12, "%s", lang_settingsMain[language][0]);
+			sftd_draw_textf(robotoS12, 48, 153, fontColor, 12, "%s", lang_settingsMain[language][2]);
+			sftd_draw_textf(robotoS12, 48, 202, fontColor, 12, "%s", lang_settingsMain[language][4]);
+			sftd_draw_textf(robotoS12, 250, 106, fontColor, 12, "%s", lang_settingsMain[language][1]);
+			sftd_draw_textf(robotoS12, 250, 153, fontColor, 12, "%s", lang_settingsMain[language][3]);
+			sftd_draw_textf(robotoS12, 250, 202, fontColor, 12, "%s", lang_settingsMain[language][5]);
+			
+			settingsHighlight(0);
+			
 			digitalTime(343, 2);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
+		
+		else if (screenDisplay == 1)
+		{
+			sf2d_draw_texture_scale(settingsBg, 0, 0, 0.9, 0.9);
+			
+			sftd_draw_textf(robotoS12, 43, 96, fontColor, 12, "%s", lang_settingsMain[language][0]);
+			sftd_draw_textf(robotoS12, 43, 143, fontColor, 12, "%s", lang_settingsMain[language][2]);
+			sftd_draw_textf(robotoS12, 43, 192, fontColor, 12, "%s", lang_settingsMain[language][4]);
+			sftd_draw_textf(robotoS12, 230, 96, fontColor, 12, "%s", lang_settingsMain[language][1]);
+			sftd_draw_textf(robotoS12, 230, 143, fontColor, 12, "%s", lang_settingsMain[language][3]);
+			sftd_draw_textf(robotoS12, 230, 192, fontColor, 12, "%s", lang_settingsMain[language][5]);
+			
+			settingsHighlight(1);
+		}	
 		
 		cursorController();
 		

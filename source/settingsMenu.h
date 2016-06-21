@@ -62,6 +62,6 @@ int displayTime();
 int performanceMenu();
 int storageMenu();
 int securityMenu();
-int settingsHighlight();
+int settingsHighlight(int style);
 int settingsUnload();
 int settingsMenu();
