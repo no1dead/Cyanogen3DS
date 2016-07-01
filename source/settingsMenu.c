@@ -10,6 +10,149 @@
 #include "settingsMenu.h"
 #include "utils.h"
 
+int updatesMenu()
+{
+	if (DARK == 1)
+	{
+		load_PNG(updatesBg, "romfs:/Dark/updatesBg.png");
+		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		fontColor = LITEGRAY;
+	}
+	else
+	{
+		load_PNG(updatesBg, "romfs:/updatesBg.png");
+		load_PNG(highlight, "romfs:/highlight.png");
+		fontColor = BLACK;
+	}
+	
+	setBilinearFilter(1, updatesBg);
+	setBilinearFilter(1, highlight);
+	
+	while (aptMainLoop())
+	{
+		hidScanInput();
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
+		
+		sf2d_draw_texture(updatesBg, 0, 0);
+		
+		sftd_draw_textf(robotoS12, 20, 75, fontColor, 12, "%s", lang_settingsUpdates[language][0]);
+		
+		if (cursor(0, 480, 58, 105))
+		{
+			sf2d_draw_texture(highlight, 0, 61);
+			sftd_draw_textf(robotoS12, 20, 75, fontColor, 12, "%s", lang_settingsUpdates[language][0]);
+			if (kDown & KEY_A)
+			{
+				sf2d_free_texture(aboutBg);
+				sf2d_free_texture(highlight);
+				onlineUpdater();
+			}
+		}
+		
+		if (screenDisplay == 0)
+		{
+			digitalTime(343, 2);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(updatesBg);
+			sf2d_free_texture(highlight);
+			aboutMenu();
+		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(updatesBg);
+			sf2d_free_texture(highlight);
+			aboutMenu();
+		}
+		
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
+	}
+
+	sf2d_free_texture(updatesBg);
+	sf2d_free_texture(highlight);
+
+	return 0;
+}
+
+void onlineUpdater()
+{
+	load_PNG(loading, "romfs:/loading.png");
+	
+	float rad = 0.0f;
+	
+	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
+
+	while (aptMainLoop())
+	{
+        sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_draw_texture_rotate(loading, 400/2, 240/2, rad);
+		
+		sftd_draw_textf(robotoS12, 20, 10, fontColor, 12, "Downloading");
+		
+		//downloadFile("https://github.com/joel16/Cyanogen3DS/releases/download/Alpha-1.0/Cyanogen3DS.Alpha.1.0.zip", "/3ds/Cyanogen3DS/");
+		
+		sf2d_end_frame();
+		
+		rad += 0.01f;
+		
+		sf2d_swapbuffers();	
+	}
+
+	sf2d_free_texture(loading);
+}
+
+void flashUpdate()
+{
+	load_PNG(recoverybg, "romfs:/android_bootable_recovery/res/images/recoverybg.png.png");
+	
+	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
+
+	while (aptMainLoop())
+	{			
+		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		sf2d_draw_texture(recoverybg, 0, 0);
+		
+		sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "Flashing zip...");
+		
+		if (fileExists("/3ds/Cyanogen3DS/UPDATE.zip"))
+		{
+			extractZip("/3ds/Cyanogen3DS/UPDATE.zip", "/3ds/");
+			sftd_draw_textf(robotoS12, 20, 88, fontColor, 12, "Installed Successfully.");
+			sftd_draw_textf(robotoS12, 20, 108, fontColor, 12, "Exiting..");
+			sf2d_free_texture(recoverybg);
+			longjmp(exitJmp, 1);
+		}
+		
+		sf2d_end_frame();
+		
+		sf2d_swapbuffers();	
+	}
+
+	sf2d_free_texture(recoverybg);
+}
+
 int aboutMenu()
 {
 	if (DARK == 1)
@@ -109,6 +252,17 @@ int aboutMenu()
 			sf2d_draw_texture(highlight, 0, 55);
 			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsAbout[language][0]);
 			sftd_draw_textf(robotoS12, 20, 83, fontColor, 12, "%s", lang_settingsAbout[language][1]);
+			if (kDown & KEY_A)
+			{
+				sf2d_free_texture(aboutBg);
+				sf2d_free_texture(highlight);
+				updatesMenu();
+			}
+		}
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(aboutBg);
+			sf2d_free_texture(highlight);
 		}
 		else if (cursor(0, 480, 106, 157))
 		{

@@ -25,6 +25,9 @@
 
 sftd_font *robotoSettingsMenu;
 
+sf2d_texture *recoverybg;
+sf2d_texture *loading;
+
 sf2d_texture *highlight;
 
 sf2d_texture *aboutBg;
@@ -50,6 +53,9 @@ sf2d_texture *offSwitch;
 int language, hrTime, DARK, experimentalF, screenDisplay;
 unsigned int fontColor;
 
+int updatesMenu();
+void onlineUpdater();
+void flashUpdate();
 int aboutMenu();
 int developerMenu();
 int displayMenu();

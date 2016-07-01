@@ -1,11 +1,7 @@
+#include "archive.h"
 #include "fileManager.h"
 #include "libs/libsf2d/include/sf2d.h"
 #include "utils.h"
-
-
-u16 OLD_3DS_CLOCK = 268;
-u16 NEW_3DS_CLOCK = 804;
-int currentClock = 0;
 
 u8 getModel()
 {
@@ -127,6 +123,58 @@ u32 soc_exit(void)
 	return 0;
 }
 
+/*bool isWifiEnabled()
+{
+	u32 wifiStatus;
+	ACU_GetWifiStatus(&wifiStatus);
+	if(!wifiStatus)
+		return false;
+	else
+		return true;
+}*/
+
+int downloadFile(const char* url, const char* path)
+{
+	httpcContext context;
+	u32 statuscode = 0;
+	Result ret = httpcOpenContext(&context, HTTPC_METHOD_GET, (char*)url , 0);
+	for (int i = 0x7; i < 0xC; i++)
+	{
+		httpcAddDefaultCert(&context, (SSLC_DefaultRootCert)i);
+	}
+	
+	if(ret == 0)
+	{
+		httpcBeginRequest(&context);
+		/*httpcReqStatus loading;
+		httpcGetRequestState(&context, &loading);
+		while (loading == 0x5){
+			httpcGetRequestState(&context, &loading);
+		}*/
+		u32 contentsize=0;
+		httpcGetResponseStatusCode(&context, &statuscode, 0);
+		if (statuscode == 200)
+		{
+			httpcGetDownloadSizeState(&context, NULL, &contentsize);
+			u8* buf = (u8*)malloc(contentsize);
+			memset(buf, 0, contentsize);
+			httpcDownloadData(&context, buf, contentsize, NULL);
+			Handle fileHandle;
+			u32 bytesWritten;
+			FS_Path filePath = fsMakePath(PATH_ASCII, path);
+			FSUSER_OpenFileDirectly(&fileHandle, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""), filePath, FS_OPEN_CREATE|FS_OPEN_WRITE, 0x00000000);
+			FSFILE_Write(fileHandle, &bytesWritten, 0, buf, contentsize,0x10001);
+			FSFILE_Close(fileHandle);
+			svcCloseHandle(fileHandle);
+			free(buf);
+		}
+	}
+	else 
+		return 0;
+	httpcCloseContext(&context);
+	return 1;
+}
+
 void setBilinearFilter(int enabled, sf2d_texture *texture)
 {
 	bilinearFilterEnabled = enabled;
@@ -134,6 +182,35 @@ void setBilinearFilter(int enabled, sf2d_texture *texture)
 	{
 		sf2d_texture_set_params(texture, GPU_TEXTURE_MAG_FILTER(GPU_LINEAR) | GPU_TEXTURE_MIN_FILTER(GPU_NEAREST));
 	}
+}
+
+int extractZip(const char * zipFile, const char * path) 
+{
+	FS_Archive sdmcArchive = 0;
+	FSUSER_OpenArchive(&sdmcArchive, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""));
+	FS_Path tempPath = fsMakePath(PATH_ASCII, path);
+	FSUSER_CreateDirectory(sdmcArchive, tempPath, FS_ATTRIBUTE_DIRECTORY);
+	FSUSER_CloseArchive(sdmcArchive);
+	char tmpFile2[1024];
+	char tmpPath2[1024];
+	sdmcInit();
+	strcpy(tmpPath2, "sdmc:");
+	strcat(tmpPath2, (char *)path);
+	chdir(tmpPath2);
+	if (strncmp("romfs:/", zipFile, 7) == 0) 
+		strcpy(tmpFile2, zipFile);
+	else
+	{
+		strcpy(tmpFile2, "sdmc:");
+		strcat(tmpFile2, (char*)zipFile);
+	}
+	Zip *handle = ZipOpen(tmpFile2);
+	if (handle == NULL) 
+		return 0;
+	int result = ZipExtract(handle, NULL);
+	ZipClose(handle);
+	sdmcExit();
+	return result;
 }
 
 void createDirs()

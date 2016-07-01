@@ -13,4 +13,4 @@ int launchApp(u64 titleId);
 char * getCardID();
 int launch3DSX(char * path);
 int installCIA(const char *path);
-int launchCia();
+int launchCia(u64 titleID, FS_MediaType mediaType);

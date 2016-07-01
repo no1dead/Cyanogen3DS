@@ -104,16 +104,11 @@ int installCIA(const char *path)
 	return 0;
 }
 
-int launchCia(/*FS_MediaType mediaType, u64 titleID*/)
+int launchCia(u64 titleID, FS_MediaType mediaType)
 {
-	u32 unique_id = 0;
-	u32 mediatype = 0;
 	u8 param[0x300];
 	u8 hmac[0x20];
-	u64 id = unique_id | ((u64)0x00040000 << 32);
-	//memset(buf0, 0, 0x300);
-	//memset(buf1, 0, 0x20);
-	APT_PrepareToDoApplicationJump(0, id, mediatype);
+	APT_PrepareToDoApplicationJump(0, titleID, mediaType);
 	APT_DoApplicationJump(param, sizeof(param), hmac);
 	return 0;
 }
