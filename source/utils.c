@@ -123,7 +123,7 @@ u32 soc_exit(void)
 	return 0;
 }
 
-/*bool isWifiEnabled()
+bool isWifiEnabled()
 {
 	u32 wifiStatus;
 	ACU_GetWifiStatus(&wifiStatus);
@@ -131,48 +131,90 @@ u32 soc_exit(void)
 		return false;
 	else
 		return true;
-}*/
+}
 
-int downloadFile(const char* url, const char* path)
+Result http_downloadsave(httpcContext *context, char *filename)//This error handling needs updated with proper text printing once ctrulib itself supports that.
 {
-	httpcContext context;
-	u32 statuscode = 0;
-	Result ret = httpcOpenContext(&context, HTTPC_METHOD_GET, (char*)url , 0);
-	for (int i = 0x7; i < 0xC; i++)
+    Result ret = 0;
+    //u8* framebuf_top;
+    u32 statuscode = 0;
+    //u32 size=0;
+    u32 contentsize = 0;
+    u8 *buf;
+
+    ret = httpcBeginRequest(context);
+    if(ret != 0)return ret;
+
+    ret = httpcGetResponseStatusCode(context, &statuscode, 0);
+    if(ret != 0)return ret;
+
+    if(statuscode != 200)
 	{
-		httpcAddDefaultCert(&context, (SSLC_DefaultRootCert)i);
-	}
+        return -2;
+    }
+
+    ret = httpcGetDownloadSizeState(context, NULL, &contentsize);
+    if(ret!=0)
+		return ret;
+    unsigned char *buffer = (unsigned char*)malloc(contentsize + 1);
+
+    buf = (u8*)malloc(contentsize);
+    if(buf == NULL)
+		return -1;
+    memset(buf, 0, contentsize);
+
+
+    ret = httpcDownloadData(context, buffer, contentsize, NULL);
+    if(ret != 0)
+    {
+        free(buf);
+        return ret;
+    }
+
+	printf("Got file\n");
+
+	FILE *dlfile;
 	
-	if(ret == 0)
-	{
-		httpcBeginRequest(&context);
-		/*httpcReqStatus loading;
-		httpcGetRequestState(&context, &loading);
-		while (loading == 0x5){
-			httpcGetRequestState(&context, &loading);
-		}*/
-		u32 contentsize=0;
-		httpcGetResponseStatusCode(&context, &statuscode, 0);
-		if (statuscode == 200)
-		{
-			httpcGetDownloadSizeState(&context, NULL, &contentsize);
-			u8* buf = (u8*)malloc(contentsize);
-			memset(buf, 0, contentsize);
-			httpcDownloadData(&context, buf, contentsize, NULL);
-			Handle fileHandle;
-			u32 bytesWritten;
-			FS_Path filePath = fsMakePath(PATH_ASCII, path);
-			FSUSER_OpenFileDirectly(&fileHandle, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""), filePath, FS_OPEN_CREATE|FS_OPEN_WRITE, 0x00000000);
-			FSFILE_Write(fileHandle, &bytesWritten, 0, buf, contentsize,0x10001);
-			FSFILE_Close(fileHandle);
-			svcCloseHandle(fileHandle);
-			free(buf);
-		}
-	}
-	else 
-		return 0;
-	httpcCloseContext(&context);
-	return 1;
+	printf("Saving to %s\n", filename);
+
+    dlfile = fopen(filename, "w");
+    fwrite(buffer, 1, contentsize, dlfile);
+    fclose(dlfile);
+
+	printf("Saved to %s\n", filename);
+
+    free(buf);
+
+    return 0;
+}
+
+Result http_file_size(char *url, u32 *len)
+{
+    httpcContext ctx;
+    Result retval = 0;
+    u32 status = 0;
+
+    retval = httpcOpenContext(&ctx, HTTPC_METHOD_HEAD, url, 0); // Open context, only need Content-Length so HEAD will do
+    if (retval != 0)
+        return retval;
+
+    retval = httpcBeginRequest(&ctx);
+    if (retval != 0)
+        return retval;
+
+    retval = httpcGetResponseStatusCode(&ctx, &status, 0);
+    if (retval != 0 || status != 200) // ^ same as above
+        return status;
+
+    retval = httpcGetDownloadSizeState(&ctx, NULL, len); // Only get total download size
+    if (retval != 0)
+    {
+        len = 0;
+        return retval;
+    }
+
+    httpcCloseContext(&ctx);
+    return retval;
 }
 
 void setBilinearFilter(int enabled, sf2d_texture *texture)
@@ -213,8 +255,11 @@ int extractZip(const char * zipFile, const char * path)
 	return result;
 }
 
-void createDirs()
+void installRequiredFiles()
 {
+	//if (fileExists("/3ds/Cyanogen3DS/UPDATE.zip"))
+	//	deleteFile("/3ds/Cyanogen3DS/UPDATE.zip");
+	
 	if (!dirExists("/3ds/Cyanogen3DS/screenshots"))
 		makeDir("/3ds/Cyanogen3DS/screenshots");
 	if (!dirExists("3ds/Cyanogen3DS/system/settings"))

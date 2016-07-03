@@ -98,29 +98,50 @@ int updatesMenu()
 
 void onlineUpdater()
 {
+	httpcInit(0);
+	
 	load_PNG(loading, "romfs:/loading.png");
 	
+	httpcContext context;
+	Result ret = 0;
 	float rad = 0.0f;
+	u32 dlSize = 0;
+	const char * url = "https://github.com/joel16/Cyanogen3DS/raw/gh-pages/UPDATE.zip";
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 
 	while (aptMainLoop())
 	{
         sf2d_start_frame(GFX_TOP, GFX_LEFT);
+		
 		sf2d_draw_texture_rotate(loading, 400/2, 240/2, rad);
 		
 		sftd_draw_textf(robotoS12, 20, 10, fontColor, 12, "Downloading");
+
+		dlSize = http_file_size("", &dlSize);
 		
-		//downloadFile("https://github.com/joel16/Cyanogen3DS/releases/download/Alpha-1.0/Cyanogen3DS.Alpha.1.0.zip", "/3ds/Cyanogen3DS/");
+		sftd_draw_textf(robotoS12, 20, 20, fontColor, 12, "%d", dlSize);
+		
+		ret = httpcOpenContext(&context, HTTPC_METHOD_GET, url, 0);
+		
+		if(ret == 0)
+		{
+			ret = http_downloadsave(&context, "/3ds/Cyanogen3DS/");
+			httpcCloseContext(&context);
+		}
+		
+		if (fileExists("/3ds/Cyanogen3DS/UPDATE.zip"))
+			flashUpdate();
 		
 		sf2d_end_frame();
 		
-		rad += 0.01f;
+		rad += 0.1f;
 		
 		sf2d_swapbuffers();	
 	}
 
 	sf2d_free_texture(loading);
+	httpcExit();
 }
 
 void flashUpdate()

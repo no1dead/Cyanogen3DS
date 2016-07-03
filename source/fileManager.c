@@ -65,6 +65,30 @@ bool dirExists(const char *path)
         return false;
 }
 
+int deleteFile(const char *path) 
+{
+	FS_Path filePath = fsMakePath(PATH_ASCII, path);
+	if(R_FAILED(FSUSER_DeleteFile(sdmcArchive, filePath))) 
+	{
+		return -1;
+	}
+  
+	return 0;
+}
+
+Handle openDirectory(const char *path) 
+{
+	Handle dir;
+
+	FS_Path filePath = fsMakePath(PATH_ASCII, path);
+	if(R_FAILED(FSUSER_OpenDirectory(&dir, sdmcArchive, filePath))) 
+	{
+		return 0;
+	}
+	
+	return(dir);
+}
+
 void dirUp()
 {
 	current-=1; // Subtract a value from current so the ">" goes up
@@ -116,12 +140,12 @@ int loadFiles(const char * path)
 	u32 entriesRead;
 	//static char name[1024];
 	//int current = 0;
-
-	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", path);
 	
 	sf2d_draw_texture(bar, 0, 6 + (current - curScroll) * 39);
 	
-	for (int i = 0; i < MAX_FILES; i++)
+	int i = 0;
+	
+	for (i = 0; i < MAX_FILES; i++)
 	{	
 		if (current <= curScroll - 1) 
 		{
@@ -154,8 +178,9 @@ int loadFiles(const char * path)
 	}
 	
 	sf2d_draw_texture_part(fileManagerBg, 0, 0, 0, 0, 400, 46);
+	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", path);
 	
-	kDown = hidKeysDown();
+	//kDown = hidKeysDown();
 	
 	if (kDown & KEY_DOWN) 
 	{
@@ -165,6 +190,11 @@ int loadFiles(const char * path)
 	{
 		dirUp();
 	}	
+	
+	if((entry.attributes & FS_ATTRIBUTE_DIRECTORY) && (kDown & KEY_A)) 
+	{
+		openDirectory(fileNames[i]);
+	}
 	
 	if (current < 1) 
 		current = 1;
@@ -191,9 +221,6 @@ int fileManager()
 	setBilinearFilter(1, dirIcon);
 	setBilinearFilter(1, appIcon);
 	setBilinearFilter(1, fileIcon);
-	
-	fsInit();
-	sdmcInit();
 	
 	while (aptMainLoop())
 	{
@@ -241,8 +268,6 @@ int fileManager()
 	}
 	
 	sf2d_free_texture(fileManagerBg);
-	sdmcExit();
-	fsExit();
 
 	return 0;
 }

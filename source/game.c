@@ -6,10 +6,8 @@ I will alter these to my needs later.*/
 
 int launchApp(u64 titleId) 
 {
-	amInit();
 	char product_id[16];
 	AM_GetTitleProductCode(MEDIATYPE_GAME_CARD, 0, product_id);
-	amExit();
 	
 	//if (product_id[0] == 'C' && product_id[1] == 'T' && product_id[2] == 'R')
 	//{
@@ -33,10 +31,8 @@ int launchApp(u64 titleId)
 
 char * getCardID() 
 {
-	amInit();
 	static char product_id[16]; //quick/hacky fix. This shouldn't be static
 	AM_GetTitleProductCode(MEDIATYPE_GAME_CARD, 0, product_id);
-	amExit();
 	if (product_id[0] == 'C' && product_id[1] == 'T' && product_id[2] == 'R') 
 		return product_id;
 	else 
@@ -108,7 +104,11 @@ int launchCia(u64 titleID, FS_MediaType mediaType)
 {
 	u8 param[0x300];
 	u8 hmac[0x20];
+	
+	memset(param, 0, sizeof(param));
+	memset(hmac, 0, sizeof(hmac));
 	APT_PrepareToDoApplicationJump(0, titleID, mediaType);
 	APT_DoApplicationJump(param, sizeof(param), hmac);
+	
 	return 0;
 }

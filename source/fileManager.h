@@ -20,6 +20,8 @@ const char *get_filename_ext(const char * filename);
 int makeDir(const char * path);
 bool fileExists(char * path);
 bool dirExists(const char * path);
+int deleteFile(const char *path);
+Handle openDirectory(const char *path);
 void dirUp();
 void dirDown();
 void dirUpx5();

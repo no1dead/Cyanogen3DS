@@ -10,31 +10,40 @@ void cleanUp()
 {
 	sftd_fini();
 	sf2d_fini();
-	romfsExit();
-	cfguExit();
+	sdmcExit();
+	fsExit();
+	amExit();
 	ptmuExit();
-	acExit();
-	csndExit();
+    acExit();
+    cfguExit();
+	aptExit();
+    romfsExit();	
 }
 
 int main(int argc, char **argv)
 {
-	sf2d_init();
-	sf2d_set_clear_color(RGBA8(0, 0, 0, 255));
-	sf2d_set_vblank_wait(0);
 	romfsInit();
-	cfguInit();
-	acInit();
-	csndInit();
+	aptInit();
+    cfguInit();
+    acInit();
+    ptmuInit();
+	amInit();
+	AM_InitializeExternalTitleDatabase(false);
+	fsInit();
+	sdmcInit();
 
 	// Font loading
+	sf2d_init();
 	sftd_init();
 	ptmuInit();
+	
+	sf2d_set_clear_color(RGBA8(0, 0, 0, 255));
+	sf2d_set_vblank_wait(0);
 
 	if ((getModel() == 2) || (getModel() == 4))
 		osSetSpeedupEnable(true); //Enable N3DS speedup
 	
-	createDirs(); //create necessary dirs
+	installRequiredFiles(); //create necessary dirs
 	
 	hrTime = setFileDefaultsInt("/3ds/Cyanogen3DS/system/app/clock/timeSet.bin", 0, hrTime);
 	DARK = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/darkTheme.bin", 0, DARK);
