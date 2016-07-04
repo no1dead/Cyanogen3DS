@@ -1240,6 +1240,8 @@ int securityMenu()
 	setBilinearFilter(1, securityBg);
 	setBilinearFilter(1, highlight);
 	
+	static SwkbdState swkbd;
+	
 	while (aptMainLoop())
 	{
 		hidScanInput();
@@ -1262,58 +1264,60 @@ int securityMenu()
 			//androidQuickSettings();
 		}
 		
-		if (cursor(0, 480, 58, 105))
+		if (cursor(0, 400, 58, 105))
 		{	
 			sf2d_draw_texture(highlight, 0, 56);
 			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsSecuirty[language][0]); 
 			if (kDown & KEY_A)
 			{
-				//if (fileExists("system/settings/password.bin", &sdmcArchive))
-					//sceIoRemove("system/settings/password.bin");
-				/*else*/ if (fileExists("system/settings/pin.bin"))
+				if (fileExists("/3ds/Cyanogen3DS/system/settings/password.bin"))
+					deleteFile("/3ds/Cyanogen3DS/system/settings/password.bin");
+				else
 				{
-					//sceIoRemove("system/settings/pin.bin");
-				//HBKB_CallKeyboard(touch);
-				//tempMessage = HBKB_CheckKeyboardInput();
-				FILE * password = fopen("system/settings/password.bin", "w");
-				fprintf(password, "%s", tempMessage);
-				fclose(password);
-				//HBKB_Clean();
+					swkbdInit(&swkbd, SWKBD_TYPE_WESTERN, 2, 20);
+					swkbdSetValidation(&swkbd, SWKBD_NOTEMPTY_NOTBLANK, 0, 0);
+					swkbdInputText(&swkbd, tempMessage, sizeof(tempMessage));
+					FILE * password = fopen("system/settings/password.bin", "w");
+					fprintf(password, "%s", tempMessage);
+					fclose(password);
+					return securityMenu();
 				}
 			}
 		}
 		
-		else if (cursor(0, 480, 106, 157))
+		else if (cursor(0, 400, 106, 157))
 		{	
 			sf2d_draw_texture(highlight, 0, 105);
 			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsSecuirty[language][1]); 
 			if (kDown & KEY_A)
 			{
-				//if (fileExists("system/settings/password.bin", &sdmcArchive))
-					//sceIoRemove("system/settings/password.bin");
-				/*else*/ if (fileExists("system/settings/pin.bin"))
+				if (fileExists("/3ds/Cyanogen3DS/system/settings/pin.bin"))
+					deleteFile("/3ds/Cyanogen3DS/system/settings/pin.bin");
+				else	
 				{
-					//sceIoRemove("system/settings/pin.bin");
-				//HBKB_CallKeyboard(touch);
-				//tempPin = HBKB_CheckKeyboardInput();
-				FILE * pin = fopen("system/settings/pin.bin", "w");
-				fprintf(pin, "%s", tempPin);
-				fclose(pin);
-				//HBKB_Clean();
+					swkbdInit(&swkbd, SWKBD_TYPE_NUMPAD, 1, 4);
+					swkbdSetPasswordMode(&swkbd, SWKBD_PASSWORD_HIDE_DELAY);
+					swkbdSetValidation(&swkbd, SWKBD_ANYTHING, 0, 0);
+					swkbdSetFeatures(&swkbd, SWKBD_FIXED_WIDTH);
+					swkbdInputText(&swkbd, tempPin, sizeof(tempPin));
+					FILE * pin = fopen("system/settings/pin.bin", "w");
+					fprintf(pin, "%s", tempPin);
+					fclose(pin);
+					return securityMenu();
 				}
 			}
 		}
 		
-		else if (cursor(0, 480, 158, 209))
+		else if (cursor(0, 400, 158, 209))
 		{	
 			sf2d_draw_texture(highlight, 0, 157);
 			sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsSecuirty[language][2]); 
 			if (kDown & KEY_A)
 			{
-				//if (fileExists("system/settings/password.bin", &sdmcArchive))
-					//sceIoRemove("system/settings/password.bin");
-				//else if (fileExists("system/settings/pin.bin", &sdmcArchive))
-					//sceIoRemove("system/settings/pin.bin");
+				if (fileExists("/3ds/Cyanogen3DS/system/settings/password.bin"))
+					deleteFile("/3ds/Cyanogen3DS/system/settings/password.bin");
+				else if (fileExists("/3ds/Cyanogen3DS/system/settings/pin.bin"))
+					deleteFile("/3ds/Cyanogen3DS/system/settings/pin.bin");
 			}
 		}
 		

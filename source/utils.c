@@ -257,8 +257,8 @@ int extractZip(const char * zipFile, const char * path)
 
 void installRequiredFiles()
 {
-	//if (fileExists("/3ds/Cyanogen3DS/UPDATE.zip"))
-	//	deleteFile("/3ds/Cyanogen3DS/UPDATE.zip");
+	if (fileExists("/3ds/Cyanogen3DS/UPDATE.zip"))
+		deleteFile("/3ds/Cyanogen3DS/UPDATE.zip"); //Delete any existing UPDATE.zip.
 	
 	if (!dirExists("/3ds/Cyanogen3DS/screenshots"))
 		makeDir("/3ds/Cyanogen3DS/screenshots");

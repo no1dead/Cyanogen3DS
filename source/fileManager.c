@@ -20,6 +20,16 @@ extern bool CPU_Running;
 
 extern u8	frameSkip;
 
+void openSdArchive()
+{
+	FSUSER_OpenArchive(&sdmcArchive, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""));
+}
+
+void closeSdArchive()
+{
+	FSUSER_CloseArchive(sdmcArchive);
+}
+
 void utf2ascii(char* dst, u16* src)
 {
 	if(!src || !dst)return;
@@ -65,15 +75,12 @@ bool dirExists(const char *path)
         return false;
 }
 
-int deleteFile(const char *path) 
+bool deleteFile(const char *path) 
 {
-	FS_Path filePath = fsMakePath(PATH_ASCII, path);
-	if(R_FAILED(FSUSER_DeleteFile(sdmcArchive, filePath))) 
-	{
-		return -1;
-	}
-  
-	return 0;
+	openSdArchive();
+	Result ret = FSUSER_DeleteFile(sdmcArchive, fsMakePath(PATH_ASCII, path));
+	closeSdArchive();
+	return ret == 0;
 }
 
 Handle openDirectory(const char *path) 
