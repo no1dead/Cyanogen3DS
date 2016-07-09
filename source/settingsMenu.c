@@ -1272,16 +1272,16 @@ int securityMenu()
 			{
 				if (fileExists("/3ds/Cyanogen3DS/system/settings/password.bin"))
 					deleteFile("/3ds/Cyanogen3DS/system/settings/password.bin");
-				else
-				{
-					swkbdInit(&swkbd, SWKBD_TYPE_WESTERN, 2, 20);
-					swkbdSetValidation(&swkbd, SWKBD_NOTEMPTY_NOTBLANK, 0, 0);
-					swkbdInputText(&swkbd, tempMessage, sizeof(tempMessage));
-					FILE * password = fopen("system/settings/password.bin", "w");
-					fprintf(password, "%s", tempMessage);
-					fclose(password);
-					return securityMenu();
-				}
+				else if (fileExists("/3ds/Cyanogen3DS/system/settings/pin.bin"))
+					deleteFile("/3ds/Cyanogen3DS/system/settings/pin.bin");
+				
+				swkbdInit(&swkbd, SWKBD_TYPE_WESTERN, 2, 20);
+				swkbdSetValidation(&swkbd, SWKBD_NOTEMPTY_NOTBLANK, 0, 0);
+				swkbdInputText(&swkbd, tempMessage, sizeof(tempMessage));
+				FILE * password = fopen("system/settings/password.bin", "w");
+				fprintf(password, "%s", tempMessage);
+				fclose(password);
+				return securityMenu();
 			}
 		}
 		
@@ -1291,20 +1291,20 @@ int securityMenu()
 			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsSecuirty[language][1]); 
 			if (kDown & KEY_A)
 			{
-				if (fileExists("/3ds/Cyanogen3DS/system/settings/pin.bin"))
+				if (fileExists("/3ds/Cyanogen3DS/system/settings/password.bin"))
+					deleteFile("/3ds/Cyanogen3DS/system/settings/password.bin");
+				else if (fileExists("/3ds/Cyanogen3DS/system/settings/pin.bin"))
 					deleteFile("/3ds/Cyanogen3DS/system/settings/pin.bin");
-				else	
-				{
-					swkbdInit(&swkbd, SWKBD_TYPE_NUMPAD, 1, 4);
-					swkbdSetPasswordMode(&swkbd, SWKBD_PASSWORD_HIDE_DELAY);
-					swkbdSetValidation(&swkbd, SWKBD_ANYTHING, 0, 0);
-					swkbdSetFeatures(&swkbd, SWKBD_FIXED_WIDTH);
-					swkbdInputText(&swkbd, tempPin, sizeof(tempPin));
-					FILE * pin = fopen("system/settings/pin.bin", "w");
-					fprintf(pin, "%s", tempPin);
-					fclose(pin);
-					return securityMenu();
-				}
+				
+				swkbdInit(&swkbd, SWKBD_TYPE_NUMPAD, 1, 4);
+				swkbdSetPasswordMode(&swkbd, SWKBD_PASSWORD_HIDE_DELAY);
+				swkbdSetValidation(&swkbd, SWKBD_ANYTHING, 0, 0);
+				swkbdSetFeatures(&swkbd, SWKBD_FIXED_WIDTH);
+				swkbdInputText(&swkbd, tempPin, sizeof(tempPin));
+				FILE * pin = fopen("system/settings/pin.bin", "w");
+				fprintf(pin, "%s", tempPin);
+				fclose(pin);
+				return securityMenu();
 			}
 		}
 		

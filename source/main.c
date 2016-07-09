@@ -1,7 +1,7 @@
 #include "appDrawer.h"
 #include "homeMenu.h"
+#include "lockscreen.h"
 #include "main.h"
-#include "homeMenu.h"
 #include "settingsMenu.h"
 #include "sound.h"
 #include "utils.h"
@@ -10,6 +10,7 @@ void cleanUp()
 {
 	sftd_fini();
 	sf2d_fini();
+	hidExit();
 	sdmcExit();
 	fsExit();
 	amExit();
@@ -17,12 +18,14 @@ void cleanUp()
     acExit();
     cfguExit();
 	aptExit();
-    romfsExit();	
+	srvExit();
+    romfsExit();
 }
 
 int main(int argc, char **argv)
 {
 	romfsInit();
+	srvInit();
 	aptInit();
     cfguInit();
     acInit();
@@ -31,11 +34,11 @@ int main(int argc, char **argv)
 	AM_InitializeExternalTitleDatabase(false);
 	fsInit();
 	sdmcInit();
+	hidInit();
 
 	// Font loading
 	sf2d_init();
 	sftd_init();
-	ptmuInit();
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 255));
 	sf2d_set_vblank_wait(0);
@@ -116,6 +119,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	lockScreen();
 	home(); // Show Home Menu, until the user presses START
 
 	// Free textures before exiting
