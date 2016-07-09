@@ -266,6 +266,8 @@ void installRequiredFiles()
 		makeDir("/3ds/Cyanogen3DS/system/settings");
 	if (!dirExists("3ds/Cyanogen3DS/system/app"))
 		makeDir("/3ds/Cyanogen3DS/system/app");
+	if (!dirExists("3ds/Cyanogen3DS/system/app/clock"))
+		makeDir("/3ds/Cyanogen3DS/system/app/clock");
 }
 
 int setFileDefaultsInt(char *path, int value, int var)
