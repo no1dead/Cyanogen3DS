@@ -1,6 +1,6 @@
 #include "appDrawer.h"
 #include "homeMenu.h"
-#include "lockscreen.h"
+#include "lockScreen.h"
 #include "main.h"
 #include "settingsMenu.h"
 #include "sound.h"
