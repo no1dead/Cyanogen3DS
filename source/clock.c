@@ -2,30 +2,51 @@
 #include "homeMenu.h"
 #include "settingsMenu.h"
 
-void digitalTime(int x, int y)
+void digitalTime(int x, int y, int style)
 {
 	time_t unix_time = time(0);
 	struct tm* time_struct = gmtime((const time_t*)&unix_time);
 	int hours = time_struct->tm_hour;
 	int minutes = time_struct->tm_min;
+	bool amOrPm = false;
 	
-		sftd_draw_textf(robotoS12, x+10, y, RGBA8(255, 255, 255, 255), 12, "%2d:%02d", hours, minutes);
-		
-	if(hours == 0)
+	if (hrTime == 0)
 	{
-		hours = 12;
+		if(hours < 12)
+			amOrPm = true;
+		if(hours == 0)
+		{
+			hours = 12;
+		}
+		else if(hours > 12)
+		{
+			hours = hours - 12;
+		}
 	}
-	if (hours > 12) 
-		hours -= 12;	
-		
-    if (hours > 12)
-		sftd_draw_textf(robotoS10, x+39, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
-	else 
-		sftd_draw_textf(robotoS10, x+39, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
 	
-	//if (hrTime == 1)
-	//{
-	//}
+	if (style == 0)
+	{
+		if (hrTime == 0)
+			sftd_draw_textf(robotoS12, x, y, RGBA8(255, 255, 255, 255), 12, "%2i:%02i", hours, minutes);
+		else
+			sftd_draw_textf(robotoS12, x+7, y, RGBA8(255, 255, 255, 255), 12, "%2i:%02i", hours, minutes);
+	}
+		
+	else if (style == 1)
+	{
+		if (hrTime == 0)
+			sftd_draw_textf(robotoS30, x+4, y, RGBA8(255, 255, 255, 255), 34, "%2i:%02i", hours, minutes);
+		else
+			sftd_draw_textf(robotoS30, x+1, y, RGBA8(255, 255, 255, 255), 34, "%2i:%02i", hours, minutes);
+	}
+	
+	if ((hrTime == 0) && (style == 0))
+	{
+		if (amOrPm)
+			sftd_draw_textf(robotoS10, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
+		else 
+			sftd_draw_textf(robotoS10, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
+	}
 }
 
 char * getDayOfWeek(int type)

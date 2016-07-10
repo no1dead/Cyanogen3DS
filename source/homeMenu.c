@@ -209,7 +209,7 @@ void androidQuickSettings()
 	sftd_draw_textf(robotoS10, 20, yPos1+14, RGBA8(255, 255, 255, 255), 10, "%s", getDayOfWeek(0));
 	sftd_draw_textf(robotoS10, 85, yPos1+14, RGBA8(255, 255, 255, 255), 10, "%s", getMonthOfYear(0));
 
-	digitalTime(10, yPos1);
+	digitalTime(19, yPos1, 0);
 
 	if ((kHeld & KEY_TOUCH) && (touch(0, 320, 0, 20))) 
 	{
@@ -314,30 +314,28 @@ void androidQuickSettings()
 
 int dayNightWidget()
 {
-	u64 lastTimeInSeconds = 0;
+	time_t unix_time = time(0);
+	struct tm* time_struct = gmtime((const time_t*)&unix_time);
+	int hours = time_struct->tm_hour;
 	
-	if(lastTimeInSeconds == 0) 
+	if (hrTime == 1)
 	{
-		lastTimeInSeconds = osGetTime() / 1000; //get on boot.
+		if(hours == 0)
+		{
+			hours = 12;
+		}
+		else if(hours > 12)
+		{
+			hours = hours - 12;
+		}
 	}
-	u64 timeInSeconds = osGetTime() / 1000;
-
-	lastTimeInSeconds = timeInSeconds;
-	
-	u64 convert = ( (70*365+17) * 86400LLU );
-	time_t now = timeInSeconds- convert;
-	struct tm *ts = localtime(&now);
-
-	int hours = ts->tm_hour;
-	int minutes = ts->tm_min;
 	
 	if (hours < 6)
 		sf2d_draw_texture(dayWidget, 172, 70);
 	else
 		sf2d_draw_texture(nightWidget, 167, 70);
 		
-	sftd_draw_textf(robotoS30, 152, 30, RGBA8(255, 255, 255, 255), 34, "%2d : %02d", hours, minutes);
-	
+	digitalTime(155, 30, 1);
 	sftd_draw_textf(robotoS10, 145, 90, RGBA8(255, 255, 255, 255), 10, "%s", getDayOfWeek(1));
 	sftd_draw_textf(robotoS10, 235, 90, RGBA8(255, 255, 255, 255), 10, "%s", getMonthOfYear(0));
 	
@@ -357,7 +355,7 @@ int switchDisplayModeOn(int app)
 		else if (app == 2)
 			sf2d_draw_texture_scale(ic_launcher_settings, 170, 90, 1.4, 1.4);
 		
-		digitalTime(343, 2); //Displays digital time
+		digitalTime(352, 2, 0); //Displays digital time
 		batteryStatus(300, 2, 0); //Displays battery status
 		//androidQuickSettings();
 		sf2d_end_frame();
@@ -413,7 +411,7 @@ int home()
 			appDrawerIcon(screenDisplay);
 			
 			dayNightWidget();
-			digitalTime(343, 2); //Displays digital time
+			digitalTime(352, 2, 0); //Displays digital time
 			batteryStatus(300, 2, 0); //Displays battery status
 			//androidQuickSettings();
 		}

@@ -49,6 +49,8 @@ sf2d_texture *wifi_highlight;
 
 sf2d_texture *onSwitch;
 sf2d_texture *offSwitch;
+sf2d_texture *select;
+sf2d_texture *deselect;
 
 int language, hrTime, DARK, experimentalF, screenDisplay;
 unsigned int fontColor;
@@ -67,6 +69,7 @@ void iconPackReload();
 int displayTime();
 int performanceMenu();
 int storageMenu();
+int batteryMenu();
 int securityMenu();
 int settingsHighlight(int style);
 int settingsUnload();

@@ -54,7 +54,7 @@ int updatesMenu()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -273,11 +273,14 @@ int aboutMenu()
 			sf2d_draw_texture(highlight, 0, 55);
 			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsAbout[language][0]);
 			sftd_draw_textf(robotoS12, 20, 83, fontColor, 12, "%s", lang_settingsAbout[language][1]);
-			if (kDown & KEY_A)
-			{
-				sf2d_free_texture(aboutBg);
-				sf2d_free_texture(highlight);
-				updatesMenu();
+			if (experimentalF == 1)
+			{	
+				if (kDown & KEY_A)
+				{
+					sf2d_free_texture(aboutBg);
+					sf2d_free_texture(highlight);
+					updatesMenu();
+				}
 			}
 		}
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
@@ -300,7 +303,7 @@ int aboutMenu()
 
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -499,7 +502,7 @@ int developerMenu()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -586,11 +589,14 @@ int displayMenu()
 		{
 			sf2d_draw_texture(highlight, 0, 55);
 			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsDisplay[language][0]);
-			if (kDown & KEY_A)
+			if (experimentalF == 1)
 			{
-				sf2d_free_texture(displayBg);
-				sf2d_free_texture(highlight);
-				displayThemes();
+				if (kDown & KEY_A)
+				{
+					sf2d_free_texture(displayBg);
+					sf2d_free_texture(highlight);
+					displayThemes();
+				}
 			}
 		}
 		else if (cursor(0, 480, 105, 155))
@@ -617,7 +623,7 @@ int displayMenu()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -717,7 +723,7 @@ int displayThemes()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -738,14 +744,14 @@ int displayThemes()
 		{
 			sf2d_free_texture(displayBg);
 			sf2d_free_texture(highlight);
-			settingsMenu();
+			displayMenu();
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 		{
 			sf2d_free_texture(displayBg);
 			sf2d_free_texture(highlight);
-			settingsMenu();
+			displayMenu();
 		}
 		
 		captureScreenshot();
@@ -810,7 +816,7 @@ int displayIconPack()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -842,14 +848,14 @@ int displayIconPack()
 		{
 			sf2d_free_texture(displayBg);
 			sf2d_free_texture(highlight);
-			displayMenu();
+			displayThemes();
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 		{
 			sf2d_free_texture(displayBg);
 			sf2d_free_texture(highlight);
-			displayMenu();
+			displayThemes();
 		}
 		
 		captureScreenshot();
@@ -990,7 +996,7 @@ int displayTime()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -1092,11 +1098,13 @@ int performanceMenu()
 		{
 			sf2d_draw_texture(highlight, 0, 202);
 			sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsPerformance[language][3]);
+			if (kDown & KEY_A)
+				batteryMenu();
 		}
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -1180,7 +1188,7 @@ int storageMenu()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -1217,6 +1225,109 @@ int storageMenu()
 	}
 
 	sf2d_free_texture(performanceBg2);
+	sf2d_free_texture(highlight);
+
+	return 0;
+}
+
+int batteryMenu()
+{
+	if (DARK == 1)
+	{
+		load_PNG(performanceBg, "romfs:/Dark/performanceBg.png");
+		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		fontColor = LITEGRAY;
+	}
+	else
+	{
+		load_PNG(performanceBg, "romfs:/performanceBg.png");
+		load_PNG(highlight, "romfs:/highlight.png");
+		fontColor = BLACK;
+	}
+	
+	load_PNG(deselect, "romfs:/deselect.png");
+	load_PNG(select, "romfs:/select.png");
+	
+	setBilinearFilter(1, performanceBg);
+	setBilinearFilter(1, highlight);
+	setBilinearFilter(1, deselect);
+	setBilinearFilter(1, select);
+	
+	while (aptMainLoop())
+	{
+		hidScanInput();
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
+		
+		sf2d_draw_texture(performanceBg, 0, 0);
+		
+		sftd_draw_textf(robotoS12, 20, 70, fontColor, 12, "%s", lang_settingsBattery[language][0]);
+		sftd_draw_textf(robotoS12, 20, 120, fontColor, 12, "%s", lang_settingsBattery[language][1]);
+		sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsBattery[language][2]);
+		
+		if (cursor(0, 480, 55, 105))
+		{
+			sf2d_draw_texture(highlight, 0, 55);
+			sftd_draw_textf(robotoS12, 20, 70, fontColor, 12, "%s", lang_settingsBattery[language][0]);
+		}
+		else if (cursor(0, 480, 105, 155))
+		{
+			sf2d_draw_texture(highlight, 0, 105);
+			sftd_draw_textf(robotoS12, 20, 120, fontColor, 12, "%s", lang_settingsBattery[language][1]);
+		}
+		else if (cursor(0, 480, 156, 205))
+		{
+			sf2d_draw_texture(highlight, 0, 154);
+			sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsBattery[language][2]);
+			if (kDown & KEY_A)
+				storageMenu();
+		}
+		
+		sf2d_draw_texture(deselect, 370, 70);
+		sf2d_draw_texture(deselect, 370, 120);
+		sf2d_draw_texture(deselect, 370, 168);
+		
+		if (screenDisplay == 0)
+		{
+			digitalTime(352, 2, 0);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(performanceBg);
+			sf2d_free_texture(highlight);
+			performanceMenu();
+		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(performanceBg);
+			sf2d_free_texture(highlight);
+			performanceMenu();
+		}
+		
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
+	}
+
+	sf2d_free_texture(performanceBg);
 	sf2d_free_texture(highlight);
 
 	return 0;
@@ -1259,7 +1370,7 @@ int securityMenu()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -1393,11 +1504,8 @@ int settingsHighlight(int style)
 		}
 		if (kDown & KEY_A)
 		{
-			if (experimentalF == 1)
-			{
-				settingsUnload();
-				displayMenu();
-			}
+			settingsUnload();
+			displayMenu();
 		}
 	}
 	else if (cursor(0, 198, 175, 240))
@@ -1432,11 +1540,8 @@ int settingsHighlight(int style)
 		}
 		if (kDown & KEY_A)
 		{
-			if (experimentalF == 1)
-			{
-				settingsUnload();
-				securityMenu();
-			}
+			settingsUnload();
+			securityMenu();
 		}
 	}
 	else if (cursor(203, 400, 134, 174))
@@ -1547,7 +1652,7 @@ int settingsMenu()
 			
 			settingsHighlight(0);
 			
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}

@@ -198,6 +198,8 @@ int loadFiles(const char * path)
 		dirUp();
 	}	
 	
+	captureScreenshot();
+	
 	if((entry.attributes & FS_ATTRIBUTE_DIRECTORY) && (kDown & KEY_A)) 
 	{
 		openDirectory(fileNames[i]);
@@ -243,7 +245,7 @@ int fileManager()
 		
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(343, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
@@ -268,8 +270,6 @@ int fileManager()
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 			appDrawer();
-	
-		captureScreenshot();
 		
 		sf2d_swapbuffers();
 	}

@@ -70,7 +70,7 @@ int powerMenu()
 
 		if (screenDisplay == 0)
 		{
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}

@@ -109,7 +109,7 @@ int appDrawer()
 				sf2d_draw_texture(ic_launcher_settings, 175, 125);
 			sftd_draw_textf(robotoS12, 172, 180, fontColor, 12, "%s", lang_appDrawer[language][7]);
 			
-			digitalTime(343, 2);
+			digitalTime(352, 2, 0);
 			batteryStatus(300, 2, 0); 
 			//androidQuickSettings();
 		}
