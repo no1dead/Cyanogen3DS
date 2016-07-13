@@ -164,14 +164,14 @@ int appDrawer()
 			}		
 		}
 		
-		/*else if ((cursor(320, 365, 45, 90)) && (kDown & KEY_A))
+		else if ((cursor(320, 365, 45, 90)) && (kDown & KEY_A))
 		{
-			if (experimentalF == 1)
+			/*if (experimentalF == 1)
 			{
 				appDrawerUnload();
-				startCard();
-			}		
-		}*/
+				launch3DSX("/3ds/killerman_ghost_buster/killerman_ghost_buster.3dsx");
+			}*/	
+		}
 		
 		else if ((cursor(170, 215, 125, 170)) && (kDown & KEY_A))
 		{

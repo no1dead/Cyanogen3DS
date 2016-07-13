@@ -83,19 +83,6 @@ bool deleteFile(const char *path)
 	return ret == 0;
 }
 
-Handle openDirectory(const char *path) 
-{
-	Handle dir;
-
-	FS_Path filePath = fsMakePath(PATH_ASCII, path);
-	if(R_FAILED(FSUSER_OpenDirectory(&dir, sdmcArchive, filePath))) 
-	{
-		return 0;
-	}
-	
-	return(dir);
-}
-
 void dirUp()
 {
 	current-=1; // Subtract a value from current so the ">" goes up
@@ -140,19 +127,18 @@ int loadFiles(const char * path)
 	FS_DirectoryEntry entry;
 
 	FS_Path dirPath = fsMakePath(PATH_ASCII, path);
-	sdmcArchive = 0;
 	FSUSER_OpenArchive(&sdmcArchive, ARCHIVE_SDMC, fsMakePath(PATH_EMPTY, ""));
 	FSUSER_OpenDirectory(&dirHandle, sdmcArchive, dirPath);
 	
 	u32 entriesRead;
 	//static char name[1024];
 	//int current = 0;
+
+	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", path);
 	
 	sf2d_draw_texture(bar, 0, 6 + (current - curScroll) * 39);
 	
-	int i = 0;
-	
-	for (i = 0; i < MAX_FILES; i++)
+	for (int i = 0; i < MAX_FILES; i++)
 	{	
 		if (current <= curScroll - 1) 
 		{
@@ -185,9 +171,8 @@ int loadFiles(const char * path)
 	}
 	
 	sf2d_draw_texture_part(fileManagerBg, 0, 0, 0, 0, 400, 46);
-	sftd_draw_textf(robotoS12, 76, 25, RGBA8(255, 255, 255, 255), 12, "%s", path);
 	
-	//kDown = hidKeysDown();
+	kDown = hidKeysDown();
 	
 	if (kDown & KEY_DOWN) 
 	{
@@ -197,13 +182,6 @@ int loadFiles(const char * path)
 	{
 		dirUp();
 	}	
-	
-	captureScreenshot();
-	
-	if((entry.attributes & FS_ATTRIBUTE_DIRECTORY) && (kDown & KEY_A)) 
-	{
-		openDirectory(fileNames[i]);
-	}
 	
 	if (current < 1) 
 		current = 1;
@@ -265,16 +243,26 @@ int fileManager()
 		if (kDown & KEY_B)
 		{
 			sf2d_free_texture(fileManagerBg);
+			sf2d_free_texture(bar);
+			sf2d_free_texture(dirIcon);
+			sf2d_free_texture(appIcon);
+			sf2d_free_texture(fileIcon);
 			appDrawer();
 		}
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 			appDrawer();
 		
+		captureScreenshot();
+		
 		sf2d_swapbuffers();
 	}
 	
 	sf2d_free_texture(fileManagerBg);
+	sf2d_free_texture(bar);
+	sf2d_free_texture(dirIcon);
+	sf2d_free_texture(appIcon);
+	sf2d_free_texture(fileIcon);
 
 	return 0;
 }

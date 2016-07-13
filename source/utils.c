@@ -123,100 +123,6 @@ u32 soc_exit(void)
 	return 0;
 }
 
-bool isWifiEnabled()
-{
-	u32 wifiStatus;
-	ACU_GetWifiStatus(&wifiStatus);
-	if(!wifiStatus)
-		return false;
-	else
-		return true;
-}
-
-Result http_downloadsave(httpcContext *context, char *filename)//This error handling needs updated with proper text printing once ctrulib itself supports that.
-{
-    Result ret = 0;
-    //u8* framebuf_top;
-    u32 statuscode = 0;
-    //u32 size=0;
-    u32 contentsize = 0;
-    u8 *buf;
-
-    ret = httpcBeginRequest(context);
-    if(ret != 0)return ret;
-
-    ret = httpcGetResponseStatusCode(context, &statuscode, 0);
-    if(ret != 0)return ret;
-
-    if(statuscode != 200)
-	{
-        return -2;
-    }
-
-    ret = httpcGetDownloadSizeState(context, NULL, &contentsize);
-    if(ret!=0)
-		return ret;
-    unsigned char *buffer = (unsigned char*)malloc(contentsize + 1);
-
-    buf = (u8*)malloc(contentsize);
-    if(buf == NULL)
-		return -1;
-    memset(buf, 0, contentsize);
-
-
-    ret = httpcDownloadData(context, buffer, contentsize, NULL);
-    if(ret != 0)
-    {
-        free(buf);
-        return ret;
-    }
-
-	printf("Got file\n");
-
-	FILE *dlfile;
-	
-	printf("Saving to %s\n", filename);
-
-    dlfile = fopen(filename, "w");
-    fwrite(buffer, 1, contentsize, dlfile);
-    fclose(dlfile);
-
-	printf("Saved to %s\n", filename);
-
-    free(buf);
-
-    return 0;
-}
-
-Result http_file_size(char *url, u32 *len)
-{
-    httpcContext ctx;
-    Result retval = 0;
-    u32 status = 0;
-
-    retval = httpcOpenContext(&ctx, HTTPC_METHOD_HEAD, url, 0); // Open context, only need Content-Length so HEAD will do
-    if (retval != 0)
-        return retval;
-
-    retval = httpcBeginRequest(&ctx);
-    if (retval != 0)
-        return retval;
-
-    retval = httpcGetResponseStatusCode(&ctx, &status, 0);
-    if (retval != 0 || status != 200) // ^ same as above
-        return status;
-
-    retval = httpcGetDownloadSizeState(&ctx, NULL, len); // Only get total download size
-    if (retval != 0)
-    {
-        len = 0;
-        return retval;
-    }
-
-    httpcCloseContext(&ctx);
-    return retval;
-}
-
 void setBilinearFilter(int enabled, sf2d_texture *texture)
 {
 	bilinearFilterEnabled = enabled;
@@ -235,7 +141,6 @@ int extractZip(const char * zipFile, const char * path)
 	FSUSER_CloseArchive(sdmcArchive);
 	char tmpFile2[1024];
 	char tmpPath2[1024];
-	sdmcInit();
 	strcpy(tmpPath2, "sdmc:");
 	strcat(tmpPath2, (char *)path);
 	chdir(tmpPath2);
@@ -251,7 +156,6 @@ int extractZip(const char * zipFile, const char * path)
 		return 0;
 	int result = ZipExtract(handle, NULL);
 	ZipClose(handle);
-	sdmcExit();
 	return result;
 }
 
@@ -268,6 +172,12 @@ void installRequiredFiles()
 		makeDir("/3ds/Cyanogen3DS/system/app");
 	if (!dirExists("3ds/Cyanogen3DS/system/app/clock"))
 		makeDir("/3ds/Cyanogen3DS/system/app/clock");
+}
+
+void sleepThread(u32 milliSec) 
+{
+    u64 nano = milliSec * 1000000;
+    svcSleepThread(nano);
 }
 
 int setFileDefaultsInt(char *path, int value, int var)

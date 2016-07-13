@@ -55,8 +55,6 @@ sf2d_texture *deselect;
 int language, hrTime, DARK, experimentalF, screenDisplay;
 unsigned int fontColor;
 
-int updatesMenu();
-void onlineUpdater();
 void flashUpdate();
 int aboutMenu();
 int developerMenu();

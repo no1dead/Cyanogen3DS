@@ -10,146 +10,10 @@
 #include "settingsMenu.h"
 #include "utils.h"
 
-int updatesMenu()
-{
-	if (DARK == 1)
-	{
-		load_PNG(updatesBg, "romfs:/Dark/updatesBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
-		fontColor = LITEGRAY;
-	}
-	else
-	{
-		load_PNG(updatesBg, "romfs:/updatesBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
-		fontColor = BLACK;
-	}
-	
-	setBilinearFilter(1, updatesBg);
-	setBilinearFilter(1, highlight);
-	
-	while (aptMainLoop())
-	{
-		hidScanInput();
-
-		u32 kDown = hidKeysDown();
-		
-		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
-		
-		sf2d_draw_texture(updatesBg, 0, 0);
-		
-		sftd_draw_textf(robotoS12, 20, 75, fontColor, 12, "%s", lang_settingsUpdates[language][0]);
-		
-		if (cursor(0, 480, 58, 105))
-		{
-			sf2d_draw_texture(highlight, 0, 61);
-			sftd_draw_textf(robotoS12, 20, 75, fontColor, 12, "%s", lang_settingsUpdates[language][0]);
-			if (kDown & KEY_A)
-			{
-				sf2d_free_texture(aboutBg);
-				sf2d_free_texture(highlight);
-				onlineUpdater();
-			}
-		}
-		
-		if (screenDisplay == 0)
-		{
-			digitalTime(352, 2, 0);
-			batteryStatus(300, 2, 0); 
-			//androidQuickSettings();
-		}
-		
-		cursorController();
-		
-		sf2d_end_frame();
-		
-		navbarControls(0);
-		
-		if (kDown & KEY_Y)
-			powerMenu(); 
-		
-		if (kDown & KEY_L)
-			lockScreen();
-		
-		if (kDown & KEY_B)
-		{
-			sf2d_free_texture(updatesBg);
-			sf2d_free_texture(highlight);
-			aboutMenu();
-		}
-		
-		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
-		{
-			sf2d_free_texture(updatesBg);
-			sf2d_free_texture(highlight);
-			aboutMenu();
-		}
-		
-		captureScreenshot();
-		
-		sf2d_swapbuffers();	
-	}
-
-	sf2d_free_texture(updatesBg);
-	sf2d_free_texture(highlight);
-
-	return 0;
-}
-
-void onlineUpdater()
-{
-	httpcInit(0);
-	
-	load_PNG(loading, "romfs:/loading.png");
-	
-	httpcContext context;
-	Result ret = 0;
-	float rad = 0.0f;
-	u32 dlSize = 0;
-	const char * url = "https://github.com/joel16/Cyanogen3DS/raw/gh-pages/UPDATE.zip";
-	
-	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
-
-	while (aptMainLoop())
-	{
-        sf2d_start_frame(GFX_TOP, GFX_LEFT);
-		
-		sf2d_draw_texture_rotate(loading, 400/2, 240/2, rad);
-		
-		sftd_draw_textf(robotoS12, 20, 10, fontColor, 12, "Downloading");
-
-		dlSize = http_file_size("", &dlSize);
-		
-		sftd_draw_textf(robotoS12, 20, 20, fontColor, 12, "%d", dlSize);
-		
-		ret = httpcOpenContext(&context, HTTPC_METHOD_GET, url, 0);
-		
-		if(ret == 0)
-		{
-			ret = http_downloadsave(&context, "/3ds/Cyanogen3DS/");
-			httpcCloseContext(&context);
-		}
-		
-		if (fileExists("/3ds/Cyanogen3DS/UPDATE.zip"))
-			flashUpdate();
-		
-		sf2d_end_frame();
-		
-		rad += 0.1f;
-		
-		sf2d_swapbuffers();	
-	}
-
-	sf2d_free_texture(loading);
-	httpcExit();
-}
-
 void flashUpdate()
 {
 	load_PNG(recoverybg, "romfs:/android_bootable_recovery/res/images/recoverybg.png.png");
 	
-	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
-
 	while (aptMainLoop())
 	{			
 		sf2d_start_frame(GFX_TOP, GFX_LEFT);
@@ -273,7 +137,7 @@ int aboutMenu()
 			sf2d_draw_texture(highlight, 0, 55);
 			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsAbout[language][0]);
 			sftd_draw_textf(robotoS12, 20, 83, fontColor, 12, "%s", lang_settingsAbout[language][1]);
-			if (experimentalF == 1)
+			/*if (experimentalF == 1)
 			{	
 				if (kDown & KEY_A)
 				{
@@ -281,7 +145,7 @@ int aboutMenu()
 					sf2d_free_texture(highlight);
 					updatesMenu();
 				}
-			}
+			}*/
 		}
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 		{
