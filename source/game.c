@@ -120,7 +120,7 @@ char * getCardID()
 		return NULL;
 }
 
-int installCIA(const char *path)
+int installCIA(const char * path)
 {
 	Handle dirHandle, ciaHandle = 0;
 	
@@ -180,6 +180,25 @@ int installCIA(const char *path)
 	FSFILE_Close(dirHandle);
 	return 0;
 }
+
+/*title_info getTitleInfo(const char * path) 
+{
+
+    title_info title;
+    AM_TitleEntry AM_title;
+
+    Handle fileHandle = openFileHandle(path);
+    if (AM_GetCiaFileInfo(MEDIATYPE_NAND, &AM_title, fileHandle)) {
+        return title;
+    }
+    closeFileHandle(fileHandle);
+
+    title.path = path;
+    title.titleID = AM_title.titleID;
+    title.version = AM_title.version;
+
+    return title;
+}*/
 
 int launchCia(u64 titleID, FS_MediaType mediaType)
 {

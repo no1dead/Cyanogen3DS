@@ -37,6 +37,24 @@ void utf2ascii(char* dst, u16* src)
 	*dst=0x00;
 }
 
+Handle openFileHandle(const char * path) 
+{
+    Handle fileHandle = 0;
+	
+    FS_Path filePath = fsMakePath(PATH_ASCII, path);
+	
+	//openSdArchive();
+	
+    if (FSUSER_OpenFile(&fileHandle, ARCHIVE_SDMC, filePath, FS_OPEN_READ & 3, 0)) 
+	{
+        FSUSER_OpenFile(&fileHandle, ARCHIVE_SDMC, filePath, FS_OPEN_READ, 0);
+    }
+	
+	//closeSdArchive();
+	
+    return fileHandle;
+}
+
 const char *get_filename_ext(const char *filename) 
 {
     const char *dot = strrchr(filename, '.');
@@ -197,11 +215,11 @@ int loadFiles(const char * path)
 
 int fileManager()
 {	
-	load_PNG(fileManagerBg, "romfs:/fileManagerBg.png");
-	load_PNG(bar, "romfs:/bar.png");
-	load_PNG(dirIcon, "romfs:/ic_fso_folder.png");
-	load_PNG(appIcon, "romfs:/ic_fso_type_app.png");
-	load_PNG(fileIcon, "romfs:/ic_fso_default.png");
+	load_PNG(fileManagerBg, "/3ds/Cyanogen3DS/system/app/filemanager/fileManagerBg.png");
+	load_PNG(bar, "/3ds/Cyanogen3DS/system/app/filemanager/bar.png");
+	load_PNG(dirIcon, "/3ds/Cyanogen3DS/system/app/filemanager/ic_fso_folder.png");
+	load_PNG(appIcon, "/3ds/Cyanogen3DS/system/app/filemanager/ic_fso_type_app.png");
+	load_PNG(fileIcon, "/3ds/Cyanogen3DS/system/app/filemanager/ic_fso_default.png");
 	
 	setBilinearFilter(1, fileManagerBg);
 	setBilinearFilter(1, bar);

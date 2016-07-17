@@ -278,8 +278,9 @@ int lastNumber = -1;
 void captureScreenshot()
 { 
     kDown = hidKeysDown();
+	kHeld = hidKeysHeld();
 
-	if (kDown & KEY_R)
+	if ((kDown & KEY_R) || (kHeld & KEY_R))
 	{
 		screenshot();
 	}

@@ -11,7 +11,7 @@ int lockScreen()
 	char pinData[5] = "";
 	int passProtect = 0;
 	
-	load_PNG(lockscreenBg, "romfs:/lockscreenBg.png");
+	load_PNG(lockscreenBg, "/3ds/Cyanogen3DS/system/lockscreen/lockscreenBg.png");
 	setBilinearFilter(1, lockscreenBg);
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));

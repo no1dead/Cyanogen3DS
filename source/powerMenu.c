@@ -2,16 +2,19 @@
 #include "homeMenu.h"
 #include "main.h"
 #include "powerMenu.h"
+#include "screenshot.h"
 #include "settingsMenu.h"
 #include "utils.h"
 
 int powerMenu()
 {
-	load_PNG(power, "romfs:/powerMenu.png");
-	load_PNG(power1, "romfs:/powerSelection.png");
+	load_PNG(power, "/3ds/Cyanogen3DS/system/home/menu/powerMenu.png");
+	load_PNG(powerSelection, "/3ds/Cyanogen3DS/system/home/menu/powerSelection.png");
+	load_PNG(recoverySelection, "/3ds/Cyanogen3DS/system/home/menu/recoverySelection.png");
 	
 	setBilinearFilter(1, power);
-	setBilinearFilter(1, power1);
+	setBilinearFilter(1, powerSelection);
+	setBilinearFilter(1, recoverySelection);
 
 	while (aptMainLoop())
 	{
@@ -31,9 +34,10 @@ int powerMenu()
 	
 			appDrawerIcon(screenDisplay);
 			
-			sf2d_draw_texture(power, 62, 100);
+			sf2d_draw_texture(power, 62, 50);
 
-			sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
+			sftd_draw_textf(robotoS18, 140, 80, RGBA8(0, 0, 0, 255), 18, "Power Off");
+			sftd_draw_textf(robotoS18, 140, 144, RGBA8(0, 0, 0, 255), 18, "Recovery");
 		}
 		
 		else if (screenDisplay == 1)
@@ -45,29 +49,51 @@ int powerMenu()
 	
 			appDrawerIcon(screenDisplay);
 			
-			sf2d_draw_texture_scale(power, 42, 100, 0.9, 0.9);
+			sf2d_draw_texture_scale(power, 42, 50, 0.9, 0.9);
 
-			sftd_draw_textf(robotoS18, 120, 118, RGBA8(0, 0, 0, 255), 16, "Power Off");
+			sftd_draw_textf(robotoS18, 120, 80, RGBA8(0, 0, 0, 255), 16, "Power Off");
+			sftd_draw_textf(robotoS18, 140, 144, RGBA8(0, 0, 0, 255), 18, "Recovery");
 		}
 
-		if (cursor(62, 338, 80, 159))
+		if (cursor(52, 340, 40, 116))
 		{
 			if (screenDisplay == 1)
 			{
-				sf2d_draw_texture_scale(power1, 42, 100, 0.9, 0.9);
-				sftd_draw_textf(robotoS18, 120, 118, RGBA8(0, 0, 0, 255), 16, "Power Off");
+				sf2d_draw_texture_scale(powerSelection, 42, 49, 0.9, 0.9);
+				sftd_draw_textf(robotoS18, 120, 80, RGBA8(0, 0, 0, 255), 16, "Power Off");
+				sftd_draw_textf(robotoS18, 140, 144, RGBA8(0, 0, 0, 255), 18, "Recovery");
 			}
 			else
 			{
-				sf2d_draw_texture(power1, 62, 100);
-				sftd_draw_textf(robotoS18, 140, 118, RGBA8(0, 0, 0, 255), 18, "Power Off");
+				sf2d_draw_texture(powerSelection, 62, 49);
+				sftd_draw_textf(robotoS18, 140, 80, RGBA8(0, 0, 0, 255), 18, "Power Off");
+				sftd_draw_textf(robotoS18, 140, 144, RGBA8(0, 0, 0, 255), 18, "Recovery");
 			}
 			if (kDown & KEY_A)
 			{
 				longjmp(exitJmp, 1);
 			}
 		}
-
+		else if (cursor(52, 340, 118, 180))
+		{
+			if (screenDisplay == 1)
+			{
+				sf2d_draw_texture_scale(recoverySelection, 42, 49, 0.9, 0.9);
+				sftd_draw_textf(robotoS18, 120, 80, RGBA8(0, 0, 0, 255), 16, "Power Off");
+				sftd_draw_textf(robotoS18, 140, 144, RGBA8(0, 0, 0, 255), 18, "Recovery");
+			}
+			else
+			{
+				sf2d_draw_texture(recoverySelection, 62, 49);
+				sftd_draw_textf(robotoS18, 140, 80, RGBA8(0, 0, 0, 255), 18, "Power Off");
+				sftd_draw_textf(robotoS18, 140, 144, RGBA8(0, 0, 0, 255), 18, "Recovery");
+			}
+			if (kDown & KEY_A)
+			{
+				longjmp(exitJmp, 1);
+			}
+		}
+		
 		if (screenDisplay == 0)
 		{
 			digitalTime(352, 2, 0);
@@ -84,11 +110,14 @@ int powerMenu()
 		if (kDown & KEY_B)
 			break;
 
+		captureScreenshot();
+		
 		sf2d_swapbuffers();
 	}
 
 	sf2d_free_texture(power);
-	sf2d_free_texture(power1);
+	sf2d_free_texture(powerSelection);
+	sf2d_free_texture(recoverySelection);
 	
 	return 0;
 }

@@ -23,12 +23,12 @@ int appDrawer()
 {	
 	if (DARK == 1)
 	{
-		load_PNG(backdrop, "romfs:/Dark/backdropDark.png");
+		load_PNG(backdrop, "/3ds/Cyanogen3DS/system/settings/Dark/backdropDark.png");
 		fontColor = WHITE;
 	}
 	else
 	{
-		load_PNG(backdrop, "romfs:/backdrop.png");
+		load_PNG(backdrop, "/3ds/Cyanogen3DS/system/home/icons/backdrop.png");
 		fontColor = BLACK;
 	}
 	

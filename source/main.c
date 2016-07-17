@@ -14,28 +14,28 @@ void cleanUp()
 	sdmcExit();
 	fsExit();
 	amExit();
+	httpcExit();
 	ptmuExit();
     acExit();
     cfguExit();
 	aptExit();
 	srvExit();
-    romfsExit();
 }
 
 int main(int argc, char **argv)
 {
-	romfsInit();
 	srvInit();
 	aptInit();
     cfguInit();
     acInit();
     ptmuInit();
+	httpcInit(0);
 	amInit();
 	AM_InitializeExternalTitleDatabase(false);
 	fsInit();
 	sdmcInit();
 	hidInit();
-
+	
 	// Font loading
 	sf2d_init();
 	sftd_init();
@@ -61,26 +61,26 @@ int main(int argc, char **argv)
 	iconPackLoad();
 
 	// Load textures from RomFS
-	load_PNG(background, "romfs:/background.png");
-	load_PNG(cursor, "romfs:/cursor.png");
-	load_PNG(quickSettings, "romfs:/quickSettings.png");
-	load_PNG(navbar, "romfs:/navbar.png");
-	load_PNG(backicon, "romfs:/backicon.png");
-	load_PNG(homeicon, "romfs:/homeicon.png");
-	load_PNG(multicon, "romfs:/multicon.png");
-	load_PNG(dayWidget, "romfs:/day.png");
-	load_PNG(nightWidget, "romfs:/night.png");
-	load_PNG(_100, "romfs:/100.png");
-	load_PNG(_80, "romfs:/80.png");
-	load_PNG(_60, "romfs:/60.png");
-	load_PNG(_40, "romfs:/40.png");
-	load_PNG(_20, "romfs:/20.png");
-	load_PNG(_charge, "romfs:/charge.png");
-	load_PNG(wifiIcon3, "romfs:/stat_sys_wifi_signal_3.png");
-	load_PNG(wifiIcon2, "romfs:/stat_sys_wifi_signal_2.png");
-	load_PNG(wifiIcon1, "romfs:/stat_sys_wifi_signal_1.png");
-	load_PNG(wifiIcon0, "romfs:/stat_sys_wifi_signal_0.png");
-	load_PNG(wifiIconNull, "romfs:/stat_sys_wifi_signal_null.png");
+	load_PNG(background, "/3ds/Cyanogen3DS/system/framework/framework-res/res/background1.png");
+	load_PNG(cursor, "/3ds/Cyanogen3DS/system/cursor/cursor.png");
+	load_PNG(quickSettings, "/3ds/Cyanogen3DS/system/quickSettings.png");
+	load_PNG(navbar, "/3ds/Cyanogen3DS/system/home/icons/navbar.png");
+	load_PNG(backicon, "/3ds/Cyanogen3DS/system/home/icons/backicon.png");
+	load_PNG(homeicon, "/3ds/Cyanogen3DS/system/home/icons/homeicon.png");
+	load_PNG(multicon, "/3ds/Cyanogen3DS/system/home/icons/multicon.png");
+	load_PNG(dayWidget, "/3ds/Cyanogen3DS/system/widget/day.png");
+	load_PNG(nightWidget, "/3ds/Cyanogen3DS/system/widget/night.png");
+	load_PNG(_100, "/3ds/Cyanogen3DS/system/home/icons/100.png");
+	load_PNG(_80, "/3ds/Cyanogen3DS/system/home/icons/80.png");
+	load_PNG(_60, "/3ds/Cyanogen3DS/system/home/icons/60.png");
+	load_PNG(_40, "/3ds/Cyanogen3DS/system/home/icons/40.png");
+	load_PNG(_20, "/3ds/Cyanogen3DS/system/home/icons/20.png");
+	load_PNG(_charge, "/3ds/Cyanogen3DS/system/home/icons/charge.png");
+	load_PNG(wifiIcon3, "/3ds/Cyanogen3DS/system/home/icons/stat_sys_wifi_signal_3.png");
+	load_PNG(wifiIcon2, "/3ds/Cyanogen3DS/system/home/icons/stat_sys_wifi_signal_2.png");
+	load_PNG(wifiIcon1, "/3ds/Cyanogen3DS/system/home/icons/stat_sys_wifi_signal_1.png");
+	load_PNG(wifiIcon0, "/3ds/Cyanogen3DS/system/home/icons/stat_sys_wifi_signal_0.png");
+	load_PNG(wifiIconNull, "/3ds/Cyanogen3DS/system/home/icons/stat_sys_wifi_signal_null.png");
 	load_PNG(ic_allapps, allappsPath);
 	load_PNG(ic_allapps_pressed, allapps_pressedPath);
 	load_PNG(ic_launcher_browser, browserPath);

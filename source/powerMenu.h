@@ -6,6 +6,7 @@
 sftd_font *robotoPowerMenu;
 
 sf2d_texture *power;
-sf2d_texture *power1;
+sf2d_texture *powerSelection;
+sf2d_texture *recoverySelection;
 
 int powerMenu();

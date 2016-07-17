@@ -12,7 +12,7 @@
 
 void flashUpdate()
 {
-	load_PNG(recoverybg, "romfs:/android_bootable_recovery/res/images/recoverybg.png.png");
+	load_PNG(recoverybg, "/3ds/Cyanogen3DS/android_bootable_recovery/res/images/recoverybg.png.png");
 	
 	while (aptMainLoop())
 	{			
@@ -42,14 +42,14 @@ int aboutMenu()
 {
 	if (DARK == 1)
 	{
-		load_PNG(aboutBg, "romfs:/Dark/aboutBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		load_PNG(aboutBg, "/3ds/Cyanogen3DS/system/settings/Dark/aboutBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(aboutBg, "romfs:/aboutBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
+		load_PNG(aboutBg, "/3ds/Cyanogen3DS/system/settings/aboutBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 		fontColor = BLACK;
 	}
 	
@@ -213,18 +213,18 @@ int developerMenu()
 {
 	if (DARK == 1)
 	{
-		load_PNG(developerBg, "romfs:/Dark/developerBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
-		load_PNG(onSwitch, "romfs:/onSwitch.png");
-		load_PNG(offSwitch, "romfs:/offSwitch.png");
+		load_PNG(developerBg, "/3ds/Cyanogen3DS/system/settings/Dark/developerBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
+		load_PNG(onSwitch, "/3ds/Cyanogen3DS/system/settings/onSwitch.png");
+		load_PNG(offSwitch, "/3ds/Cyanogen3DS/system/settings/offSwitch.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(developerBg, "romfs:/developerBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
-		load_PNG(onSwitch, "romfs:/onSwitch.png");
-		load_PNG(offSwitch, "romfs:/offSwitch.png");
+		load_PNG(developerBg, "/3ds/Cyanogen3DS/system/settings/developerBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
+		load_PNG(onSwitch, "/3ds/Cyanogen3DS/system/settings/onSwitch.png");
+		load_PNG(offSwitch, "/3ds/Cyanogen3DS/system/settings/offSwitch.png");
 		fontColor = BLACK;
 	}
 	
@@ -325,8 +325,8 @@ int developerMenu()
 					fclose(darkTheme);
 					sf2d_free_texture(developerBg);
 					sf2d_free_texture(highlight);
-					load_PNG(developerBg, "romfs:/Dark/developerBg.png");
-					load_PNG(highlight, "romfs:/Dark/highlight.png");
+					load_PNG(developerBg, "/3ds/Cyanogen3DS/system/settings/Dark/developerBg.png");
+					load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 					fontColor = LITEGRAY;
 				}
 			}
@@ -342,8 +342,8 @@ int developerMenu()
 					fclose(darkTheme);
 					sf2d_free_texture(developerBg);
 					sf2d_free_texture(highlight);
-					load_PNG(developerBg, "romfs:/developerBg.png");
-					load_PNG(highlight, "romfs:/highlight.png");
+					load_PNG(developerBg, "/3ds/Cyanogen3DS/system/settings/developerBg.png");
+					load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 					fontColor = BLACK;
 				}
 			}
@@ -420,14 +420,14 @@ int displayMenu()
 {
 	if (DARK == 1)
 	{
-		load_PNG(displayBg, "romfs:/Dark/displayBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/Dark/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(displayBg, "romfs:/displayBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 		fontColor = BLACK;
 	}
 	
@@ -533,14 +533,14 @@ int displayThemes()
 {
 	if (DARK == 1)
 	{
-		load_PNG(displayBg, "romfs:/Dark/displayBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/Dark/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(displayBg, "romfs:/displayBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 		fontColor = BLACK;
 	}
 	
@@ -633,14 +633,14 @@ int displayIconPack()
 {
 	if (DARK == 1)
 	{
-		load_PNG(displayBg, "romfs:/Dark/displayBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/Dark/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(displayBg, "romfs:/displayBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 		fontColor = BLACK;
 	}
 	
@@ -790,18 +790,18 @@ int displayTime()
 {
 	if (DARK == 1)
 	{
-		load_PNG(displayBg, "romfs:/Dark/displayBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
-		load_PNG(onSwitch, "romfs:/onSwitch.png");
-		load_PNG(offSwitch, "romfs:/offSwitch.png");
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/Dark/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
+		load_PNG(onSwitch, "/3ds/Cyanogen3DS/system/settings/onSwitch.png");
+		load_PNG(offSwitch, "/3ds/Cyanogen3DS/system/settings/offSwitch.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(displayBg, "romfs:/displayBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
-		load_PNG(onSwitch, "romfs:/onSwitch.png");
-		load_PNG(offSwitch, "romfs:/offSwitch.png");
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
+		load_PNG(onSwitch, "/3ds/Cyanogen3DS/system/settings/onSwitch.png");
+		load_PNG(offSwitch, "/3ds/Cyanogen3DS/system/settings/offSwitch.png");
 		fontColor = BLACK;
 	}
 	
@@ -912,14 +912,14 @@ int performanceMenu()
 {
 	if (DARK == 1)
 	{
-		load_PNG(performanceBg, "romfs:/Dark/performanceBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		load_PNG(performanceBg, "/3ds/Cyanogen3DS/system/settings/Dark/performanceBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(performanceBg, "romfs:/performanceBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
+		load_PNG(performanceBg, "/3ds/Cyanogen3DS/system/settings/performanceBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 		fontColor = BLACK;
 	}
 	
@@ -1014,14 +1014,14 @@ int storageMenu()
 {
 	if (DARK == 1)
 	{
-		load_PNG(performanceBg2, "romfs:/Dark/performanceBg2.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		load_PNG(performanceBg2, "/3ds/Cyanogen3DS/system/settings/Dark/performanceBg2.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(performanceBg2, "romfs:/performanceBg2.png");
-		load_PNG(highlight, "romfs:/highlight.png");
+		load_PNG(performanceBg2, "/3ds/Cyanogen3DS/system/settings/performanceBg2.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 		fontColor = BLACK;
 	}
 	
@@ -1098,19 +1098,19 @@ int batteryMenu()
 {
 	if (DARK == 1)
 	{
-		load_PNG(performanceBg, "romfs:/Dark/performanceBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		load_PNG(performanceBg, "/3ds/Cyanogen3DS/system/settings/Dark/performanceBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(performanceBg, "romfs:/performanceBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
+		load_PNG(performanceBg, "/3ds/Cyanogen3DS/system/settings/performanceBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 		fontColor = BLACK;
 	}
 	
-	load_PNG(deselect, "romfs:/deselect.png");
-	load_PNG(select, "romfs:/select.png");
+	load_PNG(deselect, "/3ds/Cyanogen3DS/system/settings/deselect.png");
+	load_PNG(select, "/3ds/Cyanogen3DS/system/settings/select.png");
 	
 	setBilinearFilter(1, performanceBg);
 	setBilinearFilter(1, highlight);
@@ -1201,14 +1201,14 @@ int securityMenu()
 {
 	if (DARK == 1)
 	{
-		load_PNG(securityBg, "romfs:/Dark/securityBg.png");
-		load_PNG(highlight, "romfs:/Dark/highlight.png");
+		load_PNG(securityBg, "/3ds/Cyanogen3DS/system/settings/Dark/securityBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(securityBg, "romfs:/securityBg.png");
-		load_PNG(highlight, "romfs:/highlight.png");
+		load_PNG(securityBg, "/3ds/Cyanogen3DS/system/settings/securityBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
 		fontColor = BLACK;
 	}
 	
@@ -1464,24 +1464,24 @@ int settingsMenu()
 {
 	if (DARK == 1)
 	{
-		load_PNG(settingsBg, "romfs:/Dark/settingsBg.png");
-		load_PNG(about_highlight, "romfs:/Dark/about_highlight.png");
-		load_PNG(display_highlight, "romfs:/Dark/display_highlight.png");
-		load_PNG(developeroptions_highlight, "romfs:/Dark/developersoptions_highlight.png");
-		load_PNG(performance_highlight, "romfs:/Dark/performance_highlight.png");
-		load_PNG(security_highlight, "romfs:/Dark/security_highlight.png");
-		load_PNG(wifi_highlight, "romfs:/Dark/wifi_highlight.png");
+		load_PNG(settingsBg, "/3ds/Cyanogen3DS/system/settings/Dark/settingsBg.png");
+		load_PNG(about_highlight, "/3ds/Cyanogen3DS/system/settings/Dark/about_highlight.png");
+		load_PNG(display_highlight, "/3ds/Cyanogen3DS/system/settings/Dark/display_highlight.png");
+		load_PNG(developeroptions_highlight, "/3ds/Cyanogen3DS/system/settings/Dark/developersoptions_highlight.png");
+		load_PNG(performance_highlight, "/3ds/Cyanogen3DS/system/settings/Dark/performance_highlight.png");
+		load_PNG(security_highlight, "/3ds/Cyanogen3DS/system/settings/Dark/security_highlight.png");
+		load_PNG(wifi_highlight, "/3ds/Cyanogen3DS/system/settings/Dark/wifi_highlight.png");
 		fontColor = LITEGRAY;
 	}
 	else
 	{
-		load_PNG(settingsBg, "romfs:/settingsBg.png");
-		load_PNG(about_highlight, "romfs:/about_highlight.png");
-		load_PNG(display_highlight, "romfs:/display_highlight.png");
-		load_PNG(developeroptions_highlight, "romfs:/developersoptions_highlight.png");
-		load_PNG(performance_highlight, "romfs:/performance_highlight.png");
-		load_PNG(security_highlight, "romfs:/security_highlight.png");
-		load_PNG(wifi_highlight, "romfs:/wifi_highlight.png");
+		load_PNG(settingsBg, "/3ds/Cyanogen3DS/system/settings/settingsBg.png");
+		load_PNG(about_highlight, "/3ds/Cyanogen3DS/system/settings/about_highlight.png");
+		load_PNG(display_highlight, "/3ds/Cyanogen3DS/system/settings/display_highlight.png");
+		load_PNG(developeroptions_highlight, "/3ds/Cyanogen3DS/system/settings/developersoptions_highlight.png");
+		load_PNG(performance_highlight, "/3ds/Cyanogen3DS/system/settings/performance_highlight.png");
+		load_PNG(security_highlight, "/3ds/Cyanogen3DS/system/settings/security_highlight.png");
+		load_PNG(wifi_highlight, "/3ds/Cyanogen3DS/system/settings/wifi_highlight.png");
 		fontColor = BLACK;
 	}
 	

@@ -37,7 +37,6 @@ RESOURCES   :=	resources
 SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	source source/libs/sf2dlib/include source/libs/sftdlib/include source/libs/sfillib/include
-ROMFS		:=	romfs
 
 APP_TITLE	:= Cyanogen3DS
 APP_DESCRIPTION	:= An alternative Custom GUI Menu for 3DS.
@@ -136,10 +135,6 @@ endif
 
 ifeq ($(strip $(NO_SMDH)),)
 	export _3DSXFLAGS += --smdh=$(CURDIR)/$(TARGET).smdh
-endif
-
-ifneq ($(ROMFS),)
-	export _3DSXFLAGS += --romfs=$(CURDIR)/$(ROMFS)
 endif
 
 .PHONY: $(BUILD) clean all

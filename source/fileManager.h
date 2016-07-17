@@ -18,6 +18,7 @@ FS_Archive sdmcArchive;
 void openSdArchive();
 void closeSdArchive();
 void utf2ascii(char * dst, u16 * src);
+Handle openFileHandle(const char * path);
 const char *get_filename_ext(const char * filename);
 int makeDir(const char * path);
 bool fileExists(char * path);
