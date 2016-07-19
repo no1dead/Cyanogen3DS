@@ -205,9 +205,12 @@ int launchCia(u64 titleID, FS_MediaType mediaType)
 	u8 param[0x300];
 	u8 hmac[0x20];
 	
+	u64 uniqueID = titleID | ((u64)0x00040000 << 32);
+	
 	memset(param, 0, sizeof(param));
 	memset(hmac, 0, sizeof(hmac));
-	APT_PrepareToDoApplicationJump(0, titleID, mediaType);
+	
+	APT_PrepareToDoApplicationJump(0, uniqueID, mediaType);
 	APT_DoApplicationJump(param, sizeof(param), hmac);
 	
 	return 0;
