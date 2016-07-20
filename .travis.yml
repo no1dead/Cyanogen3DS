@@ -17,5 +17,7 @@ before_install:
   - export PORTLIBS=${DEVKITPRO}/portlibs/armv6k
   - sh .travis-deps.sh
 
+install:  chmod 755 -R $TRAVIS_BUILD_DIR
+
 script:
   - make build-all
