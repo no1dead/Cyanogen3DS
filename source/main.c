@@ -1,4 +1,5 @@
 #include "appDrawer.h"
+#include "boot.h"
 #include "homeMenu.h"
 #include "lockScreen.h"
 #include "main.h"
@@ -48,6 +49,8 @@ int main(int argc, char **argv)
 	
 	installRequiredFiles(); //create necessary dirs
 	
+	strcpy(backgroundPath, setFileDefaultsChar("/3ds/Cyanogen3DS/system/settings/background.bin", "/3ds/Cyanogen3DS/system/framework/framework-res/res/background1.png", backgroundPath));
+	
 	hrTime = setFileDefaultsInt("/3ds/Cyanogen3DS/system/app/clock/timeSet.bin", 0, hrTime);
 	DARK = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/darkTheme.bin", 0, DARK);
 	experimentalF = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/experimentalFeatures.bin", 0, experimentalF);
@@ -58,16 +61,15 @@ int main(int argc, char **argv)
 	robotoS18 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	robotoS30 = sftd_load_font_mem(Roboto_ttf, Roboto_ttf_size);
 	
+	themesLoad();
 	iconPackLoad();
 
-	// Load textures from RomFS
-	load_PNG(background, "/3ds/Cyanogen3DS/system/framework/framework-res/res/background1.png");
-	load_PNG(cursor, "/3ds/Cyanogen3DS/system/cursor/cursor.png");
-	load_PNG(quickSettings, "/3ds/Cyanogen3DS/system/quickSettings.png");
-	load_PNG(navbar, "/3ds/Cyanogen3DS/system/home/icons/navbar.png");
-	load_PNG(backicon, "/3ds/Cyanogen3DS/system/home/icons/backicon.png");
-	load_PNG(homeicon, "/3ds/Cyanogen3DS/system/home/icons/homeicon.png");
-	load_PNG(multicon, "/3ds/Cyanogen3DS/system/home/icons/multicon.png");
+	// Load textures
+	load_PNG(background, backgroundPath);
+	load_PNG(cursor, cursorPath);
+	load_PNG(quickSettings, quickSettingsBgPath);
+	load_PNG(navbar, navbarPath);
+	load_PNG(navbarHighlight, navbarHighlightPath);
 	load_PNG(dayWidget, "/3ds/Cyanogen3DS/system/widget/day.png");
 	load_PNG(nightWidget, "/3ds/Cyanogen3DS/system/widget/night.png");
 	load_PNG(_100, "/3ds/Cyanogen3DS/system/home/icons/100.png");
@@ -87,14 +89,13 @@ int main(int argc, char **argv)
 	load_PNG(ic_launcher_messenger, messagesPath);
 	load_PNG(ic_launcher_apollo, apolloPath);
 	load_PNG(ic_launcher_settings, settingsPath);
+	load_PNG(welcome, "/3ds/Cyanogen3DS/system/home/icons/welcome.png");
 	
 	setBilinearFilter(1, background);
 	setBilinearFilter(1, cursor);
 	setBilinearFilter(1, quickSettings);
 	setBilinearFilter(1, navbar);
-	setBilinearFilter(1,backicon);
-	setBilinearFilter(1, homeicon);
-	setBilinearFilter(1, multicon);
+	setBilinearFilter(1, navbarHighlight);
 	setBilinearFilter(1, dayWidget);
 	setBilinearFilter(1, nightWidget);
 	setBilinearFilter(1, _100);
@@ -119,17 +120,14 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	lockScreen();
-	home(); // Show Home Menu, until the user presses START
+	bootAnimation();
 
 	// Free textures before exiting
 	sf2d_free_texture(background);
 	sf2d_free_texture(cursor);
 	sf2d_free_texture(quickSettings);
 	sf2d_free_texture(navbar);
-	sf2d_free_texture(backicon);
-	sf2d_free_texture(homeicon);
-	sf2d_free_texture(multicon);
+	sf2d_free_texture(navbarHighlight);
 	sf2d_free_texture(dayWidget);
 	sf2d_free_texture(nightWidget);
 	sf2d_free_texture(_100);

@@ -11,6 +11,15 @@
 #define DISPLAY_Y 41
 #define ICON_DISPLAY_Y 29 
 
+char fileManagerFontColorPath[200];
+
+struct fileManagerFontColor 
+{
+   int	r;
+   int	g;
+   int	b;
+};
+
 int current, curScroll;
 
 FS_Archive sdmcArchive;
@@ -18,6 +27,7 @@ FS_Archive sdmcArchive;
 void openSdArchive();
 void closeSdArchive();
 void utf2ascii(char * dst, u16 * src);
+void unicodeToChar(char* dst, u16* src, int max);
 Handle openFileHandle(const char * path);
 const char *get_filename_ext(const char * filename);
 int makeDir(const char * path);

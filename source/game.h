@@ -3,6 +3,7 @@
 #include <3ds.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define CTR_BUFSIZE 64*1024
 
@@ -14,6 +15,13 @@ typedef struct
 	u8 mediatype;
 	u64 title_id;
 }titleInfo_s;
+
+typedef struct lsTitle {
+    u64 thisTitle;
+    struct lsTitle* nextTitle;
+} lsTitle;
+
+extern lsTitle* firstTitle;
 
 int launch3DSX(const char * path);
 int launchApp(u64 titleId);

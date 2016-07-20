@@ -2,6 +2,9 @@
 #include "homeMenu.h"
 #include "settingsMenu.h"
 
+struct timeAndBatteryStatusFontColor fontColorTime;
+struct clockWidgetFontColor lFontColor;
+
 void digitalTime(int x, int y, int style)
 {
 	time_t unix_time = time(0);
@@ -27,25 +30,25 @@ void digitalTime(int x, int y, int style)
 	if (style == 0)
 	{
 		if (hrTime == 0)
-			sftd_draw_textf(robotoS12, x, y, RGBA8(255, 255, 255, 255), 12, "%2i:%02i", hours, minutes);
+			sftd_draw_textf(robotoS12, x, y, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 12, "%2i:%02i", hours, minutes);
 		else
-			sftd_draw_textf(robotoS12, x+7, y, RGBA8(255, 255, 255, 255), 12, "%2i:%02i", hours, minutes);
+			sftd_draw_textf(robotoS12, x+7, y, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 12, "%2i:%02i", hours, minutes);
 	}
 		
 	else if (style == 1)
 	{
 		if (hrTime == 0)
-			sftd_draw_textf(robotoS30, x+4, y, RGBA8(255, 255, 255, 255), 34, "%2i:%02i", hours, minutes);
+			sftd_draw_textf(robotoS30, x+4, y, RGBA8(lFontColor.r, lFontColor.g, lFontColor.b, 255), 34, "%2i:%02i", hours, minutes);
 		else
-			sftd_draw_textf(robotoS30, x+1, y, RGBA8(255, 255, 255, 255), 34, "%2i:%02i", hours, minutes);
+			sftd_draw_textf(robotoS30, x+1, y, RGBA8(lFontColor.r, lFontColor.g, lFontColor.b, 255), 34, "%2i:%02i", hours, minutes);
 	}
 	
 	if ((hrTime == 0) && (style == 0))
 	{
 		if (amOrPm)
-			sftd_draw_textf(robotoS10, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "AM");
+			sftd_draw_textf(robotoS10, x+30, y+2, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 10, "AM");
 		else 
-			sftd_draw_textf(robotoS10, x+30, y+2, RGBA8(255, 255, 255, 255), 10, "PM");
+			sftd_draw_textf(robotoS10, x+30, y+2, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 10, "PM");
 	}
 }
 

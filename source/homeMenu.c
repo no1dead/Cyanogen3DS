@@ -17,6 +17,9 @@ int yPos2 = -240;
 int yLine1 = -240;
 int yLine2 = -240;
 
+struct timeAndBatteryStatusFontColor fontColorTime;
+struct clockWidgetFontColor lFontColor;
+
 void cursorController()
 {
 	hidScanInput();
@@ -75,9 +78,9 @@ int batteryStatus(int x, int y, int style)
 	}
 	
 	if (style == 0)
-		sftd_draw_textf(robotoS12, x+16, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+		sftd_draw_textf(robotoS12, x+16, y, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 12, "%d%%", batt);
 	else if (style == 1)
-		sftd_draw_textf(robotoS12, x-35, y, RGBA8(255, 255, 255, 255), 12, "%d%%", batt);
+		sftd_draw_textf(robotoS12, x-35, y, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 12, "%d%%", batt);
 		
 	ACU_GetWifiStatus(&wifiStatus);
 	int wifiStat = wifiStatus + osGetWifiStrength();
@@ -160,13 +163,13 @@ int navbarControls(int type)
 			sf2d_start_frame(switchDisplay(screenDisplay - 1), GFX_LEFT);
 		
 		if touch(44, 119, 201, 240)
-			sf2d_draw_texture(backicon, 30, 201);
+			sf2d_draw_texture(navbarHighlight, 51, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
 
 		if touch(120, 195, 201, 240)
 		{
-			sf2d_draw_texture(homeicon, 30, 201);
+			sf2d_draw_texture(navbarHighlight, 116, 201);
 			if (kDown & KEY_TOUCH)
 				home();
 		}
@@ -174,7 +177,7 @@ int navbarControls(int type)
 			sf2d_draw_texture(navbar, 30, 201);
 	
 		if touch(196, 271, 201, 240)
-			sf2d_draw_texture(multicon, 30, 201);
+			sf2d_draw_texture(navbarHighlight, 181, 201);
 		else
 			sf2d_draw_texture(navbar, 30, 201);
 		
@@ -203,11 +206,11 @@ void androidQuickSettings()
 	batteryStatus(305, yPos2-5, 1);
 	//sftd_draw_textf(robotoS10, 346, yPos2-5, RGBA8(255, 255, 255, 255), 10, "%.6s", getUsername);
 	
-	sftd_draw_textf(robotoS10, 115, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][0]);
-	sftd_draw_textf(robotoS10, 245, yLine1, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][2]);
-	sftd_draw_textf(robotoS10, 170, yLine2, RGBA8(255, 255, 255, 255), 10, "%s", lang_quickSettings[language][4]);
-	sftd_draw_textf(robotoS10, 20, yPos1+14, RGBA8(255, 255, 255, 255), 10, "%s", getDayOfWeek(0));
-	sftd_draw_textf(robotoS10, 85, yPos1+14, RGBA8(255, 255, 255, 255), 10, "%s", getMonthOfYear(0));
+	sftd_draw_textf(robotoS10, 115, yLine1, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 10, "%s", lang_quickSettings[language][0]);
+	sftd_draw_textf(robotoS10, 245, yLine1, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 10, "%s", lang_quickSettings[language][2]);
+	sftd_draw_textf(robotoS10, 170, yLine2, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 10, "%s", lang_quickSettings[language][4]);
+	sftd_draw_textf(robotoS10, 20, yPos1+14, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 10, "%s", getDayOfWeek(0));
+	sftd_draw_textf(robotoS10, 85, yPos1+14, RGBA8(fontColorTime.r, fontColorTime.g, fontColorTime.b, 255), 10, "%s", getMonthOfYear(0));
 
 	digitalTime(19, yPos1, 0);
 
@@ -336,8 +339,8 @@ int dayNightWidget()
 		sf2d_draw_texture(nightWidget, 167, 70);
 		
 	digitalTime(155, 30, 1);
-	sftd_draw_textf(robotoS10, 145, 90, RGBA8(255, 255, 255, 255), 10, "%s", getDayOfWeek(1));
-	sftd_draw_textf(robotoS10, 235, 90, RGBA8(255, 255, 255, 255), 10, "%s", getMonthOfYear(0));
+	sftd_draw_textf(robotoS10, 145, 90, RGBA8(lFontColor.r, lFontColor.g, lFontColor.b, 255), 10, "%s", getDayOfWeek(1));
+	sftd_draw_textf(robotoS10, 235, 90, RGBA8(lFontColor.r, lFontColor.g, lFontColor.b, 255), 10, "%s", getMonthOfYear(0));
 	
 	return 0;
 }
@@ -366,6 +369,35 @@ int switchDisplayModeOn(int app)
 
 int home()
 {
+	firstBoot = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/boot.bin", 1, firstBoot);
+	widgetActivator = setFileDefaultsInt("/3ds/Cyanogen3DS/system/widget/widgetActivator.bin", 1, widgetActivator);
+
+	FILE *temp;
+	 
+	if (!(fileExists(clockWidgetFontColorPath)))
+	{
+		temp = fopen(clockWidgetFontColorPath, "w");
+		fprintf(temp, "255\n255\n255");
+		fclose(temp);
+	}
+	
+	temp = fopen(clockWidgetFontColorPath, "r");
+	fscanf(temp, "%d %d %d", &lFontColor.r, &lFontColor.g, &lFontColor.b);
+	fclose(temp);
+	
+	FILE *temp2;
+	 
+	if (!(fileExists(timeAndBatteryFontColorPath)))
+	{
+		temp2 = fopen(timeAndBatteryFontColorPath, "w");
+		fprintf(temp2, "255\n255\n255");
+		fclose(temp2);
+	}
+	
+	temp2 = fopen(timeAndBatteryFontColorPath, "r");
+	fscanf(temp2, "%d %d %d", &fontColorTime.r, &fontColorTime.g, &fontColorTime.b);
+	fclose(temp2);
+	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	
 	setBilinearFilter(1, ic_allapps);
@@ -410,7 +442,8 @@ int home()
 	
 			appDrawerIcon(screenDisplay);
 			
-			dayNightWidget();
+			if (widgetActivator == 1)
+				dayNightWidget();
 			digitalTime(352, 2, 0); //Displays digital time
 			batteryStatus(300, 2, 0); //Displays battery status
 			//androidQuickSettings();
@@ -438,7 +471,33 @@ int home()
 			appDrawerIcon(screenDisplay);
 		}
 		
+		if (firstBoot!= 0)
+		{
+			sf2d_draw_rectangle(0, 0, 400, 240, RGBA8(0, 0, 0, 100));
+			sf2d_draw_texture(welcome, 0, 0);
+			
+			sftd_draw_textf(robotoS18, 10, 10, RGBA8(255, 255, 255, 255), 18, "%s", lang_welcome[language][0]);
+			
+			sftd_draw_textf(robotoS18, 10, 35, RGBA8(255, 255, 255, 255), 18, "%s", lang_welcome[language][1]);
+			
+			sftd_draw_textf(robotoS18, 10, 60, RGBA8(255, 255, 255, 255), 18, "%s", lang_welcome[language][2]);
+			
+			sftd_draw_textf(robotoS18, 330, 90, RGBA8(255, 255, 255, 255), 18, "%s", lang_welcome[language][3]);
+		}
+		
 		cursorController();
+		
+		if (firstBoot!= 0)
+		{
+			if (cursor(330, 400, 90, 115) && (kDown & KEY_A))
+			{
+				FILE * firstBootTxt = fopen("/3ds/Cyanogen3DS/system/settings/boot.bin", "w"); 
+				fprintf(firstBootTxt, "0");
+				fclose(firstBootTxt);
+				sf2d_free_texture(welcome);
+				home();
+			}
+		}
 		
 		sf2d_end_frame();
 		

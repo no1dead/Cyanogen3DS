@@ -1,5 +1,6 @@
-#include "game.h"
 #include "fileManager.h"
+#include "game.h"
+#include "smdh.h"
 
 /*These are mostly based off of rinnegatamte's lua player plus src code. 
 I will alter these to my needs later.*/
@@ -181,24 +182,57 @@ int installCIA(const char * path)
 	return 0;
 }
 
-/*title_info getTitleInfo(const char * path) 
+Result getTitleList(FS_MediaType mediaType, int* usable_count)
 {
-
-    title_info title;
-    AM_TitleEntry AM_title;
-
-    Handle fileHandle = openFileHandle(path);
-    if (AM_GetCiaFileInfo(MEDIATYPE_NAND, &AM_title, fileHandle)) {
-        return title;
+    int i;
+	u32 num;
+	Result ret = AM_GetTitleCount(mediaType, &num);
+    if(ret)
+        return ret;
+    u64* tmp = (u64*)malloc(sizeof(u64) * num);
+    if(!tmp)
+        return -1;
+    ret = AM_GetTitleList(&num, mediaType, num, tmp);
+    int running_count = 0;
+    lsTitle* currentTitle;
+    currentTitle = NULL;
+    // only keep system + normal + demo titles
+    for (i=0;i<num;i++)
+    {
+        u64 tid = tmp[i];
+        u32 tid_high = tid >> 32;
+        if (tid_high == 0x00040010 || tid_high == 0x00040000 || tid_high == 0x00040002)
+        {
+            lsTitle* tempTitle = (lsTitle*)malloc(sizeof(lsTitle));
+            tempTitle->thisTitle = tmp[i];
+            tempTitle->nextTitle = NULL;
+            if(!firstTitle)
+            {
+                firstTitle = tempTitle;
+            }
+            else
+                currentTitle->nextTitle = tempTitle;
+            currentTitle = tempTitle;
+            running_count++;
+        }
     }
-    closeFileHandle(fileHandle);
+    *usable_count = running_count;
+    return ret;
+}
 
-    title.path = path;
-    title.titleID = AM_title.titleID;
-    title.version = AM_title.version;
-
-    return title;
-}*/
+void clearTitleList()
+{
+    lsTitle* title = firstTitle;
+    lsTitle* temp = NULL;
+    while(title)
+    {
+        temp = title->nextTitle;
+        title->nextTitle = NULL;
+        free(title);
+        title = temp;
+    }
+    firstTitle = NULL;
+}
 
 int launchCia(u64 titleID, FS_MediaType mediaType)
 {

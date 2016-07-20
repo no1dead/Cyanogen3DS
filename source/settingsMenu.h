@@ -52,7 +52,31 @@ sf2d_texture *offSwitch;
 sf2d_texture *select;
 sf2d_texture *deselect;
 
-int language, hrTime, DARK, experimentalF, screenDisplay;
+char settingsBgPath[250], displayBgPath[250], aboutBgPath[250], developerBgPath[250], performanceBgPath[250], performance2BgPath[250], 
+	 securityBgPath[250], updatesBgPath[250];
+
+char highlightPath[250], offSwitchPath[250], onSwitchPath[250], selectPath[250];
+
+char aboutPath[250], developerPath[250], performancePath[250], securityPath[250], themesPath[250], wifiPath[250];
+
+char cursorPath[250];
+
+char fmBgPath[250], fmSelectorPath[250], diriconPath[250];
+
+char quickSettingsBgPath[250], navbarPath[250], backdropPath[250], navbarHighlightPath[250];
+
+char backgroundPath[500], themeDirPath[250];
+
+char rgbValuesPath[250], settingsFontColorPath[200];
+
+struct settingsFontColor 
+{
+   int	r;
+   int	g;
+   int	b;
+};
+
+int language, hrTime, DARK, experimentalF, screenDisplay, widgetActivator, bootAnimActivator, firstBoot, r, g, b;
 unsigned int fontColor;
 
 void flashUpdate();
@@ -60,11 +84,15 @@ int aboutMenu();
 int developerMenu();
 int displayMenu();
 int displayThemes();
+int displayThemesManager();
 int displayIconPack();
 void replaceAsset(char tempData[], char path[], char imgPath[], char redirectPath[]);
+void themesLoad();
+void themesReload();
 void iconPackLoad();
 void iconPackReload();
 int displayTime();
+int displayMiscellaneous();
 int performanceMenu();
 int storageMenu();
 int batteryMenu();

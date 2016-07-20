@@ -5,8 +5,37 @@
 #include "settingsMenu.h"
 #include "utils.h"
 
+struct timeAndBatteryStatusFontColor fontColorTime;
+struct clockWidgetFontColor lFontColor;
+
 int lockScreen()
 {
+	FILE *temp;
+	 
+	if (!(fileExists(clockWidgetFontColorPath)))
+	{
+		temp = fopen(clockWidgetFontColorPath, "w");
+		fprintf(temp, "255\n255\n255");
+		fclose(temp);
+	}
+	
+	temp = fopen(clockWidgetFontColorPath, "r");
+	fscanf(temp, "%d %d %d", &lFontColor.r, &lFontColor.g, &lFontColor.b);
+	fclose(temp);
+	
+	FILE *temp2;
+	 
+	if (!(fileExists(timeAndBatteryFontColorPath)))
+	{
+		temp2 = fopen(timeAndBatteryFontColorPath, "w");
+		fprintf(temp2, "255\n255\n255");
+		fclose(temp2);
+	}
+	
+	temp2 = fopen(timeAndBatteryFontColorPath, "r");
+	fscanf(temp2, "%d %d %d", &fontColorTime.r, &fontColorTime.g, &fontColorTime.b);
+	fclose(temp2);
+	
 	char passwordData[20] = "";
 	char pinData[5] = "";
 	int passProtect = 0;
@@ -37,8 +66,8 @@ int lockScreen()
 		sf2d_draw_texture(lockscreenBg, 0, 0);
 
 		digitalTime(155, 30, 1);
-		sftd_draw_textf(robotoS10, 150, 90, RGBA8(255, 255, 255, 255), 10, "%s", getDayOfWeek(0));
-		sftd_draw_textf(robotoS10, 215, 90, RGBA8(255, 255, 255, 255), 10, "%s", getMonthOfYear(0));
+		sftd_draw_textf(robotoS10, 150, 90, RGBA8(lFontColor.r, lFontColor.g, lFontColor.b, 255), 10, "%s", getDayOfWeek(0));
+		sftd_draw_textf(robotoS10, 215, 90, RGBA8(lFontColor.r, lFontColor.g, lFontColor.b, 255), 10, "%s", getMonthOfYear(0));
 		
 		digitalTime(352, 2, 0);
 		batteryStatus(300, 2, 0); 

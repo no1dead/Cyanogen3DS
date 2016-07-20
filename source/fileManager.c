@@ -9,6 +9,8 @@
 #include "screenshot.h"
 #include "utils.h"
 
+struct fileManagerFontColor fmFontColor;
+
 static char cwd[1024] = DEFAULT_DIRECTORY;
 char fileNames[MAX_DISPLAY][512];
 
@@ -34,6 +36,14 @@ void utf2ascii(char* dst, u16* src)
 {
 	if(!src || !dst)return;
 	while(*src)*(dst++)=(*(src++))&0xFF;
+	*dst=0x00;
+}
+
+void unicodeToChar(char* dst, u16* src, int max)
+{
+	if(!src || !dst)return;
+	int n=0;
+	while(*src && n<max-1){*(dst++)=(*(src++))&0xFF;n++;}
 	*dst=0x00;
 }
 
@@ -171,7 +181,7 @@ int loadFiles(const char * path)
 		{
 			i++;
 			utf2ascii(fileNames[i], entry.name);
-			sftd_draw_textf(robotoS12, 76, (i - curScroll) * 19 + DISPLAY_Y, RGBA8(0, 0, 0, 255), 12, "%s", fileNames[i]);
+			sftd_draw_textf(robotoS12, 76, (i - curScroll) * 19 + DISPLAY_Y, RGBA8(fmFontColor.r, fmFontColor.g, fmFontColor.b, 255), 12, "%s", fileNames[i]);
 		}
 		else
 			break;
@@ -189,6 +199,8 @@ int loadFiles(const char * path)
 	}
 	
 	sf2d_draw_texture_part(fileManagerBg, 0, 0, 0, 0, 400, 46);
+	
+	captureScreenshot();
 	
 	kDown = hidKeysDown();
 	
@@ -215,9 +227,23 @@ int loadFiles(const char * path)
 
 int fileManager()
 {	
-	load_PNG(fileManagerBg, "/3ds/Cyanogen3DS/system/app/filemanager/fileManagerBg.png");
-	load_PNG(bar, "/3ds/Cyanogen3DS/system/app/filemanager/bar.png");
-	load_PNG(dirIcon, "/3ds/Cyanogen3DS/system/app/filemanager/ic_fso_folder.png");
+	FILE *temp;
+	 
+	if (!(fileExists(fileManagerFontColorPath)))
+	{
+		temp = fopen(fileManagerFontColorPath, "w");
+		fprintf(temp, "0\n0\n0");
+		fclose(temp);
+	}
+	
+	temp = fopen(fileManagerFontColorPath, "r");
+	fscanf(temp, "%d %d %d", &fmFontColor.r, &fmFontColor.g, &fmFontColor.b);
+	fclose(temp);
+	
+
+	load_PNG(fileManagerBg, fmBgPath);
+	load_PNG(bar, fmSelectorPath);
+	load_PNG(dirIcon, diriconPath);
 	load_PNG(appIcon, "/3ds/Cyanogen3DS/system/app/filemanager/ic_fso_type_app.png");
 	load_PNG(fileIcon, "/3ds/Cyanogen3DS/system/app/filemanager/ic_fso_default.png");
 	
@@ -270,8 +296,6 @@ int fileManager()
 		
 		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
 			appDrawer();
-		
-		captureScreenshot();
 		
 		sf2d_swapbuffers();
 	}

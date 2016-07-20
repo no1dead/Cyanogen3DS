@@ -20,6 +20,15 @@ int cursorX, cursorY;
 u16 touch_x, touch_y, touchTimer;
 touchPosition touch, oldTouch, firstTouch;
 
+char timeAndBatteryFontColorPath[200];
+
+struct timeAndBatteryStatusFontColor 
+{
+   int	r;
+   int	g;
+   int	b;
+};
+
 sftd_font *robotoS10;
 sftd_font *robotoS12;
 sftd_font *robotoS18;
@@ -39,9 +48,7 @@ sf2d_texture *ic_launcher_settings;
 
 // Navbar Assets
 sf2d_texture *navbar;
-sf2d_texture *backicon;
-sf2d_texture *homeicon;
-sf2d_texture *multicon;
+sf2d_texture *navbarHighlight;
 
 // Battery Icon assets (1-5)
 sf2d_texture *_100;
@@ -61,6 +68,9 @@ sf2d_texture *wifiIconNull;
 // Widget Assets
 sf2d_texture *dayWidget;
 sf2d_texture *nightWidget;
+
+// First boot Assets
+sf2d_texture *welcome;
 
 // File manager textures
 sf2d_texture *fileManagerBg;

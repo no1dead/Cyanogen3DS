@@ -20,7 +20,22 @@ void appDrawerUnload()
 }
 
 int appDrawer()
-{	
+{
+	struct appDrawerFontColor fontColor2;
+	
+	FILE *temp;
+	 
+	if (!(fileExists(appDrawerFontColorPath)))
+	{
+		temp = fopen(appDrawerFontColorPath, "w");
+		fprintf(temp, "0\n0\n0");
+		fclose(temp);
+	}
+	
+	temp = fopen(appDrawerFontColorPath, "r");
+	fscanf(temp, "%d %d %d", &fontColor2.r, &fontColor2.g, &fontColor2.b);
+	fclose(temp);
+	
 	if (DARK == 1)
 	{
 		load_PNG(backdrop, "/3ds/Cyanogen3DS/system/settings/Dark/backdropDark.png");
@@ -28,8 +43,8 @@ int appDrawer()
 	}
 	else
 	{
-		load_PNG(backdrop, "/3ds/Cyanogen3DS/system/home/icons/backdrop.png");
-		fontColor = BLACK;
+		load_PNG(backdrop, backdropPath);
+		fontColor = RGBA8(fontColor2.r, fontColor2.g, fontColor2.b, 255);
 	}
 	
 	load_PNG(ic_launcher_clock, clockPath);

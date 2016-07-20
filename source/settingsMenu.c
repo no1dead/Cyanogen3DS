@@ -10,6 +10,9 @@
 #include "settingsMenu.h"
 #include "utils.h"
 
+struct settingsFontColor SettingfontColor;
+struct timeAndBatteryStatusFontColor fontColorTime;
+
 void flashUpdate()
 {
 	load_PNG(recoverybg, "/3ds/Cyanogen3DS/android_bootable_recovery/res/images/recoverybg.png.png");
@@ -48,9 +51,9 @@ int aboutMenu()
 	}
 	else
 	{
-		load_PNG(aboutBg, "/3ds/Cyanogen3DS/system/settings/aboutBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		fontColor = BLACK;
+		load_PNG(aboutBg, aboutBgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, aboutBg);
@@ -221,11 +224,11 @@ int developerMenu()
 	}
 	else
 	{
-		load_PNG(developerBg, "/3ds/Cyanogen3DS/system/settings/developerBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		load_PNG(onSwitch, "/3ds/Cyanogen3DS/system/settings/onSwitch.png");
-		load_PNG(offSwitch, "/3ds/Cyanogen3DS/system/settings/offSwitch.png");
-		fontColor = BLACK;
+		load_PNG(developerBg, developerBgPath);
+		load_PNG(highlight, highlightPath);
+		load_PNG(onSwitch, onSwitchPath);
+		load_PNG(offSwitch, offSwitchPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, developerBg);
@@ -342,9 +345,9 @@ int developerMenu()
 					fclose(darkTheme);
 					sf2d_free_texture(developerBg);
 					sf2d_free_texture(highlight);
-					load_PNG(developerBg, "/3ds/Cyanogen3DS/system/settings/developerBg.png");
-					load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-					fontColor = BLACK;
+					load_PNG(developerBg, developerBgPath);
+					load_PNG(highlight, highlightPath);
+					fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 				}
 			}
 		}
@@ -426,9 +429,9 @@ int displayMenu()
 	}
 	else
 	{
-		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/displayBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		fontColor = BLACK;
+		load_PNG(displayBg, displayBgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, displayBg);
@@ -483,6 +486,12 @@ int displayMenu()
 		{
 			sf2d_draw_texture(highlight, 0, 202);
 			sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsDisplay[language][3]);
+			if (kDown & KEY_A)
+			{	
+				sf2d_free_texture(displayBg);
+				sf2d_free_texture(highlight);
+				displayMiscellaneous();
+			}
 		}
 		
 		if (screenDisplay == 0)
@@ -539,9 +548,9 @@ int displayThemes()
 	}
 	else
 	{
-		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/displayBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		fontColor = BLACK;
+		load_PNG(displayBg, displayBgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, displayBg);
@@ -566,6 +575,8 @@ int displayThemes()
 		{
 			sf2d_draw_texture(highlight, 0, 55);
 			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsThemes[language][0]);
+			if (kDown & KEY_A)
+				displayThemesManager();
 		}
 		else if (cursor(0, 480, 105, 155))
 		{
@@ -629,7 +640,7 @@ int displayThemes()
 	return 0;
 }
 
-int displayIconPack()
+int displayThemesManager()
 {
 	if (DARK == 1)
 	{
@@ -639,9 +650,9 @@ int displayIconPack()
 	}
 	else
 	{
-		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/displayBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		fontColor = BLACK;
+		load_PNG(displayBg, displayBgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, displayBg);
@@ -657,25 +668,25 @@ int displayIconPack()
 		
 		sf2d_draw_texture(displayBg, 0, 0);
 		
-		sftd_draw_textf(robotoS12, 20, 73, fontColor, 12, "Serie54");
-		
-		sftd_draw_textf(robotoS12, 20, 89, fontColor, 12, "Press 'x' to switch back to default");
+		sftd_draw_textf(robotoS12, 20, 64, fontColor, 12, "SAO");
+		sftd_draw_textf(robotoS12, 20, 81, fontColor, 12, "Press (x) to switch back to default");
 		
 		if (cursor(0, 480, 55, 105))
 		{
 			sf2d_draw_texture(highlight, 0, 55);
-			sftd_draw_textf(robotoS12, 20, 73, fontColor, 12, "Serie54");
+			sftd_draw_textf(robotoS12, 20, 64, fontColor, 12, "SAO");
+			sftd_draw_textf(robotoS12, 20, 81, fontColor, 12, "Press (x) to switch back to default");
 				
-			/* Just for testing purposes - confirmed working.
+			// Just for testing purposes - confirmed working.
 			if (kDown & KEY_A)
 			{
-				strcpy(appDirPath, "/3ds/Cyanogen3DS/system/icons/Serie54");
-				FILE * iconPackTxt = fopen("/3ds/Cyanogen3DS/system/settings/iconpack.bin", "w");
-				fprintf(iconPackTxt,"%s", appDirPath);
-				fclose(iconPackTxt);
-				iconPackLoad();
-				iconPackReload();
-			}*/
+				strcpy(themeDirPath, "/3ds/Cyanogen3DS/system/themes/SAO");
+				FILE * themeTxt = fopen("/3ds/Cyanogen3DS/system/settings/theme.bin", "w");
+				fprintf(themeTxt, "%s", themeDirPath);
+				fclose(themeTxt);
+				themesLoad();
+				themesReload();
+			}
 		}
 		
 		if (screenDisplay == 0)
@@ -691,7 +702,111 @@ int displayIconPack()
 		
 		navbarControls(0);
 		
-		/* Just for testing purposes - confirmed working.
+		// Just for testing purposes - confirmed working.
+		if (kDown & KEY_X)
+		{
+			strcpy(themeDirPath, "/3ds/Cyanogen3DS/system");
+			FILE * themeTxt = fopen("/3ds/Cyanogen3DS/system/settings/theme.bin", "w");
+			fprintf(themeTxt, "%s", themeDirPath);
+			fclose(themeTxt);
+			themesLoad();
+			themesReload();
+		}
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			displayThemes();
+		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			displayThemes();
+		}
+		
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
+	}
+
+	sf2d_free_texture(displayBg);
+	sf2d_free_texture(highlight);
+
+	return 0;
+}
+
+int displayIconPack()
+{
+	if (DARK == 1)
+	{
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/Dark/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
+		fontColor = LITEGRAY;
+	}
+	else
+	{
+		load_PNG(displayBg, displayBgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
+	}
+	
+	setBilinearFilter(1, displayBg);
+	setBilinearFilter(1, highlight);
+
+	while (aptMainLoop())
+	{
+		hidScanInput();
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
+		
+		sf2d_draw_texture(displayBg, 0, 0);
+		
+		sftd_draw_textf(robotoS12, 20, 64, fontColor, 12, "SAO");
+		sftd_draw_textf(robotoS12, 20, 81, fontColor, 12, "Press (x) to switch back to default");
+		
+		if (cursor(0, 480, 55, 105))
+		{
+			sf2d_draw_texture(highlight, 0, 55);
+			sftd_draw_textf(robotoS12, 20, 64, fontColor, 12, "SAO");
+			sftd_draw_textf(robotoS12, 20, 81, fontColor, 12, "Press (x) to switch back to default");
+				
+			// Just for testing purposes - confirmed working.
+			if (kDown & KEY_A)
+			{
+				strcpy(appDirPath, "/3ds/Cyanogen3DS/system/icons/SAO");
+				FILE * iconPackTxt = fopen("/3ds/Cyanogen3DS/system/settings/iconpack.bin", "w");
+				fprintf(iconPackTxt, "%s", appDirPath);
+				fclose(iconPackTxt);
+				iconPackLoad();
+				iconPackReload();
+			}
+		}
+		
+		if (screenDisplay == 0)
+		{
+			digitalTime(352, 2, 0);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		//Just for testing purposes - confirmed working.
 		if (kDown & KEY_X)
 		{
 			strcpy(appDirPath, "/3ds/Cyanogen3DS/system/icons/Default");
@@ -700,7 +815,7 @@ int displayIconPack()
 			fclose(iconPackTxt);
 			iconPackLoad();
 			iconPackReload();
-		}*/ 
+		} 
 		
 		if (kDown & KEY_Y)
 			powerMenu(); 
@@ -738,6 +853,159 @@ void replaceAsset(char tempData[], char path[], char imgPath[], char redirectPat
 	strcpy(tempData, path);
 	strcat(tempData, imgPath); 
 	strcpy(redirectPath, tempData);
+}
+
+void themesLoad()
+{	
+	strcpy(themeDirPath, setFileDefaultsChar("/3ds/Cyanogen3DS/system/settings/theme.bin", "/3ds/Cyanogen3DS/system", themeDirPath));
+
+	char highlightImg[100] = "/settings/highlight.png";
+	char settingsBgImg[100] = "/settings/settingsBg.png";
+	char displayBgImg[100] = "/settings/displayBg.png";
+	char aboutBgImg[100] = "/settings/aboutBg.png";
+	char developerBgImg[100] = "/settings/developerBg.png";
+	char performanceBgImg[100] = "/settings/performanceBg.png";
+	char performance2BgImg[100] = "/settings/performanceBg2.png";
+	char securityBgImg[100] = "/settings/securityBg.png";
+	char updatesBgImg[100] = "/settings/updatesBg.png";
+	char offSwitchImg[100] = "/settings/offswitch.png";
+	char onSwitchImg[100] = "/settings/onswitch.png";
+	char selectImg[100] = "/settings/select.png";
+	
+	char aboutImg[100] = "/settings/about.png";
+	char developerImg[100] = "/settings/developeroptions.png";
+	char performanceImg[100] = "/settings/performance.png";
+	char securityImg[100] = "/settings/security.png";
+	char themesImg[100] = "/settings/themes.png";
+	char wifiImg[100] = "/settings/wifi.png";
+	
+	char fmBgImg[100] = "/app/filemanager/filemanagerBg.png";
+	char fmSelectorImg[100] = "/app/filemanager/bar.png";
+	char diriconImg[100] = "/app/filemanager/dir.png";
+	
+	char quickSettingsBgImg[100] = "/home/menu/quickSettings.png";
+	char backdropImg[100] = "/home/icons/backdrop.png";
+	char navbarImg[100] = "/home/icons/navbar.png";
+	char navbarHighlightImg[100] = "/home/icons/navbarHighlight.png";
+	
+	char cursorImg[100] = "/cursor/cursor.png";
+	
+	char backgroundData[100] = "/settings/background.bin";
+	
+	char rgbValues[100] = "/settings/rgb.bin";
+	char appDrawerFontColor[100] = "/app/rgb.bin";
+	char fileManagerFontColor[100] = "/app/filemanager/rgb.bin";
+	//char galleryFontColor[100] = "/app/gallery/rgb.bin";
+	//char gameFontColor[100] = "/app/game/rgb.bin";
+	//char apolloFontColor[100] = "/app/apollo/rgb.bin";
+	char settingsFontColor[100] = "/settings/srgb.bin";
+	char timeAndBatteryFontColor[100] = "/home/rgb.bin";
+	char lockScreenWidgetFontColor[100] = "/app/clock/rgb.bin";
+	
+	replaceAsset(tempData, themeDirPath, highlightImg, highlightPath);
+	replaceAsset(tempData, themeDirPath, aboutBgImg, aboutBgPath);
+	replaceAsset(tempData, themeDirPath, developerBgImg, developerBgPath);
+	replaceAsset(tempData, themeDirPath, performanceBgImg, performanceBgPath);
+	replaceAsset(tempData, themeDirPath, performance2BgImg, performance2BgPath);
+	replaceAsset(tempData, themeDirPath, securityBgImg, securityBgPath);
+	replaceAsset(tempData, themeDirPath, updatesBgImg, updatesBgPath);
+	replaceAsset(tempData, themeDirPath, offSwitchImg, offSwitchPath);
+	replaceAsset(tempData, themeDirPath, onSwitchImg, onSwitchPath);
+	replaceAsset(tempData, themeDirPath, selectImg, selectPath);
+	replaceAsset(tempData, themeDirPath, aboutImg, aboutPath);
+	replaceAsset(tempData, themeDirPath, developerImg, developerPath);
+	replaceAsset(tempData, themeDirPath, performanceImg, performancePath);
+	replaceAsset(tempData, themeDirPath, securityImg, securityPath);
+	replaceAsset(tempData, themeDirPath, themesImg, themesPath);
+	replaceAsset(tempData, themeDirPath, wifiImg, wifiPath);
+	replaceAsset(tempData, themeDirPath, settingsBgImg, settingsBgPath);
+	replaceAsset(tempData, themeDirPath, displayBgImg, displayBgPath);
+	replaceAsset(tempData, themeDirPath, fmBgImg, fmBgPath);
+	replaceAsset(tempData, themeDirPath, fmSelectorImg, fmSelectorPath);
+	replaceAsset(tempData, themeDirPath, diriconImg, diriconPath);
+	replaceAsset(tempData, themeDirPath, quickSettingsBgImg, quickSettingsBgPath);
+	replaceAsset(tempData, themeDirPath, navbarImg, navbarPath);
+	replaceAsset(tempData, themeDirPath, navbarHighlightImg, navbarHighlightPath);
+	replaceAsset(tempData, themeDirPath, backdropImg, backdropPath);
+	replaceAsset(tempData, themeDirPath, cursorImg, cursorPath);
+	replaceAsset(tempData, themeDirPath, backgroundData, backgroundPath);
+	replaceAsset(tempData, themeDirPath, rgbValues, rgbValuesPath);
+	replaceAsset(tempData, themeDirPath, appDrawerFontColor, appDrawerFontColorPath);
+	replaceAsset(tempData, themeDirPath, fileManagerFontColor, fileManagerFontColorPath);
+	//replaceAsset(tempData, themeDirPath, galleryFontColor, galleryFontColorPath);
+	//replaceAsset(tempData, themeDirPath, gameFontColor, gameFontColorPath);
+	//replaceAsset(tempData, themeDirPath, apolloFontColor, apolloFontColorPath);
+	replaceAsset(tempData, themeDirPath, settingsFontColor, settingsFontColorPath);
+	replaceAsset(tempData, themeDirPath, timeAndBatteryFontColor, timeAndBatteryFontColorPath);
+	replaceAsset(tempData, themeDirPath, lockScreenWidgetFontColor, clockWidgetFontColorPath);
+	
+	FILE *temp;
+	 
+	if (!(fileExists(rgbValuesPath)))
+	{
+		temp = fopen(rgbValuesPath, "w");
+		fprintf(temp, "0\n149\n135");
+		fclose(temp);
+	}
+	
+	temp = fopen(rgbValuesPath, "r");
+	fscanf(temp, "%d %d %d", &r, &g, &b);
+	fclose(temp);
+	
+	strcpy(backgroundPath, setFileDefaultsChar(backgroundPath, "/3ds/Cyanogen3DS/system/framework/framework-res/res/background1.png", backgroundPath));
+}
+
+void themesReload()
+{
+	sf2d_free_texture(background);
+	sf2d_free_texture(navbar);
+	sf2d_free_texture(navbarHighlight);
+	sf2d_free_texture(quickSettings);
+	sf2d_free_texture(cursor);
+	sf2d_free_texture(displayBg);
+	sf2d_free_texture(highlight);
+	
+	load_PNG(background, backgroundPath);
+	load_PNG(navbar, navbarPath);
+	load_PNG(navbarHighlight, navbarHighlightPath);
+	load_PNG(quickSettings, quickSettingsBgPath);
+	load_PNG(cursor, cursorPath);
+	load_PNG(displayBg, displayBgPath);
+	load_PNG(highlight, highlightPath);
+	
+	FILE *temp;
+	 
+	if (!(fileExists(settingsFontColorPath)))
+	{
+		temp = fopen(settingsFontColorPath, "w");
+		fprintf(temp, "0\n0\n0");
+		fclose(temp);
+	}
+	
+	temp = fopen(settingsFontColorPath, "r");
+	fscanf(temp, "%d %d %d", &SettingfontColor.r, &SettingfontColor.g, &SettingfontColor.b);
+	fclose(temp);
+	
+	FILE *temp2;
+	 
+	if (!(fileExists(timeAndBatteryFontColorPath)))
+	{
+		temp2 = fopen(timeAndBatteryFontColorPath, "w");
+		fprintf(temp2, "255\n255\n255");
+		fclose(temp2);
+	}
+	
+	temp2 = fopen(timeAndBatteryFontColorPath, "r");
+	fscanf(temp2, "%d %d %d", &fontColorTime.r, &fontColorTime.g, &fontColorTime.b);
+	fclose(temp2);
+	
+	setBilinearFilter(1, background);
+	setBilinearFilter(1, cursor);
+	setBilinearFilter(1, quickSettings);
+	setBilinearFilter(1, navbar);
+	setBilinearFilter(1, navbarHighlight);
+	setBilinearFilter(1, displayBg);
+	setBilinearFilter(1, highlight);
 }
 
 void iconPackLoad()
@@ -783,6 +1051,11 @@ void iconPackReload()
 	load_PNG(ic_launcher_messenger, messagesPath);
 	load_PNG(ic_launcher_settings, settingsPath);
 	
+	setBilinearFilter(1, ic_launcher_browser);
+	setBilinearFilter(1, ic_launcher_messenger);
+	setBilinearFilter(1, ic_launcher_apollo);
+	setBilinearFilter(1, ic_launcher_settings);
+	
 	displayIconPack();
 }
 
@@ -798,11 +1071,11 @@ int displayTime()
 	}
 	else
 	{
-		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/displayBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		load_PNG(onSwitch, "/3ds/Cyanogen3DS/system/settings/onSwitch.png");
-		load_PNG(offSwitch, "/3ds/Cyanogen3DS/system/settings/offSwitch.png");
-		fontColor = BLACK;
+		load_PNG(displayBg, displayBgPath);
+		load_PNG(highlight, highlightPath);
+		load_PNG(onSwitch, onSwitchPath);
+		load_PNG(offSwitch, offSwitchPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, displayBg);
@@ -821,6 +1094,7 @@ int displayTime()
 		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
 		
 		sf2d_draw_texture(displayBg, 0, 0);
+		
 		if (hrTime == 0)
 			sf2d_draw_texture(offSwitch, 355, 70);
 		else if (hrTime == 1)
@@ -908,6 +1182,178 @@ int displayTime()
 	return 0;
 }
 
+int displayMiscellaneous()
+{
+	if (DARK == 1)
+	{
+		load_PNG(displayBg, "/3ds/Cyanogen3DS/system/settings/Dark/displayBg.png");
+		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/Dark/highlight.png");
+		load_PNG(onSwitch, "/3ds/Cyanogen3DS/system/settings/onSwitch.png");
+		load_PNG(offSwitch, "/3ds/Cyanogen3DS/system/settings/offSwitch.png");
+		fontColor = LITEGRAY;
+	}
+	else
+	{
+		load_PNG(displayBg, displayBgPath);
+		load_PNG(highlight, highlightPath);
+		load_PNG(onSwitch, onSwitchPath);
+		load_PNG(offSwitch, offSwitchPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
+	}
+	
+	setBilinearFilter(1, displayBg);
+	setBilinearFilter(1, highlight);
+	setBilinearFilter(1, onSwitch);
+	setBilinearFilter(1, offSwitch);
+	
+	while (aptMainLoop())
+	{
+		hidScanInput();
+
+		u32 kDown = hidKeysDown();
+		
+		sf2d_start_frame(switchDisplay(screenDisplay), GFX_LEFT);
+		
+		sf2d_draw_texture(displayBg, 0, 0);
+		
+		if (widgetActivator == 0)
+			sf2d_draw_texture(offSwitch, 355, 65);
+		else if (widgetActivator == 1)
+			sf2d_draw_texture(onSwitch, 355, 65);
+		if (bootAnimActivator == 0)
+			sf2d_draw_texture(offSwitch, 355, 164);
+		else if (bootAnimActivator == 1)
+			sf2d_draw_texture(onSwitch, 355, 164);
+		
+		sf2d_draw_texture(offSwitch, 355, 115);
+		sf2d_draw_texture(offSwitch, 355, 208);
+		
+		sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsMiscellaneous[language][0]);
+		sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsMiscellaneous[language][1]);
+		sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsMiscellaneous[language][2]);
+		sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsMiscellaneous[language][3]);
+		
+		if (cursor(0, 480, 55, 105))
+		{
+			sf2d_draw_texture(highlight, 0, 55);
+			sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "%s", lang_settingsMiscellaneous[language][0]);
+			if (widgetActivator == 0)
+			{
+				sf2d_draw_texture(offSwitch, 355, 65);
+				
+				if (kDown & KEY_A)
+				{
+					widgetActivator = 1;
+					FILE * widgetActivation = fopen("/3ds/Cyanogen3DS/system/widget/widgetActivator.bin", "w");
+					fprintf(widgetActivation, "%d", widgetActivator);
+					fclose(widgetActivation);
+				}
+			}
+			else if (widgetActivator == 1)
+			{
+				sf2d_draw_texture(onSwitch, 355, 65);
+			
+				if (kDown & KEY_A)
+				{
+					widgetActivator = 0;
+					FILE * widgetActivation = fopen("/3ds/Cyanogen3DS/system/widget/widgetActivator.bin", "w");
+					fprintf(widgetActivation, "%d", widgetActivator);
+					fclose(widgetActivation);
+				}
+			}
+		}
+		else if (cursor(0, 480, 105, 155))
+		{
+			sf2d_draw_texture(highlight, 0, 105);
+			sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "%s", lang_settingsMiscellaneous[language][1]);
+			sf2d_draw_texture(offSwitch, 355, 115);
+		}
+		else if (cursor(0, 480, 156, 205))
+		{
+			sf2d_draw_texture(highlight, 0, 154);
+			sftd_draw_textf(robotoS12, 20, 168, fontColor, 12, "%s", lang_settingsMiscellaneous[language][2]);
+			if (bootAnimActivator == 0)
+			{
+				sf2d_draw_texture(offSwitch, 355, 164);
+				
+				if (kDown & KEY_A)
+				{
+					bootAnimActivator = 1;
+					FILE * bootAnimActivation = fopen("/3ds/Cyanogen3DS/system/boot/bootAnimActivator.bin", "w");
+					fprintf(bootAnimActivation, "%d", bootAnimActivator);
+					fclose(bootAnimActivation);
+				}
+			}
+			else if (bootAnimActivator == 1)
+			{
+				sf2d_draw_texture(onSwitch, 355, 164);
+			
+				if (kDown & KEY_A)
+				{
+					bootAnimActivator = 0;
+					FILE * bootAnimActivation = fopen("/3ds/Cyanogen3DS/system/boot/bootAnimActivator.bin", "w");
+					fprintf(bootAnimActivation, "%d", bootAnimActivator);
+					fclose(bootAnimActivation);
+				}
+			}
+		}
+		else if (cursor(0, 480, 206, 240))
+		{
+			sf2d_draw_texture(highlight, 0, 202);
+			sftd_draw_textf(robotoS12, 20, 213, fontColor, 12, "%s", lang_settingsMiscellaneous[language][3]);
+			sf2d_draw_texture(offSwitch, 355, 208);
+		}
+		
+		if (screenDisplay == 0)
+		{
+			digitalTime(352, 2, 0);
+			batteryStatus(300, 2, 0); 
+			//androidQuickSettings();
+		}
+		
+		cursorController();
+		
+		sf2d_end_frame();
+		
+		navbarControls(0);
+		
+		if (kDown & KEY_Y)
+			powerMenu(); 
+		
+		if (kDown & KEY_L)
+			lockScreen();
+		
+		if (kDown & KEY_B)
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			sf2d_free_texture(offSwitch);
+			sf2d_free_texture(onSwitch);
+			displayMenu();
+		}
+		
+		if (touch(44, 119, 201, 240) && (kDown & KEY_TOUCH))
+		{
+			sf2d_free_texture(displayBg);
+			sf2d_free_texture(highlight);
+			sf2d_free_texture(offSwitch);
+			sf2d_free_texture(onSwitch);
+			displayMenu();
+		}
+		
+		captureScreenshot();
+		
+		sf2d_swapbuffers();	
+	}
+
+	sf2d_free_texture(displayBg);
+	sf2d_free_texture(highlight);
+	sf2d_free_texture(offSwitch);
+	sf2d_free_texture(onSwitch);
+
+	return 0;
+}
+
 int performanceMenu()
 {
 	if (DARK == 1)
@@ -918,9 +1364,9 @@ int performanceMenu()
 	}
 	else
 	{
-		load_PNG(performanceBg, "/3ds/Cyanogen3DS/system/settings/performanceBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		fontColor = BLACK;
+		load_PNG(performanceBg, performanceBgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, performanceBg);
@@ -1020,9 +1466,9 @@ int storageMenu()
 	}
 	else
 	{
-		load_PNG(performanceBg2, "/3ds/Cyanogen3DS/system/settings/performanceBg2.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		fontColor = BLACK;
+		load_PNG(performanceBg2, performance2BgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, performanceBg2);
@@ -1043,12 +1489,12 @@ int storageMenu()
 		FSUSER_GetArchiveResource(&resource, SYSTEM_MEDIATYPE_SD);
 		sftd_draw_textf(robotoS12, 20, 68, fontColor, 12, "SD: %.1f MB", ((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0);
 		sf2d_draw_rectangle(20, 86, 360, 10, RGBA8(206, 215, 219, 255));
-		sf2d_draw_rectangle(20, 86, ((((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) / (((u64) resource.totalClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) * 360) - 20, 10, TEAL);
+		sf2d_draw_rectangle(20, 86, ((((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) / (((u64) resource.totalClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) * 360) - 20, 10, RGBA8(r, g, b, 255));
 		
 		FSUSER_GetArchiveResource(&resource, SYSTEM_MEDIATYPE_CTR_NAND);
 		sftd_draw_textf(robotoS12, 20, 116, fontColor, 12, "CTR NAND: %.1f MB", ((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0);
 		sf2d_draw_rectangle(20, 134, 360, 10, RGBA8(206, 215, 219, 255));
-		sf2d_draw_rectangle(20, 134, ((((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) / (((u64) resource.totalClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) * 360) - 20, 10, TEAL);
+		sf2d_draw_rectangle(20, 134, ((((u64) resource.freeClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) / (((u64) resource.totalClusters * (u64) resource.clusterSize) / 1024.0 / 1024.0) * 360) - 20, 10, RGBA8(r, g, b, 255));
 		
 		if (screenDisplay == 0)
 		{
@@ -1104,13 +1550,13 @@ int batteryMenu()
 	}
 	else
 	{
-		load_PNG(performanceBg, "/3ds/Cyanogen3DS/system/settings/performanceBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		fontColor = BLACK;
+		load_PNG(performanceBg, performanceBgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	load_PNG(deselect, "/3ds/Cyanogen3DS/system/settings/deselect.png");
-	load_PNG(select, "/3ds/Cyanogen3DS/system/settings/select.png");
+	load_PNG(select, selectPath);
 	
 	setBilinearFilter(1, performanceBg);
 	setBilinearFilter(1, highlight);
@@ -1207,9 +1653,9 @@ int securityMenu()
 	}
 	else
 	{
-		load_PNG(securityBg, "/3ds/Cyanogen3DS/system/settings/securityBg.png");
-		load_PNG(highlight, "/3ds/Cyanogen3DS/system/settings/highlight.png");
-		fontColor = BLACK;
+		load_PNG(securityBg, securityBgPath);
+		load_PNG(highlight, highlightPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, securityBg);
@@ -1462,6 +1908,20 @@ int settingsUnload()
 
 int settingsMenu()
 {
+	FILE *temp;
+	 
+	if (!(fileExists(settingsFontColorPath)))
+	{
+		temp = fopen(settingsFontColorPath, "w");
+		fprintf(temp, "0\n0\n0");
+		fclose(temp);
+	}
+	
+	temp = fopen(settingsFontColorPath, "r");
+	fscanf(temp, "%d %d %d", &SettingfontColor.r, &SettingfontColor.g, &SettingfontColor.b);
+	fclose(temp);
+
+	
 	if (DARK == 1)
 	{
 		load_PNG(settingsBg, "/3ds/Cyanogen3DS/system/settings/Dark/settingsBg.png");
@@ -1475,14 +1935,14 @@ int settingsMenu()
 	}
 	else
 	{
-		load_PNG(settingsBg, "/3ds/Cyanogen3DS/system/settings/settingsBg.png");
-		load_PNG(about_highlight, "/3ds/Cyanogen3DS/system/settings/about_highlight.png");
-		load_PNG(display_highlight, "/3ds/Cyanogen3DS/system/settings/display_highlight.png");
-		load_PNG(developeroptions_highlight, "/3ds/Cyanogen3DS/system/settings/developersoptions_highlight.png");
-		load_PNG(performance_highlight, "/3ds/Cyanogen3DS/system/settings/performance_highlight.png");
-		load_PNG(security_highlight, "/3ds/Cyanogen3DS/system/settings/security_highlight.png");
-		load_PNG(wifi_highlight, "/3ds/Cyanogen3DS/system/settings/wifi_highlight.png");
-		fontColor = BLACK;
+		load_PNG(settingsBg, settingsBgPath);
+		load_PNG(about_highlight, aboutPath);
+		load_PNG(display_highlight, themesPath);
+		load_PNG(developeroptions_highlight, developerPath);
+		load_PNG(performance_highlight, performancePath);
+		load_PNG(security_highlight, securityPath);
+		load_PNG(wifi_highlight, wifiPath);
+		fontColor = RGBA8(SettingfontColor.r, SettingfontColor.g, SettingfontColor.b, 255);
 	}
 	
 	setBilinearFilter(1, settingsBg);
