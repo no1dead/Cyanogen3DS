@@ -71,7 +71,8 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lsfil -lpng -ljpeg -lz -lsf2d -lctru -lm -lsftd -lfreetype
+LIBS	:=	-lsftd -lfreetype -lpng -lz -lsf2d -lcitro3d -lctru -lm -lsfil -ljpeg -lz
+			
 
 OS := $(shell uname)
 
@@ -153,6 +154,7 @@ endif
 #---------------------------------------------------------------------------------
 # 3DS CIA
 #---------------------------------------------------------------------------------
+
 export BUILD_ARGS := \
 -DAPP_TITLE=$(APP_TITLE) \
 -DAPP_PRODUCT_CODE=$(APP_PRODUCT_CODE) \
