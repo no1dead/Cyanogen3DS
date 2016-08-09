@@ -11,6 +11,13 @@ perl devkitARMupdate.pl
 cd ctrulib/libctru && make ; cd -
 cp -rf ctrulib/libctru/ ${DEVKITPRO}
 
+# Get latest version of Citro3D
+git clone --recursive https://github.com/fincs/citro3d.git
+cd citro3d
+make install
+cd ../
+rm -rf citro3d
+
 # Get picasso
 mv tools/picasso.exe ${PICASSO}
 

@@ -57,7 +57,7 @@ sf2d_rendertarget *sf2d_create_rendertarget(int width, int height)
 		return NULL;
 	}
 
-	Mtx_OrthoTilt(&rt->projection, 0.0f, width, height, 0.0f, 0.0f, 1.0f);
+	Mtx_OrthoTilt(&rt->projection, 0.0f, width, height, 0.0f, 0.0f, 1.0f, true);
 	return rt;
 }
 
@@ -92,7 +92,13 @@ void sf2d_texture_tile32_hardware(sf2d_texture *texture, const void *data, int w
 	GSPGPU_FlushDataCache(data, (w*h)<<2);
 	GSPGPU_FlushDataCache(texture->tex.data, texture->tex.size);
 
-	C3D_SafeDisplayTransfer((u32*)data, GX_BUFFER_DIM(w, h), (u32*)texture->tex.data, GX_BUFFER_DIM(texture->tex.width, texture->tex.height), flags);
+	C3D_SafeDisplayTransfer(
+		(u32*)data,
+		GX_BUFFER_DIM(w, h),
+		(u32*)texture->tex.data,
+		GX_BUFFER_DIM(texture->tex.width, texture->tex.height),
+		flags
+	);
 
 	gspWaitForPPF();
 	texture->tiled = 1;
