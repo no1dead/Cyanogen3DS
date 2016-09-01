@@ -1908,19 +1908,9 @@ int settingsUnload()
 
 int settingsMenu()
 {
-	FILE *temp;
-	 
-	if (!(fileExists(settingsFontColorPath)))
-	{
-		temp = fopen(settingsFontColorPath, "w");
-		fprintf(temp, "0\n0\n0");
-		fclose(temp);
-	}
-	
-	temp = fopen(settingsFontColorPath, "r");
-	fscanf(temp, "%d %d %d", &SettingfontColor.r, &SettingfontColor.g, &SettingfontColor.b);
-	fclose(temp);
-
+	FILE * file = fopen(settingsFontColorPath, "r");
+	fscanf(file, "%d %d %d", &SettingfontColor.r, &SettingfontColor.g, &SettingfontColor.b);
+	fclose(file);
 	
 	if (DARK == 1)
 	{

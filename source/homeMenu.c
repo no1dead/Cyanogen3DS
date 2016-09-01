@@ -372,31 +372,13 @@ int home()
 	firstBoot = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/boot.bin", 1, firstBoot);
 	widgetActivator = setFileDefaultsInt("/3ds/Cyanogen3DS/system/widget/widgetActivator.bin", 1, widgetActivator);
 
-	FILE *temp;
-	 
-	if (!(fileExists(clockWidgetFontColorPath)))
-	{
-		temp = fopen(clockWidgetFontColorPath, "w");
-		fprintf(temp, "255\n255\n255");
-		fclose(temp);
-	}
+	FILE * file = fopen(clockWidgetFontColorPath, "r");
+	fscanf(file, "%d %d %d", &lFontColor.r, &lFontColor.g, &lFontColor.b);
+	fclose(file);
 	
-	temp = fopen(clockWidgetFontColorPath, "r");
-	fscanf(temp, "%d %d %d", &lFontColor.r, &lFontColor.g, &lFontColor.b);
-	fclose(temp);
-	
-	FILE *temp2;
-	 
-	if (!(fileExists(timeAndBatteryFontColorPath)))
-	{
-		temp2 = fopen(timeAndBatteryFontColorPath, "w");
-		fprintf(temp2, "255\n255\n255");
-		fclose(temp2);
-	}
-	
-	temp2 = fopen(timeAndBatteryFontColorPath, "r");
-	fscanf(temp2, "%d %d %d", &fontColorTime.r, &fontColorTime.g, &fontColorTime.b);
-	fclose(temp2);
+	file = fopen(timeAndBatteryFontColorPath, "r");
+	fscanf(file, "%d %d %d", &fontColorTime.r, &fontColorTime.g, &fontColorTime.b);
+	fclose(file);
 	
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 0));
 	

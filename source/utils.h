@@ -35,6 +35,7 @@ bool isWifiEnabled();
 void setBilinearFilter(int enabled, sf2d_texture *texture);
 int extractZip(const char * zipFile, const char * path);
 void installRequiredFiles();
+void installFontColorData();
 void sleepThread(u32 milliSec);
 int setFileDefaultsInt(char *path, int value, int var);
 float setFileDefaultsFloat(char *path, float value, float var);

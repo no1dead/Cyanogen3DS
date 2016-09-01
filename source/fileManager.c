@@ -227,19 +227,9 @@ int loadFiles(const char * path)
 
 int fileManager()
 {	
-	FILE *temp;
-	 
-	if (!(fileExists(fileManagerFontColorPath)))
-	{
-		temp = fopen(fileManagerFontColorPath, "w");
-		fprintf(temp, "0\n0\n0");
-		fclose(temp);
-	}
-	
-	temp = fopen(fileManagerFontColorPath, "r");
-	fscanf(temp, "%d %d %d", &fmFontColor.r, &fmFontColor.g, &fmFontColor.b);
-	fclose(temp);
-	
+	FILE * file = fopen(fileManagerFontColorPath, "r");
+	fscanf(file, "%d %d %d", &fmFontColor.r, &fmFontColor.g, &fmFontColor.b);
+	fclose(file);
 
 	load_PNG(fileManagerBg, fmBgPath);
 	load_PNG(bar, fmSelectorPath);

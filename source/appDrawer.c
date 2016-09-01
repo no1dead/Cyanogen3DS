@@ -23,18 +23,9 @@ int appDrawer()
 {
 	struct appDrawerFontColor fontColor2;
 	
-	FILE *temp;
-	 
-	if (!(fileExists(appDrawerFontColorPath)))
-	{
-		temp = fopen(appDrawerFontColorPath, "w");
-		fprintf(temp, "0\n0\n0");
-		fclose(temp);
-	}
-	
-	temp = fopen(appDrawerFontColorPath, "r");
-	fscanf(temp, "%d %d %d", &fontColor2.r, &fontColor2.g, &fontColor2.b);
-	fclose(temp);
+	FILE * file = fopen(appDrawerFontColorPath, "r");
+	fscanf(file, "%d %d %d", &fontColor2.r, &fontColor2.g, &fontColor2.b);
+	fclose(file);
 	
 	if (DARK == 1)
 	{

@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 	
 	installRequiredFiles(); //create necessary dirs
 	
-	strcpy(backgroundPath, setFileDefaultsChar("/3ds/Cyanogen3DS/system/settings/background.bin", "/3ds/Cyanogen3DS/system/framework/framework-res/res/background1.png", backgroundPath));
+	strcpy(backgroundPath, setFileDefaultsChar("/3ds/Cyanogen3DS/system/settings/background.bin", "/3ds/Cyanogen3DS/system/framework/framework-res/res/ventana.png", backgroundPath));
 	
 	hrTime = setFileDefaultsInt("/3ds/Cyanogen3DS/system/app/clock/timeSet.bin", 0, hrTime);
 	DARK = setFileDefaultsInt("/3ds/Cyanogen3DS/system/settings/darkTheme.bin", 0, DARK);
@@ -63,6 +63,8 @@ int main(int argc, char **argv)
 	
 	themesLoad();
 	iconPackLoad();
+	
+	installFontColorData();
 
 	// Load textures
 	load_PNG(background, backgroundPath);

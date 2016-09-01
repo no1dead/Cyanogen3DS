@@ -1,6 +1,9 @@
+#include "appDrawer.h"
 #include "archive.h"
+#include "clock.h"
 #include "fileManager.h"
-#include "libs/libsf2d/include/sf2d.h"
+#include "homeMenu.h"
+#include "settingsMenu.h"
 #include "utils.h"
 
 u8 getModel()
@@ -161,17 +164,50 @@ int extractZip(const char * zipFile, const char * path)
 
 void installRequiredFiles()
 {
-	if (fileExists("/3ds/Cyanogen3DS/UPDATE.zip"))
-		deleteFile("/3ds/Cyanogen3DS/UPDATE.zip"); //Delete any existing UPDATE.zip.
+	/*if (fileExists("/3ds/Cyanogen3DS/UPDATE.zip"))
+		deleteFile("/3ds/Cyanogen3DS/UPDATE.zip"); //Delete any existing UPDATE.zip.*/
 	
-	if (!dirExists("/3ds/Cyanogen3DS/screenshots"))
+	if (!(dirExists("/3ds/Cyanogen3DS/screenshots")))
 		makeDir("/3ds/Cyanogen3DS/screenshots");
-	if (!dirExists("3ds/Cyanogen3DS/system/settings"))
-		makeDir("/3ds/Cyanogen3DS/system/settings");
-	if (!dirExists("3ds/Cyanogen3DS/system/app"))
-		makeDir("/3ds/Cyanogen3DS/system/app");
-	if (!dirExists("3ds/Cyanogen3DS/system/app/clock"))
+	
+	if (!(dirExists("/3ds/Cyanogen3DS/system/themes")))
+		makeDir("/3ds/Cyanogen3DS/system/themes");
+	
+	if (!(dirExists("3ds/Cyanogen3DS/system/app/clock")))
 		makeDir("/3ds/Cyanogen3DS/system/app/clock");
+}
+
+void installFontColorData()
+{
+	FILE * file;
+	
+	if (!(fileExists(appDrawerFontColorPath)))
+	{
+		file = fopen(appDrawerFontColorPath, "w");
+		fprintf(file, "0\n0\n0");
+		fclose(file);
+	}
+	
+	if (!(fileExists(clockWidgetFontColorPath)))
+	{
+		file = fopen(clockWidgetFontColorPath, "w");
+		fprintf(file, "255\n255\n255");
+		fclose(file);
+	}
+	
+	if (!(fileExists(timeAndBatteryFontColorPath)))
+	{
+		file = fopen(timeAndBatteryFontColorPath, "w");
+		fprintf(file, "255\n255\n255");
+		fclose(file);
+	}
+	
+	if (!(fileExists(settingsFontColorPath)))
+	{
+		file = fopen(settingsFontColorPath, "w");
+		fprintf(file, "0\n0\n0");
+		fclose(file);
+	}
 }
 
 void sleepThread(u32 milliSec) 
